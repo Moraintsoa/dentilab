@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyse Architecture BDD — Cabinet Dentaire</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d1117; --sur:#161b22; --sur2:#1c2430; --sur3:#21262d;
+  --border:#30363d; --text:#e6edf3; --muted:#768390; --muted2:#505968;
+  --green:#3fb950; --red:#f85149; --yellow:#d29922; --blue:#58a6ff;
+  --purple:#bc8cff; --orange:#f0883e; --cyan:#39c5cf; --pink:#e06aaa;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;}
+
+/* ── HEADER ── */
+header{
+  padding:20px 32px; border-bottom:1px solid var(--border);
+  background:var(--sur); display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+}
+h1{font-family:'DM Serif Display',serif;font-size:22px;letter-spacing:-.5px;}
+.badge{padding:4px 12px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.badge-warn{background:#d2992220;color:var(--yellow);border:1px solid #d2992240;}
+.badge-ok{background:#3fb95020;color:var(--green);border:1px solid #3fb95040;}
+.badge-new{background:#58a6ff20;color:var(--blue);border:1px solid #58a6ff40;}
+
+/* ── TABS ── */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--sur);padding:0 32px;}
+.tab{padding:12px 20px;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;font-family:'DM Mono',monospace;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+/* ── MAIN ── */
+.content{display:none;padding:28px 32px;max-width:1400px;margin:0 auto;}
+.content.active{display:block;}
+
+/* ── ANALYSIS VIEW ── */
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.analysis-card{
+  background:var(--sur);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;
+}
+.ac-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.ac-icon{font-size:18px;}
+.ac-title{font-size:12px;font-weight:600;letter-spacing:.5px;}
+.ac-body{padding:14px 18px;}
+
+.issue-item{
+  padding:10px 12px;border-radius:8px;margin-bottom:8px;
+  border-left:3px solid;font-size:11px;line-height:1.7;
+}
+.issue-critical{background:#f8514910;border-color:var(--red);}
+.issue-warn{background:#d2992215;border-color:var(--yellow);}
+.issue-improve{background:#58a6ff10;border-color:var(--blue);}
+.issue-add{background:#3fb95010;border-color:var(--green);}
+
+.issue-tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;display:block;}
+.tag-critical{color:var(--red);}
+.tag-warn{color:var(--yellow);}
+.tag-improve{color:var(--blue);}
+.tag-add{color:var(--green);}
+
+/* ── SCHEMA VIEWS ── */
+.schema-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.schema-col{background:var(--sur);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.schema-col-header{
+  padding:12px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.schema-col-title{font-size:11px;font-weight:600;letter-spacing:.5px;}
+
+/* ERD table cards */
+.erd-tables{padding:14px;display:flex;flex-direction:column;gap:10px;}
+.erd-table{
+  background:var(--sur2);border:1px solid var(--border);border-radius:8px;
+  overflow:hidden;transition:border-color .2s;cursor:pointer;
+}
+.erd-table:hover{border-color:var(--muted);}
+.erd-table.new-table{border-color:#3fb95050;}
+.erd-table.modified-table{border-color:#58a6ff50;}
+.erd-table.removed-table{border-color:#f8514950;opacity:.6;}
+
+.et-header{
+  padding:8px 12px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.et-name{font-size:11px;font-weight:600;color:var(--text);}
+.et-badge{
+  font-size:8px;padding:1px 7px;border-radius:10px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;margin-left:auto;
+}
+.eb-new{background:#3fb95020;color:var(--green);border:1px solid #3fb95040;}
+.eb-mod{background:#58a6ff20;color:var(--blue);border:1px solid #58a6ff40;}
+.eb-del{background:#f8514920;color:var(--red);border:1px solid #f8514940;}
+
+.et-fields{padding:6px 0;}
+.et-field{
+  padding:3px 12px;display:flex;align-items:center;gap:8px;
+  font-size:10px;line-height:1.4;
+}
+.et-field:hover{background:var(--sur3);}
+.et-field.new-field{background:#3fb95008;}
+.et-field.new-field .ef-name::after{content:'  ✦';color:var(--green);font-size:8px;}
+.fkey{
+  font-size:8px;padding:1px 5px;border-radius:3px;font-weight:700;
+  min-width:26px;text-align:center;flex-shrink:0;
+}
+.fk-pk{background:#d2992220;color:var(--yellow);border:1px solid #d2992240;}
+.fk-fk{background:#bc8cff20;color:var(--purple);border:1px solid #bc8cff40;}
+.fk-uk{background:#3fb95020;color:var(--green);border:1px solid #3fb95040;}
+.ef-name{color:var(--text);flex:1;}
+.ef-type{color:var(--muted);font-size:9px;}
+.ef-note{font-size:8.5px;color:var(--cyan);margin-left:auto;opacity:.8;}
+
+/* Collapsible fields */
+.et-toggle{
+  padding:4px 12px;font-size:9px;color:var(--muted);cursor:pointer;
+  text-align:center;border-top:1px solid var(--border);
+  transition:color .2s;
+}
+.et-toggle:hover{color:var(--blue);}
+.et-fields-wrap{overflow:hidden;transition:max-height .3s;}
+
+/* ── IMPROVEMENTS SUMMARY ── */
+.improvements-list{display:flex;flex-direction:column;gap:10px;}
+.imp{
+  background:var(--sur);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;border-left:3px solid;
+}
+.imp-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.imp-num{
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;
+}
+.imp-title{font-size:11px;font-weight:600;}
+.imp-desc{font-size:10.5px;color:var(--muted);line-height:1.7;}
+.imp-code{
+  background:var(--sur2);border:1px solid var(--border);border-radius:6px;
+  padding:8px 12px;font-size:10px;margin-top:8px;color:var(--cyan);
+  white-space:pre-wrap;line-height:1.6;
+}
+
+/* ── DIFF LEGEND ── */
+.diff-legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+.dl-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);}
+.dl-dot{width:10px;height:10px;border-radius:2px;}
+
+/* score bar */
+.score-section{
+  background:var(--sur);border:1px solid var(--border);border-radius:12px;
+  padding:20px 24px;margin-bottom:20px;
+}
+.score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px;}
+.score-item{text-align:center;}
+.score-bar-wrap{height:6px;background:var(--sur3);border-radius:3px;margin:8px 0;}
+.score-bar{height:6px;border-radius:3px;transition:width .8s;}
+.score-label{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.score-val{font-family:'DM Serif Display',serif;font-size:22px;}
+
+/* relation list */
+.rel-section{margin-top:12px;}
+.rel-item{
+  display:flex;align-items:center;gap:8px;padding:6px 12px;
+  font-size:10px;border-radius:6px;margin-bottom:3px;
+}
+.rel-item:hover{background:var(--sur3);}
+.rel-from{color:var(--blue);font-weight:600;}
+.rel-arrow{color:var(--muted);}
+.rel-to{color:var(--purple);font-weight:600;}
+.rel-type{color:var(--muted);font-size:9px;margin-left:auto;}
+
+/* ── FULL SCHEMA TEXT ── */
+.mermaid-block{
+  background:var(--sur2);border:1px solid var(--border);border-radius:10px;
+  padding:20px;font-size:10px;line-height:1.8;color:var(--cyan);
+  white-space:pre-wrap;overflow-x:auto;
+  max-height:600px;overflow-y:auto;
+}
+.copy-btn{
+  padding:8px 16px;background:var(--sur3);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;
+  font-size:10px;cursor:pointer;transition:all .2s;
+}
+.copy-btn:hover{background:var(--blue);border-color:var(--blue);color:#000;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Revue Architecture BDD</h1>
+    <div style="font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:1px">Cabinet Dentaire SaaS · Analyse critique + Schéma amélioré</div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-left:auto">
+    <span class="badge badge-warn">7 problèmes identifiés</span>
+    <span class="badge badge-new">5 tables ajoutées</span>
+    <span class="badge badge-ok">15 colonnes améliorées</span>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('analysis',this)">🔍 Analyse critique</div>
+  <div class="tab" onclick="showTab('compare',this)">⚖️ Avant / Après</div>
+  <div class="tab" onclick="showTab('improved',this)">✨ Schéma amélioré</div>
+  <div class="tab" onclick="showTab('mermaid',this)">📄 ERD Mermaid</div>
+</div>
+
+<!-- ═══════════════ TAB 1: ANALYSE ═══════════════ -->
+<div class="content active" id="tab-analysis">
+
+  <!-- Score -->
+  <div class="score-section">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">Évaluation de l'architecture originale</div>
+    <div class="score-grid">
+      <div class="score-item">
+        <div class="score-val" style="color:var(--green)">7/10</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:70%;background:var(--green)"></div></div>
+        <div class="score-label">Structure générale</div>
+      </div>
+      <div class="score-item">
+        <div class="score-val" style="color:var(--yellow)">5/10</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:50%;background:var(--yellow)"></div></div>
+        <div class="score-label">Sécurité / RGPD</div>
+      </div>
+      <div class="score-item">
+        <div class="score-val" style="color:var(--yellow)">6/10</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:60%;background:var(--yellow)"></div></div>
+        <div class="score-label">Complétude métier</div>
+      </div>
+      <div class="score-item">
+        <div class="score-val" style="color:var(--red)">4/10</div>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:40%;background:var(--red)"></div></div>
+        <div class="score-label">Audit / Traçabilité</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="analysis-grid">
+
+    <!-- PROBLÈMES CRITIQUES -->
+    <div class="analysis-card">
+      <div class="ac-header">
+        <span class="ac-icon">🔴</span>
+        <span class="ac-title" style="color:var(--red)">Problèmes critiques</span>
+      </div>
+      <div class="ac-body">
+
+        <div class="issue-item issue-critical">
+          <span class="issue-tag tag-critical">Critique #1 — Sécurité RGPD / HDS</span>
+          <strong>USERS.role</strong> est un simple <code>string</code> libre. Aucune contrainte d'enum. Un bug ou une injection peut élever les privilèges. Il faut un enum strict <code>(docteur, assistante, secretaire, admin)</code> avec contrôle applicatif + RLS PostgreSQL par <code>cabinet_id</code>.
+        </div>
+
+        <div class="issue-item issue-critical">
+          <span class="issue-tag tag-critical">Critique #2 — Données sensibles non protégées</span>
+          <strong>PATIENTS</strong> stocke numéro de sécu, mutuelle, antécédents médicaux en clair. Aucune mention de chiffrement colonne (<code>pgcrypto</code>). En environnement HDS (Hébergeur Données de Santé), c'est une obligation légale française.
+        </div>
+
+        <div class="issue-item issue-critical">
+          <span class="issue-tag tag-critical">Critique #3 — Aucun audit log global</span>
+          <code>DENTAL_CHART_HISTORY</code> existe seulement pour le schéma dentaire. Toutes les autres tables (consultations, traitements, factures) n'ont aucune traçabilité des modifications. En médecine, <strong>toute modification doit être tracée</strong> (qui, quand, avant/après).
+        </div>
+
+      </div>
+    </div>
+
+    <!-- AVERTISSEMENTS -->
+    <div class="analysis-card">
+      <div class="ac-header">
+        <span class="ac-icon">🟡</span>
+        <span class="ac-title" style="color:var(--yellow)">Avertissements logiques</span>
+      </div>
+      <div class="ac-body">
+
+        <div class="issue-item issue-warn">
+          <span class="issue-tag tag-warn">Avert. #1 — DENTAL_CHARTS mal modélisée</span>
+          Une ligne par dent par patient = potentiellement 32 lignes par patient, difficile à requêter atomiquement. La colonne <code>tooth_number</code> devrait être contrainte (1–48 FDI). De plus, il manque le <strong>numéro de quadrant FDI</strong> et les <strong>faces atteintes</strong> (mésiale, distale, occlusale…) qui sont centrales en clinique dentaire.
+        </div>
+
+        <div class="issue-item issue-warn">
+          <span class="issue-tag tag-warn">Avert. #2 — TREATMENTS flottants</span>
+          Un traitement peut exister sans lien avec un <code>TREATMENT_PLAN</code>. Il n'y a pas de FK entre <code>TREATMENTS</code> et <code>TREATMENT_PLAN_ITEMS</code>. Si un acte planifié est réalisé, il n'y a aucun moyen de le marquer comme tel automatiquement.
+        </div>
+
+        <div class="issue-item issue-warn">
+          <span class="issue-tag tag-warn">Avert. #3 — APPOINTMENTS sans confirmation patient</span>
+          Pas de colonne pour le canal de rappel (<code>sms</code>, <code>email</code>), pas de confirmation de présence patient, ni de motif d'annulation. Essentiels pour la gestion d'agenda réelle.
+        </div>
+
+        <div class="issue-item issue-warn">
+          <span class="issue-tag tag-warn">Avert. #4 — Pas de versioning de prix</span>
+          <code>TREATMENTS.unit_price</code> est modifiable. Si le prix change, les anciennes factures sont corrompues. Il faut figer le prix au moment de la facturation (ce que <code>INVOICE_ITEMS.unit_price</code> fait partiellement, mais <code>TREATMENT_PLAN_ITEMS.estimated_price</code> n'est pas relié).
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CE QUI MANQUE -->
+    <div class="analysis-card">
+      <div class="ac-header">
+        <span class="ac-icon">🟢</span>
+        <span class="ac-title" style="color:var(--green)">Tables manquantes</span>
+      </div>
+      <div class="ac-body">
+
+        <div class="issue-item issue-add">
+          <span class="issue-tag tag-add">Manque #1 — NOTIFICATIONS</span>
+          Aucune table pour gérer les rappels de RDV (SMS/email), les alertes de stock bas, les relances de factures impayées. Sans ça, tout passe en dur dans le code ou dans un service externe non tracé.
+        </div>
+
+        <div class="issue-item issue-add">
+          <span class="issue-tag tag-add">Manque #2 — PRESCRIPTIONS</span>
+          Les prescriptions médicamenteuses (antibiotiques, antidouleurs) ne sont pas modélisées. Un champ <code>text</code> dans <code>CONSULTATIONS</code> n'est pas suffisant — il faut un historique, un lien avec le patient et une date de validité.
+        </div>
+
+        <div class="issue-item issue-add">
+          <span class="issue-tag tag-add">Manque #3 — AUDIT_LOGS global</span>
+          Une table centrale <code>AUDIT_LOGS (table_name, record_id, action, old_json, new_json, user_id, ip, at)</code> est indispensable pour la conformité médicale. Elle peut être alimentée par des triggers PostgreSQL automatiques.
+        </div>
+
+        <div class="issue-item issue-add">
+          <span class="issue-tag tag-add">Manque #4 — CONSENTEMENTS RGPD</span>
+          Aucune trace du consentement éclairé patient (date, version du formulaire, canal de signature). Obligatoire RGPD + réglementation médicale française.
+        </div>
+
+        <div class="issue-item issue-add">
+          <span class="issue-tag tag-add">Manque #5 — REPORTS / RAPPORTS</span>
+          Pas de table pour stocker les rapports générés (CA mensuel, actes fréquents…). Sans ça, les rapports sont recalculés à chaque requête, ce qui est lent sur des données volumineuses.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CE QUI EST BIEN -->
+    <div class="analysis-card">
+      <div class="ac-header">
+        <span class="ac-icon">✅</span>
+        <span class="ac-title" style="color:var(--green)">Ce qui est bien fait</span>
+      </div>
+      <div class="ac-body">
+
+        <div class="issue-item" style="background:#3fb95008;border-left:3px solid var(--green)">
+          <span class="issue-tag tag-add">✓ Séparation INVOICE / INVOICE_ITEMS</span>
+          Bonne normalisation. Le pattern entête-lignes est correct et permet des factures multi-actes proprement.
+        </div>
+
+        <div class="issue-item" style="background:#3fb95008;border-left:3px solid var(--green)">
+          <span class="issue-tag tag-add">✓ INVENTORY_MOVEMENTS + INVENTORY_USAGE</span>
+          Tracer les mouvements de stock ET lier leur consommation aux traitements est une excellente décision de modélisation. Rare de le voir dans un premier jet.
+        </div>
+
+        <div class="issue-item" style="background:#3fb95008;border-left:3px solid var(--green)">
+          <span class="issue-tag tag-add">✓ TREATMENT_PLANS séparé des TREATMENTS</span>
+          La distinction plan planifié vs acte réalisé est conceptuellement juste. Beaucoup d'architectures fusionnent les deux à tort.
+        </div>
+
+        <div class="issue-item" style="background:#3fb95008;border-left:3px solid var(--green)">
+          <span class="issue-tag tag-add">✓ DENTAL_CHART_HISTORY</span>
+          Versionner l'état des dents est une excellente initiative clinique. À étendre à l'ensemble du système avec un audit_log global.
+        </div>
+
+        <div class="issue-item" style="background:#3fb95008;border-left:3px solid var(--green)">
+          <span class="issue-tag tag-add">✓ Multi-tenant via cabinet_id</span>
+          La présence de <code>cabinet_id</code> sur les tables clés est la bonne approche pour un SaaS. Il faut maintenant y ajouter le RLS PostgreSQL.
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════ TAB 2: COMPARE ═══════════════ -->
+<div class="content" id="tab-compare">
+  <div class="diff-legend">
+    <div class="dl-item"><div class="dl-dot" style="background:#3fb95060"></div>Table ajoutée</div>
+    <div class="dl-item"><div class="dl-dot" style="background:#58a6ff60"></div>Table modifiée</div>
+    <div class="dl-item"><div class="dl-dot" style="background:#f8514960"></div>Table supprimée / fusionnée</div>
+    <div class="dl-item"><div class="dl-dot" style="background:#3fb95030;border:1px dashed var(--green)"></div>Colonne ajoutée</div>
+  </div>
+
+  <div class="schema-layout">
+    <!-- ORIGINAL -->
+    <div class="schema-col">
+      <div class="schema-col-header" style="background:#f8514910;border-bottom-color:#f8514940">
+        <span style="color:var(--red);font-size:14px">⚠</span>
+        <span class="schema-col-title" style="color:var(--red)">Version originale</span>
+        <span style="margin-left:auto;font-size:9px;color:var(--muted)">17 tables</span>
+      </div>
+      <div class="erd-tables">
+
+        <div class="erd-table">
+          <div class="et-header"><span class="et-name">CABINETS</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">name, address, phone, email</span><span class="ef-type">string</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">created_at</span><span class="ef-type">timestamp</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table">
+          <div class="et-header"><span class="et-name">USERS</span><span class="et-badge eb-mod">modifié</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey fk-fk">FK</span><span class="ef-name">cabinet_id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey fk-uk">UK</span><span class="ef-name">email</span><span class="ef-type">string</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">role</span><span class="ef-type">string ← ⚠ libre!</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table">
+          <div class="et-header"><span class="et-name">PATIENTS</span><span class="et-badge eb-mod">modifié</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--yellow)">medical_notes, allergies</span><span class="ef-type">text ← non chiffré</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— numéro_securite manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— mutuelle manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— consentement_rgpd manquant</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table">
+          <div class="et-header"><span class="et-name">APPOINTMENTS</span><span class="et-badge eb-mod">modifié</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— rappel_envoye manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— confirmation_patient manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— cancel_reason manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--yellow)">status</span><span class="ef-type">string ← pas d'enum</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table">
+          <div class="et-header"><span class="et-name">DENTAL_CHARTS</span><span class="et-badge eb-mod">modifié</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— faces_atteintes manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— quadrant FDI manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--yellow)">tooth_number</span><span class="ef-type">int ← pas de contrainte 11-48</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table">
+          <div class="et-header"><span class="et-name" style="opacity:.5">TREATMENTS</span><span class="et-badge eb-mod">modifié</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— lien vers treatment_plan_item manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--yellow)">unit_price</span><span class="ef-type">decimal ← modifiable ⚠</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table" style="opacity:.5">
+          <div class="et-header"><span class="et-name">RADIOGRAPHIES</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— consultation_id manquant</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name" style="color:var(--red)">— storage_provider manquant</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table" style="opacity:.4;border-style:dashed">
+          <div class="et-header"><span class="et-name" style="color:var(--red)">NOTIFICATIONS</span><span class="et-badge eb-del">absent</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="ef-name" style="color:var(--muted)">⚠ Rappels RDV, alertes stock</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table" style="opacity:.4;border-style:dashed">
+          <div class="et-header"><span class="et-name" style="color:var(--red)">AUDIT_LOGS</span><span class="et-badge eb-del">absent</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="ef-name" style="color:var(--muted)">⚠ Traçabilité médicale obligatoire</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table" style="opacity:.4;border-style:dashed">
+          <div class="et-header"><span class="et-name" style="color:var(--red)">PRESCRIPTIONS</span><span class="et-badge eb-del">absent</span></div>
+        </div>
+
+        <div class="erd-table" style="opacity:.4;border-style:dashed">
+          <div class="et-header"><span class="et-name" style="color:var(--red)">PATIENT_CONSENTS</span><span class="et-badge eb-del">absent</span></div>
+        </div>
+
+        <div class="erd-table" style="opacity:.4;border-style:dashed">
+          <div class="et-header"><span class="et-name" style="color:var(--red)">REPORTS</span><span class="et-badge eb-del">absent</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- IMPROVED -->
+    <div class="schema-col">
+      <div class="schema-col-header" style="background:#3fb95010;border-bottom-color:#3fb95040">
+        <span style="color:var(--green);font-size:14px">✓</span>
+        <span class="schema-col-title" style="color:var(--green)">Version améliorée</span>
+        <span style="margin-left:auto;font-size:9px;color:var(--muted)">22 tables</span>
+      </div>
+      <div class="erd-tables">
+
+        <div class="erd-table">
+          <div class="et-header"><span class="et-name">CABINETS</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field new-field"><span class="fkey fk-uk">UK</span><span class="ef-name">slug</span><span class="ef-type">varchar</span><span class="ef-note">sous-domaine SaaS</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">name, address (jsonb), phone, email</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">plan_abonnement</span><span class="ef-type">enum</span><span class="ef-note">free/pro/enterprise</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">config_horaires</span><span class="ef-type">jsonb</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table modified-table">
+          <div class="et-header"><span class="et-name">USERS</span><span class="et-badge eb-mod">amélioré</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey fk-fk">FK</span><span class="ef-name">cabinet_id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey fk-uk">UK</span><span class="ef-name">email</span><span class="ef-type">varchar</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">role</span><span class="ef-type">enum(docteur,assist.,secret.,admin)</span><span class="ef-note">✦ enum strict</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">numero_rpps</span><span class="ef-type">varchar</span><span class="ef-note">N° ordre dentiste</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">is_active, derniere_connexion</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table modified-table">
+          <div class="et-header"><span class="et-name">PATIENTS</span><span class="et-badge eb-mod">amélioré</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field new-field"><span class="fkey fk-uk">UK</span><span class="ef-name">numero_dossier</span><span class="ef-type">varchar</span><span class="ef-note">référence cabinet</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">mutuelle</span><span class="ef-type">jsonb</span><span class="ef-note">chiffré</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">numero_securite</span><span class="ef-type">varchar</span><span class="ef-note">pgcrypto</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">genre, medecin_traitant</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">is_archived</span><span class="ef-type">bool</span><span class="ef-note">droit à l'oubli RGPD</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table new-table">
+          <div class="et-header"><span class="et-name">PATIENT_CONSENTS</span><span class="et-badge eb-new">nouveau</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey fk-fk">FK</span><span class="ef-name">patient_id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">type</span><span class="ef-type">enum(soins,rgpd,photo,partage)</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">version_formulaire, signed_at</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">canal</span><span class="ef-type">enum(papier,email,tablette)</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table modified-table">
+          <div class="et-header"><span class="et-name">APPOINTMENTS</span><span class="et-badge eb-mod">amélioré</span></div>
+          <div class="et-fields">
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">status</span><span class="ef-type">enum(planifie,confirme,en_cours,termine,annule,absent)</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">rappel_envoye, rappel_at</span><span class="ef-type">bool / timestamptz</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">confirmation_patient</span><span class="ef-type">bool</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">cancel_reason, couleur_agenda</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table modified-table">
+          <div class="et-header"><span class="et-name">DENTAL_CHARTS</span><span class="et-badge eb-mod">amélioré</span></div>
+          <div class="et-fields">
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">fdi_number</span><span class="ef-type">int CHECK(11-48)</span><span class="ef-note">contrainte FDI</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">quadrant</span><span class="ef-type">int(1-4)</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">faces_atteintes</span><span class="ef-type">text[]</span><span class="ef-note">mésiale/distale/occl.</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">tooth_status</span><span class="ef-type">enum(saine,caries,obturee,couronne…)</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table modified-table">
+          <div class="et-header"><span class="et-name">TREATMENTS</span><span class="et-badge eb-mod">amélioré</span></div>
+          <div class="et-fields">
+            <div class="et-field new-field"><span class="fkey fk-fk">FK</span><span class="ef-name">treatment_plan_item_id</span><span class="ef-type">uuid nullable</span><span class="ef-note">lien plan→réel</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">unit_price_snapshot</span><span class="ef-type">decimal</span><span class="ef-note">prix figé à l'acte</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">duration_min, faces</span><span class="ef-type">int / text[]</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table new-table">
+          <div class="et-header"><span class="et-name">PRESCRIPTIONS</span><span class="et-badge eb-new">nouveau</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey fk-fk">FK</span><span class="ef-name">consultation_id, patient_id, doctor_id</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">medicaments</span><span class="ef-type">jsonb[]</span><span class="ef-note">nom, dosage, durée</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">validite_jours, notes</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table modified-table">
+          <div class="et-header"><span class="et-name">RADIOGRAPHIES</span><span class="et-badge eb-mod">amélioré</span></div>
+          <div class="et-fields">
+            <div class="et-field new-field"><span class="fkey fk-fk">FK</span><span class="ef-name">consultation_id</span><span class="ef-type">uuid nullable</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">storage_provider</span><span class="ef-type">enum(s3,supabase,local)</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">annotations</span><span class="ef-type">jsonb</span><span class="ef-note">zones annotées</span></div>
+            <div class="et-field new-field"><span class="fkey"></span><span class="ef-name">fdi_numbers</span><span class="ef-type">int[]</span><span class="ef-note">dents concernées</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table new-table">
+          <div class="et-header"><span class="et-name">NOTIFICATIONS</span><span class="et-badge eb-new">nouveau</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey fk-fk">FK</span><span class="ef-name">patient_id, cabinet_id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">type</span><span class="ef-type">enum(rappel_rdv,facture,stock,rgpd)</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">canal</span><span class="ef-type">enum(sms,email,push)</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">status, sent_at, payload</span><span class="ef-type">jsonb</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table new-table">
+          <div class="et-header"><span class="et-name">AUDIT_LOGS</span><span class="et-badge eb-new">nouveau</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">table_name, record_id</span><span class="ef-type">varchar / uuid</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">action</span><span class="ef-type">enum(INSERT,UPDATE,DELETE)</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">old_data, new_data</span><span class="ef-type">jsonb</span></div>
+            <div class="et-field"><span class="fkey fk-fk">FK</span><span class="ef-name">user_id</span><span class="ef-type">uuid + ip_address</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">created_at</span><span class="ef-type">timestamptz</span></div>
+          </div>
+        </div>
+
+        <div class="erd-table new-table">
+          <div class="et-header"><span class="et-name">REPORTS</span><span class="et-badge eb-new">nouveau</span></div>
+          <div class="et-fields">
+            <div class="et-field"><span class="fkey fk-pk">PK</span><span class="ef-name">id</span><span class="ef-type">uuid</span></div>
+            <div class="et-field"><span class="fkey fk-fk">FK</span><span class="ef-name">cabinet_id, generated_by</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">type</span><span class="ef-type">enum(ca,patients,actes,stock)</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">periode_debut, periode_fin</span><span class="ef-type">date</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">data_snapshot</span><span class="ef-type">jsonb</span></div>
+            <div class="et-field"><span class="fkey"></span><span class="ef-name">export_url, format</span><span class="ef-type">enum(pdf,csv,xlsx)</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TAB 3: IMPROVED ═══════════════ -->
+<div class="content" id="tab-improved">
+  <div class="improvements-list">
+
+    <div class="imp" style="border-color:var(--red)">
+      <div class="imp-head">
+        <div class="imp-num" style="background:#f8514920;color:var(--red)">1</div>
+        <div class="imp-title" style="color:var(--red)">Row Level Security (RLS) PostgreSQL — priorité absolue</div>
+      </div>
+      <div class="imp-desc">Active l'isolation des données par cabinet directement au niveau de la BDD. Chaque requête SQL est automatiquement filtrée, même si le code applicatif oublie un <code>WHERE cabinet_id = ?</code>. Sans ça, une faille applicative peut exposer TOUS les patients de TOUS les cabinets.</div>
+      <div class="imp-code">-- Activer RLS sur chaque table multi-tenant
+ALTER TABLE patients ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "isolation_cabinet" ON patients
+  USING (cabinet_id = current_setting('app.current_cabinet_id')::uuid);
+
+-- Idem pour: appointments, consultations, treatments,
+-- invoices, dental_charts, radiographies, inventory_items...</div>
+    </div>
+
+    <div class="imp" style="border-color:var(--yellow)">
+      <div class="imp-head">
+        <div class="imp-num" style="background:#d2992220;color:var(--yellow)">2</div>
+        <div class="imp-title" style="color:var(--yellow)">Enum strict sur USERS.role — sécurité d'accès</div>
+      </div>
+      <div class="imp-desc">Remplacer <code>string</code> libre par un type PostgreSQL enum. Cela empêche tout rôle arbitraire d'être inséré, et permet de construire des politiques RLS basées sur le rôle sans ambiguïté.</div>
+      <div class="imp-code">CREATE TYPE user_role AS ENUM (
+  'docteur', 'assistante', 'secretaire', 'admin'
+);
+
+ALTER TABLE users
+  ALTER COLUMN role TYPE user_role USING role::user_role;</div>
+    </div>
+
+    <div class="imp" style="border-color:var(--purple)">
+      <div class="imp-head">
+        <div class="imp-num" style="background:#bc8cff20;color:var(--purple)">3</div>
+        <div class="imp-title" style="color:var(--purple)">Chiffrement colonnes sensibles — conformité HDS</div>
+      </div>
+      <div class="imp-desc">Les données de santé (N° sécurité sociale, mutuelle, antécédents) doivent être chiffrées au repos. PostgreSQL <code>pgcrypto</code> permet de chiffrer directement en BDD avec une clé applicative, même si le disque est compromis.</div>
+      <div class="imp-code">-- Extension pgcrypto
+CREATE EXTENSION pgcrypto;
+
+-- Chiffrer au INSERT
+INSERT INTO patients (numero_securite, ...)
+VALUES (pgp_sym_encrypt('1234567890123', 'APP_SECRET_KEY'), ...);
+
+-- Déchiffrer à la lecture
+SELECT pgp_sym_decrypt(numero_securite::bytea, 'APP_SECRET_KEY')
+FROM patients WHERE id = ?;</div>
+    </div>
+
+    <div class="imp" style="border-color:var(--green)">
+      <div class="imp-head">
+        <div class="imp-num" style="background:#3fb95020;color:var(--green)">4</div>
+        <div class="imp-title" style="color:var(--green)">AUDIT_LOGS via trigger automatique</div>
+      </div>
+      <div class="imp-desc">Créer un trigger générique qui s'applique à toutes les tables sensibles. Chaque INSERT/UPDATE/DELETE est automatiquement loggé avec l'état avant et après, sans que le code applicatif ait besoin de s'en occuper.</div>
+      <div class="imp-code">CREATE OR REPLACE FUNCTION fn_audit_log()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO audit_logs (table_name, record_id, action, old_data, new_data, user_id, created_at)
+  VALUES (
+    TG_TABLE_NAME,
+    COALESCE(NEW.id, OLD.id),
+    TG_OP,
+    to_jsonb(OLD),
+    to_jsonb(NEW),
+    current_setting('app.current_user_id')::uuid,
+    NOW()
+  );
+  RETURN COALESCE(NEW, OLD);
+END;
+$$ LANGUAGE plpgsql;
+
+-- Appliquer sur les tables critiques
+CREATE TRIGGER trg_audit_consultations
+  AFTER INSERT OR UPDATE OR DELETE ON consultations
+  FOR EACH ROW EXECUTE FUNCTION fn_audit_log();</div>
+    </div>
+
+    <div class="imp" style="border-color:var(--blue)">
+      <div class="imp-head">
+        <div class="imp-num" style="background:#58a6ff20;color:var(--blue)">5</div>
+        <div class="imp-title" style="color:var(--blue)">Lien TREATMENTS → TREATMENT_PLAN_ITEMS</div>
+      </div>
+      <div class="imp-desc">Ajouter une FK nullable <code>treatment_plan_item_id</code> dans <code>TREATMENTS</code>. Quand un acte planifié est réalisé, la FK est remplie et le statut du <code>TREATMENT_PLAN_ITEM</code> passe automatiquement à <code>realise</code> via trigger. Ça ferme la boucle plan↔réalisation.</div>
+      <div class="imp-code">-- FK nullable (un traitement peut être hors plan)
+ALTER TABLE treatments
+  ADD COLUMN treatment_plan_item_id uuid REFERENCES treatment_plan_items(id);
+
+-- Trigger: marquer le plan item comme réalisé
+CREATE OR REPLACE FUNCTION fn_mark_plan_item_done()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.treatment_plan_item_id IS NOT NULL THEN
+    UPDATE treatment_plan_items
+    SET status = 'realise'
+    WHERE id = NEW.treatment_plan_item_id;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;</div>
+    </div>
+
+    <div class="imp" style="border-color:var(--cyan)">
+      <div class="imp-head">
+        <div class="imp-num" style="background:#39c5cf20;color:var(--cyan)">6</div>
+        <div class="imp-title" style="color:var(--cyan)">DENTAL_CHARTS — contrainte FDI + faces atteintes</div>
+      </div>
+      <div class="imp-desc">Ajouter une contrainte CHECK sur <code>fdi_number</code> pour valider la notation FDI (11–18, 21–28, 31–38, 41–48). Ajouter <code>faces_atteintes text[]</code> pour stocker la précision clinique (mésiale, distale, occlusale, buccale, linguale) essentielle en dentisterie.</div>
+      <div class="imp-code">CREATE TYPE tooth_face AS ENUM (
+  'mesiale', 'distale', 'occlusale',
+  'buccale', 'linguale', 'palatine', 'incisale'
+);
+
+CREATE TYPE tooth_status_enum AS ENUM (
+  'saine', 'caries', 'obturee', 'couronne', 'absente',
+  'bridge', 'implant', 'devitalisee', 'surveillance', 'fracture'
+);
+
+ALTER TABLE dental_charts
+  ADD COLUMN fdi_number int CHECK (
+    (fdi_number BETWEEN 11 AND 18) OR
+    (fdi_number BETWEEN 21 AND 28) OR
+    (fdi_number BETWEEN 31 AND 38) OR
+    (fdi_number BETWEEN 41 AND 48)
+  ),
+  ADD COLUMN faces_atteintes tooth_face[],
+  ADD COLUMN tooth_status tooth_status_enum NOT NULL DEFAULT 'saine';</div>
+    </div>
+
+    <div class="imp" style="border-color:var(--orange)">
+      <div class="imp-head">
+        <div class="imp-num" style="background:#f0883e20;color:var(--orange)">7</div>
+        <div class="imp-title" style="color:var(--orange)">Snapshot prix dans TREATMENTS — intégrité financière</div>
+      </div>
+      <div class="imp-desc">Ajouter <code>unit_price_snapshot</code> figé au moment où l'acte est enregistré. Si le tarif évolue ensuite, les consultations passées restent cohérentes. C'est le même principe qu'<code>INVOICE_ITEMS.unit_price</code>, à appliquer dès le traitement.</div>
+      <div class="imp-code">ALTER TABLE treatments
+  ADD COLUMN unit_price_snapshot decimal(10,2) NOT NULL DEFAULT 0,
+  ADD COLUMN currency char(3) NOT NULL DEFAULT 'EUR';
+
+-- Au moment de l'INSERT d'un treatment, snapshotter le prix courant
+-- depuis un référentiel d'actes (table CARE_CATALOG à ajouter)
+INSERT INTO treatments (consultation_id, treatment_type, unit_price_snapshot, ...)
+SELECT ..., catalog.current_price, ...
+FROM care_catalog catalog
+WHERE catalog.code = ?;</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════ TAB 4: MERMAID ═══════════════ -->
+<div class="content" id="tab-mermaid">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:4px">Schéma ERD Mermaid — Version améliorée</div>
+      <div style="font-size:10px;color:var(--muted)">Copiez ce code dans mermaid.live ou dans votre documentation</div>
+    </div>
+    <button class="copy-btn" onclick="copyMermaid()">📋 Copier le code</button>
+  </div>
+
+  <div class="mermaid-block" id="mermaid-code">erDiagram
+
+    %% ─── CORE MULTI-TENANT ───────────────────────────────────
+    CABINETS {
+        uuid id PK
+        varchar slug UK "sous-domaine SaaS"
+        varchar name
+        jsonb address
+        varchar phone
+        varchar email
+        enum plan_abonnement "free|pro|enterprise"
+        jsonb config_horaires
+        timestamptz created_at
+    }
+
+    USERS {
+        uuid id PK
+        uuid cabinet_id FK
+        varchar email UK
+        varchar full_name
+        enum role "docteur|assistante|secretaire|admin"
+        varchar numero_rpps "N° ordre dentiste"
+        bool is_active
+        timestamptz derniere_connexion
+        timestamptz created_at
+    }
+
+    PATIENTS {
+        uuid id PK
+        uuid cabinet_id FK
+        varchar numero_dossier UK
+        varchar first_name
+        varchar last_name
+        date date_of_birth
+        enum genre "m|f|autre"
+        varchar phone
+        varchar email
+        text address
+        text medical_notes "chiffré pgcrypto"
+        text allergies
+        bytea numero_securite "chiffré pgcrypto"
+        jsonb mutuelle "chiffré pgcrypto"
+        varchar medecin_traitant
+        bool is_archived "droit à l'oubli RGPD"
+        timestamptz created_at
+    }
+
+    PATIENT_CONSENTS {
+        uuid id PK
+        uuid patient_id FK
+        enum type "soins|rgpd|photo|partage_data"
+        varchar version_formulaire
+        enum canal "papier|email|tablette"
+        bool accepted
+        timestamptz signed_at
+    }
+
+    %% ─── PLANNING ────────────────────────────────────────────
+    APPOINTMENTS {
+        uuid id PK
+        uuid cabinet_id FK
+        uuid patient_id FK
+        uuid doctor_id FK
+        timestamptz start_time
+        timestamptz end_time
+        enum status "planifie|confirme|en_cours|termine|annule|absent"
+        text reason
+        bool rappel_envoye
+        timestamptz rappel_at
+        bool confirmation_patient
+        text cancel_reason
+        varchar couleur_agenda
+        timestamptz created_at
+    }
+
+    %% ─── CLINIQUE ────────────────────────────────────────────
+    CONSULTATIONS {
+        uuid id PK
+        uuid appointment_id FK
+        uuid patient_id FK
+        uuid doctor_id FK
+        text chief_complaint
+        text clinical_notes
+        text diagnosis
+        timestamptz created_at
+    }
+
+    PRESCRIPTIONS {
+        uuid id PK
+        uuid consultation_id FK
+        uuid patient_id FK
+        uuid doctor_id FK
+        jsonb medicaments "nom|dosage|frequence|duree"
+        int validite_jours
+        text notes
+        timestamptz created_at
+    }
+
+    TREATMENTS {
+        uuid id PK
+        uuid consultation_id FK
+        uuid treatment_plan_item_id FK "nullable, lien plan→réel"
+        int fdi_tooth_number "11-48"
+        varchar treatment_type
+        text description
+        decimal unit_price_snapshot "figé à l'acte"
+        varchar currency
+        int duration_min
+        text[] faces
+        enum status "planifie|en_cours|realise|annule"
+        timestamptz created_at
+    }
+
+    TREATMENT_PLANS {
+        uuid id PK
+        uuid patient_id FK
+        uuid doctor_id FK
+        varchar title
+        text description
+        enum status "brouillon|actif|termine|abandonne"
+        decimal estimated_total
+        timestamptz created_at
+    }
+
+    TREATMENT_PLAN_ITEMS {
+        uuid id PK
+        uuid treatment_plan_id FK
+        int fdi_tooth_number
+        varchar treatment_type
+        decimal estimated_price
+        enum status "planifie|realise|annule"
+        int ordre
+    }
+
+    %% ─── SCHÉMA DENTAIRE ─────────────────────────────────────
+    DENTAL_CHARTS {
+        uuid id PK
+        uuid patient_id FK
+        int fdi_number "CHECK 11-48 / 51-85"
+        int quadrant "1-4 adulte, 5-8 enfant"
+        enum tooth_status "saine|caries|obturee|couronne|absente|bridge|implant|devitalisee|surveillance|fracture"
+        text[] faces_atteintes "mesiale|distale|occlusale|buccale|linguale"
+        text notes
+        uuid last_updated_by FK
+        timestamptz updated_at
+    }
+
+    DENTAL_CHART_HISTORY {
+        uuid id PK
+        uuid dental_chart_id FK
+        enum old_status
+        enum new_status
+        text[] old_faces
+        text[] new_faces
+        uuid changed_by FK
+        timestamptz changed_at
+    }
+
+    RADIOGRAPHIES {
+        uuid id PK
+        uuid patient_id FK
+        uuid consultation_id FK "nullable"
+        uuid doctor_id FK
+        int[] fdi_numbers "dents concernées"
+        enum type "panoramique|bitewing|periapical|cephalometrique"
+        enum storage_provider "s3|supabase|local"
+        text file_url
+        int file_size_kb
+        jsonb annotations "zones annotées frontend"
+        text notes
+        date taken_at
+    }
+
+    %% ─── FACTURATION ─────────────────────────────────────────
+    INVOICES {
+        uuid id PK
+        varchar numero UK
+        uuid patient_id FK
+        uuid cabinet_id FK
+        uuid consultation_id FK "nullable"
+        decimal total_ht
+        decimal tva_amount
+        decimal total_ttc
+        decimal remboursement_mutuelle
+        decimal reste_a_charge
+        enum status "brouillon|emise|payee|partielle|annulee"
+        date date_echeance
+        timestamptz issued_at
+    }
+
+    INVOICE_ITEMS {
+        uuid id PK
+        uuid invoice_id FK
+        uuid treatment_id FK
+        varchar description
+        int quantity
+        decimal unit_price
+        decimal total_line
+    }
+
+    PAYMENT_TRANSACTIONS {
+        uuid id PK
+        uuid invoice_id FK
+        decimal amount
+        enum payment_method "especes|carte|virement|cheque|tiers_payant"
+        varchar reference
+        timestamptz paid_at
+    }
+
+    %% ─── INVENTAIRE ──────────────────────────────────────────
+    INVENTORY_ITEMS {
+        uuid id PK
+        uuid cabinet_id FK
+        varchar reference UK
+        varchar name
+        enum category "consommable|instrument|medicament|materiau"
+        int quantity
+        int min_threshold
+        decimal unit_cost
+        varchar fournisseur
+        date date_expiration
+        varchar numero_lot
+    }
+
+    INVENTORY_MOVEMENTS {
+        uuid id PK
+        uuid item_id FK
+        uuid cabinet_id FK
+        enum movement_type "entree|sortie|perte|ajustement"
+        int quantity
+        text reason
+        uuid created_by FK
+        timestamptz created_at
+    }
+
+    INVENTORY_USAGE {
+        uuid id PK
+        uuid treatment_id FK
+        uuid item_id FK
+        int quantity_used
+    }
+
+    %% ─── NOTIFICATIONS ───────────────────────────────────────
+    NOTIFICATIONS {
+        uuid id PK
+        uuid cabinet_id FK
+        uuid patient_id FK "nullable"
+        uuid user_id FK "nullable"
+        enum type "rappel_rdv|facture_impayee|stock_bas|rgpd|system"
+        enum canal "sms|email|push|interne"
+        enum status "pending|sent|failed|read"
+        jsonb payload
+        timestamptz scheduled_at
+        timestamptz sent_at
+    }
+
+    %% ─── RAPPORTS ────────────────────────────────────────────
+    REPORTS {
+        uuid id PK
+        uuid cabinet_id FK
+        uuid generated_by FK
+        enum type "ca|patients_actifs|actes|stock|rdv"
+        date periode_debut
+        date periode_fin
+        jsonb data_snapshot
+        enum format "pdf|csv|xlsx"
+        text export_url
+        timestamptz created_at
+    }
+
+    %% ─── AUDIT ───────────────────────────────────────────────
+    AUDIT_LOGS {
+        uuid id PK
+        varchar table_name
+        uuid record_id
+        enum action "INSERT|UPDATE|DELETE"
+        jsonb old_data
+        jsonb new_data
+        uuid user_id FK "nullable"
+        varchar ip_address
+        timestamptz created_at
+    }
+
+    %% ─── RELATIONS ───────────────────────────────────────────
+    CABINETS ||--o{ USERS : "emploie"
+    CABINETS ||--o{ PATIENTS : "gère"
+    CABINETS ||--o{ APPOINTMENTS : "planifie"
+    CABINETS ||--o{ INVOICES : "émet"
+    CABINETS ||--o{ INVENTORY_ITEMS : "stocke"
+    CABINETS ||--o{ NOTIFICATIONS : "envoie"
+    CABINETS ||--o{ REPORTS : "génère"
+
+    PATIENTS ||--o{ APPOINTMENTS : "prend"
+    PATIENTS ||--o{ CONSULTATIONS : "reçoit"
+    PATIENTS ||--o{ TREATMENT_PLANS : "suit"
+    PATIENTS ||--o{ INVOICES : "reçoit"
+    PATIENTS ||--o{ DENTAL_CHARTS : "possède"
+    PATIENTS ||--o{ RADIOGRAPHIES : "possède"
+    PATIENTS ||--o{ PATIENT_CONSENTS : "signe"
+    PATIENTS ||--o{ NOTIFICATIONS : "reçoit"
+
+    USERS ||--o{ APPOINTMENTS : "assure"
+    USERS ||--o{ CONSULTATIONS : "effectue"
+    USERS ||--o{ TREATMENT_PLANS : "crée"
+    USERS ||--o{ PRESCRIPTIONS : "rédige"
+
+    APPOINTMENTS ||--o| CONSULTATIONS : "génère"
+    CONSULTATIONS ||--o{ TREATMENTS : "contient"
+    CONSULTATIONS ||--o{ PRESCRIPTIONS : "produit"
+    CONSULTATIONS ||--o{ RADIOGRAPHIES : "génère"
+
+    TREATMENTS }o--o| TREATMENT_PLAN_ITEMS : "réalise"
+    TREATMENT_PLANS ||--o{ TREATMENT_PLAN_ITEMS : "détaille"
+
+    INVOICES ||--o{ INVOICE_ITEMS : "contient"
+    INVOICES ||--o{ PAYMENT_TRANSACTIONS : "reçoit"
+    INVOICE_ITEMS }o--|| TREATMENTS : "facture"
+
+    INVENTORY_ITEMS ||--o{ INVENTORY_MOVEMENTS : "enregistre"
+    TREATMENTS ||--o{ INVENTORY_USAGE : "consomme"
+    INVENTORY_USAGE }o--|| INVENTORY_ITEMS : "utilise"
+
+    DENTAL_CHARTS ||--o{ DENTAL_CHART_HISTORY : "historise"</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function copyMermaid() {
+  const text = document.getElementById('mermaid-code').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✓ Copié !';
+    btn.style.background = 'var(--green)';
+    btn.style.color = '#000';
+    setTimeout(() => {
+      btn.textContent = '📋 Copier le code';
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

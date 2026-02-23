@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odontogramme FDI — Interactif</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:      #f0ece4;
+  --surface: #faf8f4;
+  --sur2:    #ede9e0;
+  --border:  #d8d0c0;
+  --text:    #2a2118;
+  --muted:   #8a7d6a;
+  --accent:  #3b6ea5;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── HEADER ─── */
+header {
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+h1 { font-family:'DM Serif Display',serif; font-size:21px; letter-spacing:-.5px; white-space:nowrap; }
+.sub { font-size:10px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; white-space:nowrap; }
+
+/* ─── MODE TABS ─── */
+.mode-tabs {
+  display:flex; gap:0; border:1.5px solid var(--border); border-radius:10px;
+  overflow:hidden; background:var(--sur2);
+}
+.mode-tab {
+  padding:8px 14px; font-family:'DM Mono',monospace; font-size:10px;
+  background:transparent; border:none; cursor:pointer; color:var(--muted);
+  transition:all .2s; border-right:1px solid var(--border);
+  display:flex; flex-direction:column; align-items:center; gap:1px;
+  line-height:1.3;
+}
+.mode-tab:last-child { border-right:none; }
+.mode-tab .tab-icon { font-size:14px; }
+.mode-tab .tab-main { font-size:10px; font-weight:500; }
+.mode-tab .tab-sub  { font-size:8px; color:var(--muted); letter-spacing:.5px; }
+.mode-tab.active { background:var(--text); color:#f0ece4; }
+.mode-tab.active .tab-sub { color:#c8c0b0; }
+
+/* stat pills */
+.header-right { margin-left:auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.stat-pill {
+  background:var(--sur2); border:1px solid var(--border); border-radius:20px;
+  padding:5px 12px; font-size:10px; text-align:center; white-space:nowrap;
+}
+.stat-pill strong { font-family:'DM Serif Display',serif; font-size:16px; display:block; line-height:1.1; }
+
+/* ─── MIXED MODE PHASE BANNER ─── */
+.phase-banner {
+  background:linear-gradient(135deg,#e8f0f8,#f0ece4);
+  border-bottom:1px solid var(--border);
+  padding:10px 28px;
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.phase-tabs { display:flex; gap:6px; }
+.phase-tab {
+  padding:5px 12px; border-radius:20px; font-size:10px;
+  border:1.5px solid var(--border); background:var(--sur2);
+  cursor:pointer; color:var(--muted); transition:all .2s;
+  font-family:'DM Mono',monospace;
+}
+.phase-tab.active {
+  background:var(--accent); border-color:var(--accent); color:#fff;
+}
+.phase-desc {
+  font-size:10px; color:var(--muted); flex:1; line-height:1.6;
+}
+
+/* ─── MAIN LAYOUT ─── */
+.main { display:grid; grid-template-columns:1fr 290px; flex:1; }
+
+/* ─── CHART AREA ─── */
+.chart-area {
+  padding:20px 12px;
+  display:flex; flex-direction:column; align-items:center;
+  overflow:auto; gap:0;
+}
+
+.orientation-note {
+  font-size:9px; color:var(--muted); letter-spacing:1.5px;
+  text-transform:uppercase; margin-bottom:12px; text-align:center;
+}
+
+/* Chart frame: 4-col grid */
+.chart-frame {
+  display:grid;
+  grid-template-columns: 52px 1fr 1fr 52px;
+  width:100%; max-width:820px;
+  align-items:center;
+}
+
+/* side labels */
+.side-label {
+  font-size:8px; color:var(--muted); letter-spacing:1.5px;
+  text-transform:uppercase; writing-mode:vertical-rl; text-align:center;
+  padding:0 3px;
+}
+.side-label.flip { transform:rotate(180deg); }
+
+/* jaw label */
+.jaw-label-row {
+  grid-column:1/5; font-size:9px; letter-spacing:3px;
+  text-transform:uppercase; color:var(--muted); text-align:center;
+  padding:5px 0 3px;
+}
+
+/* half rows */
+.half-row {
+  display:flex; align-items:flex-end; gap:3px;
+}
+.half-row.left-half  { justify-content:flex-end; }
+.half-row.right-half { justify-content:flex-start; }
+.half-row.lower { align-items:flex-start; }
+
+/* midline H */
+.midline-h {
+  grid-column:1/5; height:1px; background:var(--border);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; margin:5px 0;
+}
+.midline-h span {
+  position:absolute; background:var(--bg);
+  font-size:8px; color:var(--muted); letter-spacing:2px; padding:0 12px;
+}
+
+/* midline V */
+.midline-v {
+  width:2px; background:var(--border); align-self:stretch; flex-shrink:0;
+}
+
+/* tooth wrap */
+.tooth-wrap {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  cursor:pointer; position:relative;
+}
+.tooth-wrap.lower-tooth { flex-direction:column-reverse; }
+
+.tooth-num {
+  font-size:7.5px; color:var(--muted); line-height:1;
+  text-align:center; white-space:nowrap; transition:color .2s;
+  pointer-events:none;
+}
+
+.tooth-svg-wrap {
+  transition:transform .18s cubic-bezier(.34,1.56,.64,1), filter .18s;
+}
+.tooth-svg-wrap svg { display:block; filter:drop-shadow(0 1px 2px rgba(0,0,0,.11)); }
+.tooth-wrap:hover .tooth-svg-wrap {
+  transform:scale(1.18); filter:drop-shadow(0 4px 12px rgba(0,0,0,.2)) !important;
+  z-index:20; position:relative;
+}
+.tooth-wrap.selected .tooth-svg-wrap {
+  transform:scale(1.22); filter:drop-shadow(0 0 10px rgba(0,0,0,.3)) !important;
+}
+.tooth-wrap.selected .tooth-num { color:var(--text); font-weight:600; }
+.tooth-wrap.dimmed { opacity:.12; pointer-events:none; }
+
+/* Mixed mode: lait vs permanent visual badges */
+.tooth-wrap .tooth-type-badge {
+  font-size:6px; letter-spacing:.5px; text-transform:uppercase;
+  opacity:.6; pointer-events:none;
+}
+
+/* face legend */
+.face-legend {
+  margin-top:18px; display:flex; gap:20px; flex-wrap:wrap; justify-content:center;
+  font-size:8.5px; color:var(--muted); letter-spacing:.3px; text-transform:uppercase;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  border-left:1px solid var(--border); background:var(--surface);
+  display:flex; flex-direction:column; overflow-y:auto;
+  max-height:calc(100vh - 56px);
+  position:sticky; top:0;
+}
+.sb-sec { padding:16px; border-bottom:1px solid var(--border); }
+.sb-title {
+  font-size:8.5px; letter-spacing:3px; text-transform:uppercase;
+  color:var(--muted); margin-bottom:10px;
+}
+
+.no-sel {
+  text-align:center; padding:24px 14px; color:var(--muted);
+  font-size:11px; line-height:2;
+}
+.no-sel-icon { font-size:30px; display:block; margin-bottom:6px; }
+
+/* state grid */
+.state-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px; }
+.state-btn {
+  display:flex; align-items:center; gap:6px; padding:7px 9px;
+  border-radius:7px; border:1.5px solid var(--border);
+  background:var(--sur2); cursor:pointer;
+  font-family:'DM Mono',monospace; font-size:10px; color:var(--text);
+  transition:all .15s; text-align:left;
+}
+.state-btn:hover { transform:translateY(-1px); border-color:var(--muted); }
+.state-btn.active { border-width:2px; }
+.sdot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+.notes-field {
+  width:100%; background:var(--sur2); border:1px solid var(--border);
+  border-radius:8px; padding:9px 11px;
+  font-family:'DM Mono',monospace; font-size:10px; color:var(--text);
+  resize:vertical; min-height:58px; outline:none;
+}
+.notes-field:focus { border-color:var(--muted); }
+.notes-field::placeholder { color:var(--muted); }
+
+.stats-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; }
+.stat-b {
+  background:var(--sur2); border:1px solid var(--border);
+  border-radius:8px; padding:8px 5px; text-align:center;
+}
+.stat-n { font-family:'DM Serif Display',serif; font-size:19px; display:block; }
+.stat-l { font-size:8.5px; color:var(--muted); }
+
+.leg-item {
+  display:flex; align-items:center; gap:8px; font-size:10px;
+  padding:4px 6px; border-radius:6px; cursor:pointer; transition:background .15s;
+}
+.leg-item:hover { background:var(--sur2); }
+.leg-col { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+.leg-cnt {
+  margin-left:auto; font-size:9px; color:var(--muted);
+  background:var(--sur2); padding:1px 6px; border-radius:10px;
+}
+
+/* quadrant info */
+.q-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+.q-box {
+  border:1.5px solid var(--border); border-radius:8px; padding:7px;
+  font-size:9px; text-align:center; cursor:pointer; transition:all .15s;
+  background:var(--surface);
+}
+.q-box:hover { border-color:var(--muted); background:var(--sur2); }
+.q-box-num { font-family:'DM Serif Display',serif; font-size:16px; line-height:1.2; }
+.q-box-lbl { color:var(--muted); font-size:8px; }
+
+/* mixed mode legend colors */
+.lait-indicator { color:#b06020; }
+.perm-indicator { color:#1e5a8a; }
+
+/* dentition info box */
+.dent-info {
+  background:var(--sur2); border-radius:8px; padding:10px;
+  border:1px solid var(--border); font-size:10px; line-height:1.7;
+  color:var(--muted);
+}
+.dent-info strong { color:var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Odontogramme</h1>
+    <div class="sub">Système FDI · Vue du praticien</div>
+  </div>
+
+  <!-- MODE TABS -->
+  <div class="mode-tabs">
+    <button class="mode-tab" onclick="setMode('child',this)" title="6 mois – 6 ans">
+      <span class="tab-icon">🍼</span>
+      <span class="tab-main">Temporaire</span>
+      <span class="tab-sub">20 dents · Q5-Q8</span>
+    </button>
+    <button class="mode-tab" onclick="setMode('mixed',this)" title="6 – 12 ans">
+      <span class="tab-icon">🔄</span>
+      <span class="tab-main">Mixte</span>
+      <span class="tab-sub">28 dents · transition</span>
+    </button>
+    <button class="mode-tab active" onclick="setMode('adult',this)" title="À partir de 12/13 ans">
+      <span class="tab-icon">🦷</span>
+      <span class="tab-main">Permanente</span>
+      <span class="tab-sub">28–32 dents · Q1-Q4</span>
+    </button>
+  </div>
+
+  <div class="header-right">
+    <div class="stat-pill"><strong id="hpresent">28</strong>présentes</div>
+    <div class="stat-pill"><strong id="hissues" style="color:#c0392b">0</strong>à traiter</div>
+    <div class="stat-pill"><strong id="hmissing" style="color:#64748b">0</strong>absentes</div>
+  </div>
+</header>
+
+<!-- PHASE BANNER (mixed mode only) -->
+<div class="phase-banner" id="phase-banner" style="display:none">
+  <div class="phase-tabs">
+    <button class="phase-tab active" onclick="setPhase(1,this)">Phase 1</button>
+    <button class="phase-tab" onclick="setPhase(2,this)">Inter-transitionnelle</button>
+    <button class="phase-tab" onclick="setPhase(3,this)">Phase 2</button>
+  </div>
+  <div class="phase-desc" id="phase-desc">
+    <strong>1ère phase de transition</strong> — Éruption des 1ères molaires définitives (16,26,36,46) et remplacement des incisives de lait par les définitives.
+  </div>
+</div>
+
+<div class="main">
+  <div class="chart-area">
+    <div class="orientation-note">← Droite du patient &nbsp;·&nbsp; Vue du praticien &nbsp;·&nbsp; Gauche du patient →</div>
+    <div class="chart-frame" id="chart-frame"></div>
+    <div class="face-legend">
+      <span>M = Mésiale</span><span>D = Distale</span>
+      <span>O = Occlusale / Incisale</span><span>B = Buccale</span><span>L = Linguale / Palatine</span>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <!-- DETAIL PANEL -->
+    <div id="tooth-detail">
+      <div class="no-sel">
+        <span class="no-sel-icon">🦷</span>
+        Cliquez sur une dent<br>pour la sélectionner
+      </div>
+    </div>
+
+    <!-- DENTITION INFO -->
+    <div class="sb-sec" id="dent-info-sec">
+      <div class="sb-title">Denture active</div>
+      <div class="dent-info" id="dent-info-box"></div>
+    </div>
+
+    <!-- QUADRANTS -->
+    <div class="sb-sec">
+      <div class="sb-title">Quadrants FDI</div>
+      <div style="font-size:8.5px;color:var(--muted);margin-bottom:8px;line-height:1.8">
+        1er chiffre = quadrant · 2e chiffre = position<br>
+        (1 = incisive centrale → 8 = sagesse)
+      </div>
+      <div class="q-grid" id="q-info"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="sb-sec">
+      <div class="sb-title">Résumé</div>
+      <div class="stats-row">
+        <div class="stat-b"><span class="stat-n" id="cnt-present">28</span><div class="stat-l">PRÉSENTES</div></div>
+        <div class="stat-b"><span class="stat-n" id="cnt-issues" style="color:#c0392b">0</span><div class="stat-l">À TRAITER</div></div>
+        <div class="stat-b"><span class="stat-n" id="cnt-missing" style="color:#64748b">0</span><div class="stat-l">ABSENTES</div></div>
+      </div>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="sb-sec">
+      <div class="sb-title">Légende — cliquer pour filtrer</div>
+      <div id="legend"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  STATES
+// ═══════════════════════════════════════════════════════════════
+const STATES = {
+  healthy:   { label:'Saine',         color:'#2d7a4f', bg:'#e8f5ed', emoji:'✓' },
+  caries:    { label:'Caries',        color:'#c0392b', bg:'#fdecea', emoji:'●' },
+  filled:    { label:'Obturée',       color:'#2563eb', bg:'#eff6ff', emoji:'◉' },
+  crown:     { label:'Couronne',      color:'#b8860b', bg:'#fef9e0', emoji:'♛' },
+  missing:   { label:'Absente',       color:'#64748b', bg:'#f1f5f9', emoji:'✕' },
+  erupting:  { label:'En éruption',   color:'#0891b2', bg:'#ecfeff', emoji:'↑' },
+  bridge:    { label:'Bridge',        color:'#7c3aed', bg:'#f5f3ff', emoji:'═' },
+  implant:   { label:'Implant',       color:'#475569', bg:'#f8fafc', emoji:'⚓' },
+  root:      { label:'Dévitalisée',   color:'#dc6d1a', bg:'#fff4e6', emoji:'⬡' },
+  watching:  { label:'Surveillance',  color:'#d97706', bg:'#fffbeb', emoji:'◎' },
+  fracture:  { label:'Fracture',      color:'#9f1239', bg:'#fff1f2', emoji:'⚡' },
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  FDI DATA
+// ═══════════════════════════════════════════════════════════════
+// Adult Q1-Q4 (8 teeth each = 32 max)
+// Child Q5-Q8 (5 teeth each = 20)
+// Permanent 28 = adult WITHOUT wisdom teeth (pos 8: 18,28,38,48)
+
+const TOOTH_NAMES_ADULT = {
+  1:'Incisive centrale', 2:'Incisive latérale', 3:'Canine',
+  4:'1ère prémolaire', 5:'2ème prémolaire',
+  6:'1ère molaire', 7:'2ème molaire', 8:'3ème molaire (sagesse)'
+};
+const TOOTH_NAMES_CHILD = {
+  1:'Incisive centrale', 2:'Incisive latérale', 3:'Canine',
+  4:'1ère molaire de lait', 5:'2ème molaire de lait'
+};
+const CHILD_LETTERS = {1:'A',2:'B',3:'C',4:'D',5:'E'};
+
+// Dimensions
+const AW  = {1:26,2:24,3:28,4:32,5:32,6:42,7:40,8:40};
+const AHU = {1:48,2:44,3:54,4:52,5:50,6:56,7:54,8:52};
+const AHL = {1:46,2:42,3:52,4:50,5:48,6:54,7:52,8:50};
+const CW  = {1:22,2:20,3:24,4:30,5:32};
+const CHU = {1:38,2:36,3:42,4:44,5:44};
+const CHL = {1:36,2:34,3:40,4:42,5:42};
+
+// Global
+let MODE  = 'adult';   // 'child' | 'mixed' | 'adult'
+let PHASE = 1;         // mixed sub-phase 1,2,3
+const toothStates = {};
+const toothNotes  = {};
+let selectedFdi = null;
+
+// ─── Which FDIs are visible in each mode/phase ───────────────
+function getVisibleFdis() {
+  if (MODE === 'child') {
+    return {
+      upper: { left:[18-17,51,52,53,54,55].filter(()=>false)||[55,54,53,52,51], right:[61,62,63,64,65] },
+      lower: { left:[81,82,83,84,85], right:[71,72,73,74,75] },
+      lait: new Set([51,52,53,54,55,61,62,63,64,65,71,72,73,74,75,81,82,83,84,85]),
+      perm: new Set()
+    };
+  }
+  if (MODE === 'adult') {
+    // 28 or 32 — show positions 1-7 (28 without wisdom) + wisdom optional
+    const rows = buildAdultRows(false);
+    return {
+      ...rows,
+      lait: new Set(),
+      perm: new Set([...rows.upper.left,...rows.upper.right,...rows.lower.left,...rows.lower.right])
+    };
+  }
+  if (MODE === 'mixed') {
+    return getMixedFdis(PHASE);
+  }
+}
+
+function buildAdultRows(withWisdom=false) {
+  const pos = withWisdom ? [1,2,3,4,5,6,7,8] : [1,2,3,4,5,6,7];
+  return {
+    upper: {
+      left:  pos.map(p => 10+p),   // Q1: 11..17(18)
+      right: pos.map(p => 20+p),   // Q2: 21..27(28)
+    },
+    lower: {
+      left:  pos.map(p => 40+p),   // Q4: 41..47(48)
+      right: pos.map(p => 30+p),   // Q3: 31..37(38)
+    }
+  };
+}
+
+// Mixed mode — which teeth are visible by phase
+// Lait: Q5-Q8, Permanent: Q1-Q4
+function getMixedFdis(phase) {
+  // Phase 1: 1st molars permanent (16,26,36,46) erupted + incisors replaced (11,12,21,22,31,32,41,42)
+  // Phase 2 (inter-trans): same teeth stable, no change visible
+  // Phase 3: canines + premolars permanent (13,14,15,23,24,25,33,34,35,43,44,45) replacing lait canines+molars
+
+  let laitFdis = new Set();
+  let permFdis = new Set();
+
+  if (phase === 1) {
+    // Upper: Q1 lait: 53,54,55 still present; 11,12 perm replaced; 16 perm first molar
+    // Upper left: 63,64,65 lait; 21,22 perm; 26 perm
+    // Lower left: 73,74,75 lait; 31,32 perm; 36 perm
+    // Lower right: 83,84,85 lait; 41,42 perm; 46 perm
+    laitFdis = new Set([53,54,55, 63,64,65, 73,74,75, 83,84,85]);
+    permFdis = new Set([11,12,16, 21,22,26, 31,32,36, 41,42,46]);
+  } else if (phase === 2) {
+    // Inter-trans: same as phase 1, stable
+    laitFdis = new Set([53,54,55, 63,64,65, 73,74,75, 83,84,85]);
+    permFdis = new Set([11,12,16, 21,22,26, 31,32,36, 41,42,46]);
+  } else {
+    // Phase 3: lait canines+molars replaced by canines+premolars
+    laitFdis = new Set(); // all lait gone except maybe 55,65,75,85 rarely
+    permFdis = new Set([11,12,13,14,15,16, 21,22,23,24,25,26, 31,32,33,34,35,36, 41,42,43,44,45,46]);
+  }
+
+  // Build rows from the union
+  const allFdi = [...laitFdis, ...permFdis];
+  // upper left = Q1 perm + Q5 lait sorted by type
+  // We'll build custom rows for mixed
+  return { lait: laitFdis, perm: permFdis, mixed: true };
+}
+
+// ─── Helpers to get upper/lower halves for a mode ────────────
+function getHalves() {
+  if (MODE === 'child') {
+    return {
+      upperLeft:  [55,54,53,52,51],  // Q5 reversed (outward→center)
+      upperRight: [61,62,63,64,65],  // Q6
+      lowerLeft:  [85,84,83,82,81],  // Q8 reversed
+      lowerRight: [71,72,73,74,75],  // Q7
+    };
+  }
+  if (MODE === 'adult') {
+    const p = [7,6,5,4,3,2,1]; // reversed: outward→center (17..11)
+    return {
+      upperLeft:  p.map(i=>10+i),  // 17,16,15,14,13,12,11
+      upperRight: [21,22,23,24,25,26,27],
+      lowerLeft:  p.map(i=>40+i),  // 47..41
+      lowerRight: [31,32,33,34,35,36,37],
+    };
+  }
+  // MIXED — build rows with lait + perm interspersed
+  if (PHASE <= 2) {
+    return {
+      // Upper left (patient right=Q1+Q5): perm 16,12,11 + lait 53,54,55
+      // Display order outward→center: 55,54,53,[perm16],12,11
+      upperLeft:  [16,55,54,53,12,11],
+      upperRight: [21,22,63,64,65,26],
+      lowerLeft:  [46,85,84,83,42,41],
+      lowerRight: [31,32,73,74,75,36],
+    };
+  } else {
+    // Phase 3: all permanent except wisdom
+    return {
+      upperLeft:  [17,16,15,14,13,12,11].filter(f=>PHASE<3||true), // 7 teeth
+      upperRight: [21,22,23,24,25,26,27],
+      lowerLeft:  [47,46,45,44,43,42,41],
+      lowerRight: [31,32,33,34,35,36,37],
+    };
+  }
+}
+
+// ─── Is this FDI a lait tooth? ───────────────────────────────
+function isLait(fdi) { return fdi >= 51 && fdi <= 85; }
+function isUpper(fdi) {
+  if (isLait(fdi)) return fdi >= 51 && fdi <= 65;
+  return fdi >= 11 && fdi <= 28;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SVG DRAWING
+// ═══════════════════════════════════════════════════════════════
+function gc(state) {
+  const s = STATES[state] || STATES.healthy;
+  return { fill:s.bg, stroke:s.color };
+}
+function rBar(x,y,rw,rh,col='#c8b89a',sc='#a89070') {
+  return `<rect x="${x}" y="${y}" width="${rw}" height="${rh}" rx="${Math.min(rw,4)}" fill="${col}" stroke="${sc}" stroke-width="1" opacity=".55"/>`;
+}
+function missX(w,h,stroke) {
+  const cx=w/2,cy=h/2,r=Math.min(w,h)*.27;
+  return `<rect x="3" y="3" width="${w-6}" height="${h-6}" rx="6" fill="none" stroke="${stroke}" stroke-width="1.4" stroke-dasharray="4,3" opacity=".4"/>
+  <line x1="${cx-r}" y1="${cy-r}" x2="${cx+r}" y2="${cy+r}" stroke="${stroke}" stroke-width="1.8" opacity=".5"/>
+  <line x1="${cx+r}" y1="${cy-r}" x2="${cx-r}" y2="${cy+r}" stroke="${stroke}" stroke-width="1.8" opacity=".5"/>`;
+}
+function eruptX(w,h,stroke,fill) {
+  // Partially visible tooth (erupting) with dashed top
+  const cx=w/2; const h2=h*.7;
+  return `<rect x="4" y="${h-h2}" width="${w-8}" height="${h2-4}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="1.6" stroke-dasharray="3,2"/>
+  <text x="${cx}" y="${h*.45}" text-anchor="middle" font-size="10" fill="${stroke}" opacity=".7">↑</text>`;
+}
+
+function drawTooth(fdi, state) {
+  const lait = isLait(fdi);
+  const upper = isUpper(fdi);
+  const pos = fdi % 10;
+  const w = lait ? CW[pos]  : AW[pos];
+  const h = lait ? (upper ? CHU[pos] : CHL[pos]) : (upper ? AHU[pos] : AHL[pos]);
+  const {fill,stroke} = gc(state);
+  const cx=w/2;
+
+  if (state==='missing')  return {svg:missX(w,h,stroke),w,h};
+  if (state==='erupting') return {svg:eruptX(w,h,stroke,fill),w,h};
+
+  const crownH=h*.58, rootH=h*.45;
+  const crownY = upper ? 0 : h-crownH;
+  const rootY  = upper ? crownH-2 : 0;
+  let svg='';
+
+  // === INCISORS (pos 1-2) ===
+  if (pos<=2) {
+    const cw=w-6;
+    if(upper) {
+      svg+=`<path d="M ${cx-cw/2} ${crownY+crownH} Q ${cx-cw/2} ${crownY+4} ${cx} ${crownY+3} Q ${cx+cw/2} ${crownY+4} ${cx+cw/2} ${crownY+crownH} Z" fill="${fill}" stroke="${stroke}" stroke-width="1.7"/>`;
+      for(let i=-1;i<=1;i++) svg+=`<line x1="${cx+i*4}" y1="${crownY+crownH*.32}" x2="${cx+i*4}" y2="${crownY+crownH*.64}" stroke="${stroke}" stroke-width=".6" opacity=".3"/>`;
+    } else {
+      svg+=`<path d="M ${cx-cw/2} ${crownY+4} Q ${cx-cw/2} ${crownY+crownH-3} ${cx} ${crownY+crownH-2} Q ${cx+cw/2} ${crownY+crownH-3} ${cx+cw/2} ${crownY+4} Z" fill="${fill}" stroke="${stroke}" stroke-width="1.7"/>`;
+      for(let i=-1;i<=1;i++) svg+=`<line x1="${cx+i*4}" y1="${crownY+crownH*.36}" x2="${cx+i*4}" y2="${crownY+crownH*.66}" stroke="${stroke}" stroke-width=".6" opacity=".3"/>`;
+    }
+    svg+=rBar(cx-4,rootY,8,rootH-2);
+  }
+  // === CANINE (pos 3) ===
+  else if(pos===3) {
+    const cw=w-6;
+    if(upper) svg+=`<path d="M ${cx} ${crownY+2} L ${cx+cw/2} ${crownY+crownH-4} Q ${cx} ${crownY+crownH+3} ${cx-cw/2} ${crownY+crownH-4} Z" fill="${fill}" stroke="${stroke}" stroke-width="1.7"/>`;
+    else      svg+=`<path d="M ${cx} ${crownY+crownH-2} L ${cx+cw/2} ${crownY+4} Q ${cx} ${crownY-3} ${cx-cw/2} ${crownY+4} Z" fill="${fill}" stroke="${stroke}" stroke-width="1.7"/>`;
+    svg+=rBar(cx-4,rootY,8,rootH+2);
+  }
+  // === PREMOLARS (pos 4-5) ===
+  else if(pos<=5) {
+    svg+=`<rect x="3" y="${crownY+2}" width="${w-6}" height="${crownH-4}" rx="7" fill="${fill}" stroke="${stroke}" stroke-width="1.7"/>`;
+    const oy=crownY+crownH*.45;
+    svg+=`<ellipse cx="${cx-4}" cy="${oy}" rx="5" ry="${crownH*.19}" fill="${fill}" stroke="${stroke}" stroke-width="1" opacity=".7"/>`;
+    svg+=`<ellipse cx="${cx+4}" cy="${oy}" rx="5" ry="${crownH*.19}" fill="${fill}" stroke="${stroke}" stroke-width="1" opacity=".7"/>`;
+    svg+=`<line x1="${cx}" y1="${crownY+crownH*.15}" x2="${cx}" y2="${crownY+crownH*.8}" stroke="${stroke}" stroke-width=".7" opacity=".4"/>`;
+    const rw=(w-8)/2;
+    svg+=rBar(4,rootY,rw-1,rootH); svg+=rBar(4+rw+1,rootY,rw-1,rootH,'#d4c4aa');
+  }
+  // === MOLARS (pos 6-8) ===
+  else {
+    svg+=`<rect x="3" y="${crownY+2}" width="${w-6}" height="${crownH-4}" rx="8" fill="${fill}" stroke="${stroke}" stroke-width="1.7"/>`;
+    const oy=crownY+crownH*.48;
+    svg+=`<ellipse cx="${cx}" cy="${oy}" rx="${(w-16)/2}" ry="${crownH*.27}" fill="${fill}" stroke="${stroke}" stroke-width="1.1" opacity=".68"/>`;
+    svg+=`<line x1="${cx}" y1="${crownY+crownH*.2}" x2="${cx}" y2="${crownY+crownH*.82}" stroke="${stroke}" stroke-width=".7" opacity=".4"/>`;
+    svg+=`<line x1="${cx-(w-18)/2}" y1="${oy}" x2="${cx+(w-18)/2}" y2="${oy}" stroke="${stroke}" stroke-width=".7" opacity=".4"/>`;
+    const rw=(w-10)/3;
+    svg+=rBar(4,rootY,rw,rootH,'#c8b89a'); svg+=rBar(4+rw+1,rootY,rw,rootH,'#d4c4aa'); svg+=rBar(4+rw*2+2,rootY,rw,rootH,'#c8b89a');
+  }
+
+  // State overlays
+  if(state==='crown') svg+=`<rect x="4" y="${crownY+2}" width="${w-8}" height="${crownH-4}" rx="6" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-dasharray="3,2" opacity=".8"/>`;
+  if(state==='bridge') svg+=`<line x1="0" y1="${crownY+crownH/2}" x2="${w}" y2="${crownY+crownH/2}" stroke="#7c3aed" stroke-width="2" opacity=".5"/>`;
+  if(state==='root') {
+    svg+=`<line x1="${cx-5}" y1="${crownY+5}" x2="${cx+5}" y2="${crownY+crownH-5}" stroke="#dc6d1a" stroke-width="1.5" opacity=".7"/>`;
+    svg+=`<line x1="${cx+5}" y1="${crownY+5}" x2="${cx-5}" y2="${crownY+crownH-5}" stroke="#dc6d1a" stroke-width="1.5" opacity=".7"/>`;
+  }
+
+  // Lait tooth gets a subtle round indicator dot
+  if(lait) svg+=`<circle cx="${w-5}" cy="5" r="3" fill="#b06020" opacity=".4"/>`;
+
+  return {svg,w,h};
+}
+
+function renderFdi(fdi) {
+  const el = document.getElementById(`tsvg-${fdi}`);
+  if(!el) return;
+  const state = toothStates[fdi]||'healthy';
+  const {svg,w,h} = drawTooth(fdi,state);
+  el.innerHTML=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" overflow="visible">${svg}</svg>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  BUILD CHART
+// ═══════════════════════════════════════════════════════════════
+function buildChart() {
+  const frame = document.getElementById('chart-frame');
+  frame.innerHTML='';
+
+  const halves = getHalves();
+  const {upperLeft,upperRight,lowerLeft,lowerRight} = halves;
+
+  // Init states
+  [...upperLeft,...upperRight,...lowerLeft,...lowerRight].forEach(f=>{
+    if(!(f in toothStates)) toothStates[f]='healthy';
+  });
+
+  // JAW UPPER LABEL
+  addDiv(frame,'grid-column:1/5;font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:center;padding:5px 0 3px;','MAXILLAIRE SUPÉRIEUR');
+
+  // UPPER ROW
+  buildJawRow(frame, upperLeft, upperRight, false);
+
+  // MIDLINE H
+  const mh=document.createElement('div');
+  mh.style.cssText='grid-column:1/5;height:1px;background:var(--border);display:flex;align-items:center;justify-content:center;position:relative;margin:5px 0;';
+  mh.innerHTML=`<span style="position:absolute;background:var(--bg);font-size:8px;color:var(--muted);letter-spacing:2px;padding:0 12px">— LIGNE MÉDIANE —</span>`;
+  frame.appendChild(mh);
+
+  // LOWER ROW
+  buildJawRow(frame, lowerLeft, lowerRight, true);
+
+  // JAW LOWER LABEL
+  addDiv(frame,'grid-column:1/5;font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:center;padding:3px 0 5px;','MANDIBULE INFÉRIEURE');
+
+  // Build quadrant info
+  buildQInfo(upperLeft,upperRight,lowerLeft,lowerRight);
+  updateDentInfo();
+  updateStats();
+  renderLegend();
+  renderAllTeeth();
+}
+
+function addDiv(parent,style,text) {
+  const d=document.createElement('div');
+  d.style.cssText=style; d.textContent=text;
+  parent.appendChild(d);
+  return d;
+}
+
+function buildJawRow(frame, leftTeeth, rightTeeth, isLower) {
+  // Side label LEFT
+  const sl=document.createElement('div');
+  sl.style.cssText='font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;writing-mode:vertical-rl;text-align:center;padding:0 3px;transform:rotate(180deg);';
+  sl.textContent='DROITE PT.';
+  frame.appendChild(sl);
+
+  // Left half (Q1/Q4/Q8 patient right)
+  const leftDiv=document.createElement('div');
+  leftDiv.style.cssText=`display:flex;align-items:${isLower?'flex-start':'flex-end'};gap:3px;justify-content:flex-end;`;
+  leftTeeth.forEach(fdi=>leftDiv.appendChild(createToothEl(fdi,isLower)));
+  frame.appendChild(leftDiv);
+
+  // Right half
+  const rightDiv=document.createElement('div');
+  rightDiv.style.cssText=`display:flex;align-items:${isLower?'flex-start':'flex-end'};gap:3px;justify-content:flex-start;`;
+  // midline V
+  const mv=document.createElement('div');
+  mv.style.cssText='width:2px;background:var(--border);align-self:stretch;flex-shrink:0;';
+  rightDiv.appendChild(mv);
+  rightTeeth.forEach(fdi=>rightDiv.appendChild(createToothEl(fdi,isLower)));
+  frame.appendChild(rightDiv);
+
+  // Side label RIGHT
+  const sr=document.createElement('div');
+  sr.style.cssText='font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;writing-mode:vertical-rl;text-align:center;padding:0 3px;';
+  sr.textContent='GAUCHE PT.';
+  frame.appendChild(sr);
+}
+
+function createToothEl(fdi,isLower) {
+  const wrap=document.createElement('div');
+  wrap.className='tooth-wrap'+(isLower?' lower-tooth':'');
+  wrap.dataset.fdi=fdi;
+  wrap.title=getTitle(fdi);
+
+  const numDiv=document.createElement('div');
+  numDiv.className='tooth-num';
+  if(MODE==='mixed'||MODE==='child') {
+    const pos=fdi%10;
+    const letter=isLait(fdi)?` (${CHILD_LETTERS[pos]||''})`:'';
+    numDiv.innerHTML=`${fdi}${letter?`<br><span style="font-size:6.5px;opacity:.6">${CHILD_LETTERS[pos]||''}</span>`:''}`;
+  } else {
+    numDiv.textContent=fdi;
+  }
+
+  const svgWrap=document.createElement('div');
+  svgWrap.className='tooth-svg-wrap';
+  svgWrap.id=`tsvg-${fdi}`;
+
+  wrap.appendChild(numDiv);
+  wrap.appendChild(svgWrap);
+  wrap.addEventListener('click',()=>selectTooth(fdi));
+  return wrap;
+}
+
+function getTitle(fdi) {
+  const pos=fdi%10;
+  const q=Math.floor(fdi/10);
+  const lait=isLait(fdi);
+  const name=lait?(TOOTH_NAMES_CHILD[pos]||''):(TOOTH_NAMES_ADULT[pos]||'');
+  const qMap={1:'Sup.Droite',2:'Sup.Gauche',3:'Inf.Gauche',4:'Inf.Droite',5:'Sup.Droite♦',6:'Sup.Gauche♦',7:'Inf.Gauche♦',8:'Inf.Droite♦'};
+  return `${fdi}${lait?` (${CHILD_LETTERS[pos]||''})`:''}  —  ${name}  —  Q${q} ${qMap[q]||''}`;
+}
+
+function renderAllTeeth() {
+  document.querySelectorAll('[data-fdi]').forEach(el=>{
+    renderFdi(parseInt(el.dataset.fdi));
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SELECTION
+// ═══════════════════════════════════════════════════════════════
+function selectTooth(fdi) {
+  selectedFdi=fdi;
+  document.querySelectorAll('[data-fdi]').forEach(el=>el.classList.remove('selected'));
+  const wrap=document.querySelector(`[data-fdi="${fdi}"]`);
+  if(wrap) wrap.classList.add('selected');
+  renderDetail(fdi);
+}
+
+function renderDetail(fdi) {
+  const state=toothStates[fdi]||'healthy';
+  const s=STATES[state];
+  const pos=fdi%10;
+  const q=Math.floor(fdi/10);
+  const lait=isLait(fdi);
+  const name=lait?(TOOTH_NAMES_CHILD[pos]||''):(TOOTH_NAMES_ADULT[pos]||'');
+  const letter=lait?` — ${CHILD_LETTERS[pos]||''}`:'';
+  const qLbl={1:'Sup. Droite patient',2:'Sup. Gauche patient',3:'Inf. Gauche patient',4:'Inf. Droite patient',5:'Sup. Droite (lait)',6:'Sup. Gauche (lait)',7:'Inf. Gauche (lait)',8:'Inf. Droite (lait)'};
+  const typeTag=lait?`<span style="font-size:9px;padding:2px 8px;border-radius:10px;background:#fff3e0;color:#b06020;border:1px solid #f0c88060;margin-left:6px">🥛 lait</span>`:'<span style="font-size:9px;padding:2px 8px;border-radius:10px;background:#e3f0ff;color:#1e5a8a;border:1px solid #90b8e060;margin-left:6px">🦷 perm.</span>';
+  const notes=toothNotes[fdi]||'';
+
+  const btns=Object.entries(STATES).map(([key,val])=>`
+    <button class="state-btn ${state===key?'active':''}"
+      style="${state===key?`border-color:${val.color};color:${val.color};background:${val.bg}`:''}"
+      onclick="setState(${fdi},'${key}')">
+      <div class="sdot" style="background:${val.color}"></div>${val.label}
+    </button>`).join('');
+
+  document.getElementById('tooth-detail').innerHTML=`
+    <div class="sb-sec" style="text-align:center">
+      <div style="font-family:'DM Serif Display',serif;font-size:19px;margin-bottom:3px">
+        Dent ${fdi}${letter} ${typeTag}
+      </div>
+      <div style="font-size:9.5px;color:var(--muted);margin-bottom:10px">${name} · Q${q} · ${qLbl[q]||''}</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:11px;border:1.5px solid ${s.color};color:${s.color};background:${s.bg}">
+        ${s.emoji} ${s.label}
+      </div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-title">Modifier l'état</div>
+      <div class="state-grid">${btns}</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-title">Notes cliniques</div>
+      <textarea class="notes-field" placeholder="Observations, traitement prévu..."
+        onchange="toothNotes[${fdi}]=this.value">${notes}</textarea>
+    </div>`;
+}
+
+function setState(fdi,state) {
+  toothStates[fdi]=state;
+  renderFdi(fdi);
+  renderDetail(fdi);
+  updateStats();
+  renderLegend();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  QUADRANT INFO
+// ═══════════════════════════════════════════════════════════════
+function buildQInfo(ul,ur,ll,lr) {
+  const box=document.getElementById('q-info');
+  const data=[
+    {label:'Q1/Q5',desc:'Sup. Droite patient',teeth:ul,chartPos:'← gauche chart'},
+    {label:'Q2/Q6',desc:'Sup. Gauche patient',teeth:ur,chartPos:'droite chart →'},
+    {label:'Q4/Q8',desc:'Inf. Droite patient',teeth:ll,chartPos:'← gauche chart'},
+    {label:'Q3/Q7',desc:'Inf. Gauche patient',teeth:lr,chartPos:'droite chart →'},
+  ];
+  box.innerHTML=data.map(d=>`
+    <div class="q-box" onclick="highlightTeeth([${d.teeth.join(',')}])">
+      <div class="q-box-num">${d.label}</div>
+      <div class="q-box-lbl">${d.desc}</div>
+      <div style="font-size:7.5px;color:var(--muted);margin-top:2px">${d.chartPos}</div>
+      <div style="font-size:8px;color:var(--muted)">${d.teeth.length} dents</div>
+    </div>`).join('');
+}
+
+function highlightTeeth(teeth) {
+  document.querySelectorAll('[data-fdi]').forEach(el=>{
+    el.style.opacity=teeth.includes(parseInt(el.dataset.fdi))?'1':'.1';
+  });
+  setTimeout(()=>document.querySelectorAll('[data-fdi]').forEach(el=>el.style.opacity=''),2000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  DENTITION INFO BOX
+// ═══════════════════════════════════════════════════════════════
+const DENT_INFO = {
+  child: {
+    title:'🍼 Denture temporaire',
+    period:'6 mois – 6 ans',
+    count:'20 dents de lait',
+    desc:'Quadrants 5–8 · Positions A–E · Incisives, canines et molaires de lait uniquement. Numérotation FDI : 51–55, 61–65, 71–75, 81–85.',
+    color:'#b06020'
+  },
+  mixed: {
+    title:'🔄 Denture mixte',
+    period:'6 – 12/13 ans',
+    count:'28 dents (transition)',
+    desc:'Cohabitation dents de lait <span style="color:#b06020">●</span> et dents permanentes <span style="color:#1e5a8a">●</span>. Se divise en 3 sous-phases visibles ci-dessus.',
+    color:'#3b6ea5',
+    phases: [
+      '<strong>Phase 1</strong> : Éruption 1ères molaires définitives + remplacement incisives.',
+      '<strong>Inter-trans.</strong> : Stabilité relative, aucune nouvelle dent visible.',
+      '<strong>Phase 2</strong> : Canines + prémolaires définitives remplacent lait.'
+    ]
+  },
+  adult: {
+    title:'🦷 Denture permanente',
+    period:'À partir de 12/13 ans',
+    count:'28 dents (sans sagesses)',
+    desc:'Quadrants 1–4 · Positions 1–7. Les dents de sagesse (18,28,38,48) sont optionnelles et peuvent être absentes ou exclure du plan de traitement.',
+    color:'#1e5a8a'
+  }
+};
+
+function updateDentInfo() {
+  const info=DENT_INFO[MODE];
+  let html=`<div style="font-size:10px;font-weight:600;color:${info.color};margin-bottom:4px">${info.title}</div>`;
+  html+=`<div style="font-size:9px;color:var(--muted);margin-bottom:6px">${info.period} · ${info.count}</div>`;
+  html+=`<div style="font-size:9px;color:var(--muted);line-height:1.7">${info.desc}</div>`;
+  if(info.phases&&MODE==='mixed') {
+    html+=`<div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">`;
+    info.phases.forEach((p,i)=>{
+      html+=`<div style="font-size:9px;line-height:1.5;padding:5px 8px;border-radius:5px;background:${i+1===PHASE?'#e3f0ff':'var(--surface)'};border:1px solid ${i+1===PHASE?'#90b8e0':'var(--border)'}">
+        ${p}</div>`;
+    });
+    html+=`</div>`;
+  }
+  document.getElementById('dent-info-box').innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  STATS + LEGEND
+// ═══════════════════════════════════════════════════════════════
+function countByState() {
+  const c={};
+  Object.keys(STATES).forEach(k=>c[k]=0);
+  // Count only visible teeth
+  document.querySelectorAll('[data-fdi]').forEach(el=>{
+    const f=parseInt(el.dataset.fdi);
+    const s=toothStates[f]||'healthy';
+    c[s]=(c[s]||0)+1;
+  });
+  return c;
+}
+
+function updateStats() {
+  const c=countByState();
+  const total=Object.values(c).reduce((a,b)=>a+b,0);
+  const missing=c.missing||0;
+  const issues=(c.caries||0)+(c.fracture||0)+(c.watching||0);
+  const present=total-missing;
+  ['cnt-present','hpresent'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent=present;
+  });
+  ['cnt-issues','hissues'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent=issues;
+  });
+  ['cnt-missing','hmissing'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent=missing;
+  });
+}
+
+function renderLegend() {
+  const c=countByState();
+  document.getElementById('legend').innerHTML=Object.entries(STATES).map(([key,val])=>`
+    <div class="leg-item" onclick="filterByState('${key}')">
+      <div class="leg-col" style="background:${val.bg};border:1.5px solid ${val.color}"></div>
+      <span>${val.emoji} ${val.label}</span>
+      <span class="leg-cnt">${c[key]||0}</span>
+    </div>`).join('');
+}
+
+function filterByState(state) {
+  document.querySelectorAll('[data-fdi]').forEach(el=>{
+    const fdi=parseInt(el.dataset.fdi);
+    el.style.opacity=(toothStates[fdi]===state)?'1':'.1';
+  });
+  setTimeout(()=>document.querySelectorAll('[data-fdi]').forEach(el=>el.style.opacity=''),2200);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  MODE & PHASE SWITCHING
+// ═══════════════════════════════════════════════════════════════
+function setMode(mode,btn) {
+  MODE=mode; selectedFdi=null; PHASE=1;
+  document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('phase-banner').style.display = mode==='mixed' ? 'flex' : 'none';
+  // Reset phase tabs
+  document.querySelectorAll('.phase-tab').forEach((b,i)=>b.classList.toggle('active',i===0));
+  document.getElementById('tooth-detail').innerHTML=`
+    <div class="no-sel">
+      <span class="no-sel-icon">${{child:'🍼',mixed:'🔄',adult:'🦷'}[mode]}</span>
+      ${{child:'<strong>Denture temporaire</strong><br>20 dents de lait<br>Q5–Q8 · A–E',
+         mixed:'<strong>Denture mixte</strong><br>28 dents · phase de transition<br>Choisissez une sous-phase',
+         adult:'<strong>Denture permanente</strong><br>28 dents (sans sagesses)<br>Q1–Q4'}[mode]}
+      <br><br>Cliquez une dent pour la sélectionner
+    </div>`;
+  buildChart();
+}
+
+function setPhase(n,btn) {
+  PHASE=n;
+  document.querySelectorAll('.phase-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const descs=[
+    '<strong>1ère phase de transition</strong> — Éruption des premières molaires définitives (16,26,36,46) et remplacement des incisives de lait par les définitives.',
+    '<strong>Phase inter-transitionnelle</strong> — Période de stabilité relative : aucune nouvelle dent visible. Lait et permanent cohabitent.',
+    '<strong>2ème phase de transition</strong> — Les canines et prémolaires définitives remplacent les canines et molaires de lait restantes.'
+  ];
+  document.getElementById('phase-desc').innerHTML=descs[n-1];
+  buildChart();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  DEMO DATA
+// ═══════════════════════════════════════════════════════════════
+function loadDemo() {
+  const demo={16:'crown',26:'crown',36:'caries',46:'filled',
+    12:'watching',22:'caries',17:'root',15:'bridge',25:'bridge',
+    47:'missing',31:'healthy'};
+  Object.entries(demo).forEach(([k,v])=>toothStates[parseInt(k)]=v);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════
+loadDemo();
+buildChart();
+</script>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odontogramme FDI — Interactif</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:      #f0ece4;
+  --surface: #faf8f4;
+  --sur2:    #ede9e0;
+  --border:  #d8d0c0;
+  --text:    #2a2118;
+  --muted:   #8a7d6a;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── HEADER ─── */
+header {
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+h1 { font-family:'DM Serif Display',serif; font-size:22px; letter-spacing:-.5px; }
+.sub { font-size:10px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; }
+.header-right { margin-left:auto; display:flex; align-items:center; gap:12px; }
+
+/* Mode toggle */
+.mode-toggle {
+  display:flex; border:1.5px solid var(--border); border-radius:8px; overflow:hidden;
+}
+.mode-btn {
+  padding:7px 14px; font-family:'DM Mono',monospace; font-size:11px;
+  background:transparent; border:none; cursor:pointer; color:var(--muted);
+  transition:all .2s;
+}
+.mode-btn.active { background:var(--text); color:var(--bg); }
+
+/* stat pills */
+.stat-pill {
+  background:var(--sur2); border:1px solid var(--border); border-radius:20px;
+  padding:5px 14px; font-size:11px; text-align:center;
+}
+.stat-pill strong { font-family:'DM Serif Display',serif; font-size:17px; display:block; }
+
+/* ─── MAIN LAYOUT ─── */
+.main { display:grid; grid-template-columns:1fr 290px; flex:1; min-height:0; }
+
+/* ─── CHART AREA ─── */
+.chart-area {
+  padding:24px 16px;
+  display:flex; flex-direction:column; align-items:center;
+  overflow:auto; gap:0;
+}
+
+/* Quadrant labels grid */
+.chart-frame {
+  display:grid;
+  grid-template-columns: 60px 1fr 1fr 60px;
+  grid-template-rows: auto auto auto auto auto;
+  width:100%; max-width:820px;
+  align-items:center;
+  gap:0;
+}
+
+.q-label {
+  font-size:9px; letter-spacing:2px; text-transform:uppercase;
+  color:var(--muted); text-align:center; padding:4px;
+  writing-mode:horizontal-tb;
+}
+.q-num {
+  font-family:'DM Serif Display',serif; font-size:28px; color:var(--border);
+  text-align:center; line-height:1;
+}
+
+/* jaw labels spanning 2 cols */
+.jaw-label-upper, .jaw-label-lower {
+  grid-column:2/4;
+  font-size:9px; letter-spacing:3px; text-transform:uppercase;
+  color:var(--muted); text-align:center; padding:4px 0;
+}
+
+/* teeth rows */
+.row-wrap {
+  display:flex; align-items:flex-end; gap:3px; justify-content:flex-end;
+}
+.row-wrap.left-half  { justify-content:flex-start; }
+.row-wrap.lower-row  { align-items:flex-start; }
+
+/* midline */
+.midline-v {
+  width:2px; background:var(--border); align-self:stretch;
+  grid-row:span 1; margin:0 2px;
+}
+
+/* midline horizontal */
+.midline-h {
+  grid-column:1/5;
+  height:1px; background:var(--border);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; margin:4px 0;
+}
+.midline-h-label {
+  position:absolute; background:var(--bg);
+  font-size:9px; color:var(--muted); letter-spacing:2px; padding:0 10px;
+}
+
+/* right/left patient labels */
+.side-label {
+  font-size:9px; color:var(--muted); letter-spacing:1.5px;
+  text-transform:uppercase; writing-mode:vertical-rl;
+  text-align:center;
+}
+.side-label.right-side { transform:rotate(180deg); }
+
+/* Individual tooth */
+.tooth-wrap {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  cursor:pointer; transition:opacity .2s;
+  position:relative;
+}
+.lower-row .tooth-wrap { flex-direction:column-reverse; }
+
+.tooth-num {
+  font-size:8px; color:var(--muted); line-height:1;
+  text-align:center; transition:color .2s;
+  white-space:nowrap;
+}
+.tooth-svg-wrap svg {
+  display:block;
+  transition:transform .18s cubic-bezier(.34,1.56,.64,1), filter .18s;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.12));
+}
+.tooth-wrap:hover .tooth-svg-wrap svg {
+  transform:scale(1.2);
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.22));
+  z-index:10; position:relative;
+}
+.tooth-wrap.selected .tooth-svg-wrap svg {
+  transform:scale(1.25);
+  filter:drop-shadow(0 0 10px rgba(0,0,0,.32));
+}
+.tooth-wrap.selected .tooth-num { color:var(--text); font-weight:600; }
+.tooth-wrap.dimmed { opacity:.18; }
+
+/* Face legend */
+.face-legend {
+  margin-top:20px; display:flex; gap:24px;
+  font-size:9px; color:var(--muted); letter-spacing:.5px;
+  text-transform:uppercase; flex-wrap:wrap; justify-content:center;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  border-left:1px solid var(--border); background:var(--surface);
+  display:flex; flex-direction:column; overflow-y:auto;
+}
+.sb-sec { padding:18px; border-bottom:1px solid var(--border); }
+.sb-title {
+  font-size:9px; letter-spacing:3px; text-transform:uppercase;
+  color:var(--muted); margin-bottom:12px;
+}
+
+/* detail panel */
+.no-sel {
+  text-align:center; padding:28px 16px;
+  color:var(--muted); font-size:11px; line-height:2;
+}
+.no-sel-icon { font-size:32px; display:block; margin-bottom:8px; }
+
+.sel-name { font-family:'DM Serif Display',serif; font-size:20px; margin-bottom:2px; }
+.sel-sub  { font-size:10px; color:var(--muted); margin-bottom:12px; }
+.sel-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:6px 16px; border-radius:20px; font-size:11px;
+  border:1.5px solid; margin-bottom:4px;
+}
+
+/* state grid */
+.state-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+.state-btn {
+  display:flex; align-items:center; gap:6px; padding:8px 10px;
+  border-radius:7px; border:1.5px solid var(--border);
+  background:var(--sur2); cursor:pointer;
+  font-family:'DM Mono',monospace; font-size:10px; color:var(--text);
+  transition:all .15s; text-align:left;
+}
+.state-btn:hover { transform:translateY(-1px); }
+.state-btn.active { border-width:2px; }
+.sdot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+
+/* Notes */
+.notes-field {
+  width:100%; background:var(--sur2); border:1px solid var(--border);
+  border-radius:8px; padding:9px 11px;
+  font-family:'DM Mono',monospace; font-size:11px; color:var(--text);
+  resize:vertical; min-height:60px; outline:none;
+}
+.notes-field:focus { border-color:var(--muted); }
+.notes-field::placeholder { color:var(--muted); }
+
+/* Legend */
+.leg-item {
+  display:flex; align-items:center; gap:9px; font-size:10px;
+  padding:5px 7px; border-radius:6px; cursor:pointer; transition:background .15s;
+}
+.leg-item:hover { background:var(--sur2); }
+.leg-col { width:11px; height:11px; border-radius:3px; flex-shrink:0; }
+.leg-cnt {
+  margin-left:auto; font-size:9px; color:var(--muted);
+  background:var(--sur2); padding:1px 7px; border-radius:10px;
+}
+
+/* Stats */
+.stats-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; }
+.stat-b {
+  background:var(--sur2); border:1px solid var(--border);
+  border-radius:8px; padding:9px 6px; text-align:center;
+}
+.stat-n { font-family:'DM Serif Display',serif; font-size:20px; display:block; }
+.stat-l { font-size:9px; color:var(--muted); letter-spacing:.5px; }
+
+/* Quadrant info box */
+.quadrant-info {
+  display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px;
+}
+.q-box {
+  border:1.5px solid var(--border); border-radius:8px; padding:8px;
+  font-size:10px; text-align:center; cursor:pointer; transition:all .15s;
+  background:var(--surface);
+}
+.q-box:hover { border-color:var(--muted); }
+.q-box.hl { border-color:var(--text); background:var(--sur2); }
+.q-box-num { font-family:'DM Serif Display',serif; font-size:18px; }
+.q-box-lbl { color:var(--muted); font-size:9px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Odontogramme</h1>
+    <div class="sub">Système FDI — vue du praticien</div>
+  </div>
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="setMode('adult',this)">👤 Adulte (32)</button>
+    <button class="mode-btn" onclick="setMode('child',this)">🧒 Enfant (20)</button>
+  </div>
+  <div class="header-right">
+    <div class="stat-pill"><strong id="hpresent">32</strong>présentes</div>
+    <div class="stat-pill"><strong id="hissues" style="color:#c0392b">0</strong>à traiter</div>
+    <div class="stat-pill"><strong id="hmissing" style="color:#64748b">0</strong>absentes</div>
+  </div>
+</header>
+
+<div class="main">
+  <div class="chart-area">
+
+    <!-- PATIENT ORIENTATION NOTE -->
+    <!--<div style="font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;text-align:center">
+      ← Côté droit du patient &nbsp;·&nbsp; Vue du praticien &nbsp;·&nbsp; Côté gauche du patient →
+    </div>
+
+    <div class="chart-frame" id="chart-frame">
+      <!-- Built by JS -->
+    <!--</div>
+
+    <div class="face-legend">
+      <span>M = Mésiale</span><span>D = Distale</span>
+      <span>O = Occlusale / Incisale</span><span>B = Buccale</span><span>L = Linguale / Palatine</span>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div id="tooth-detail">
+      <div class="no-sel">
+        <span class="no-sel-icon">🦷</span>
+        Cliquez sur une dent<br>pour la sélectionner
+      </div>
+    </div>
+
+    <div class="sb-sec">
+      <div class="sb-title">Quadrants FDI</div>
+      <div style="font-size:9px;color:var(--muted);margin-bottom:8px;line-height:1.8">
+        Premier chiffre = quadrant<br>
+        Second chiffre = position (1 centre → 8 fond)
+      </div>
+      <div class="quadrant-info" id="q-info">
+        <!-- Built by JS -->
+      <!--</div>
+    </div>
+
+    <div class="sb-sec">
+      <div class="sb-title">Résumé</div>
+      <div class="stats-row">
+        <div class="stat-b"><span class="stat-n" id="cnt-present">32</span><div class="stat-l">PRÉSENTES</div></div>
+        <div class="stat-b"><span class="stat-n" id="cnt-issues" style="color:#c0392b">0</span><div class="stat-l">À TRAITER</div></div>
+        <div class="stat-b"><span class="stat-n" id="cnt-missing" style="color:#64748b">0</span><div class="stat-l">ABSENTES</div></div>
+      </div>
+    </div>
+
+    <div class="sb-sec" id="legend-sec">
+      <div class="sb-title">Légende</div>
+      <div id="legend"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  STATES
+// ═══════════════════════════════════════════════════════
+const STATES = {
+  healthy:  { label:'Saine',          color:'#2d7a4f', bg:'#e8f5ed', emoji:'✓' },
+  caries:   { label:'Caries',         color:'#c0392b', bg:'#fdecea', emoji:'●' },
+  filled:   { label:'Obturée',        color:'#2563eb', bg:'#eff6ff', emoji:'◉' },
+  crown:    { label:'Couronne',        color:'#b8860b', bg:'#fef9e0', emoji:'♛' },
+  missing:  { label:'Absente',         color:'#64748b', bg:'#f1f5f9', emoji:'✕' },
+  bridge:   { label:'Bridge',          color:'#7c3aed', bg:'#f5f3ff', emoji:'═' },
+  implant:  { label:'Implant',         color:'#0891b2', bg:'#ecfeff', emoji:'⚓' },
+  root:     { label:'Dévitalisée',     color:'#dc6d1a', bg:'#fff4e6', emoji:'⬡' },
+  watching: { label:'Surveillance',    color:'#d97706', bg:'#fffbeb', emoji:'◎' },
+  fracture: { label:'Fracture',        color:'#9f1239', bg:'#fff1f2', emoji:'⚡' },
+};
+
+// ═══════════════════════════════════════════════════════
+//  FDI QUADRANT DEFINITIONS
+//
+//  ADULT quadrants (from patient's perspective ↔ mirrored for praticien):
+//    Q1 = upper-right patient  → displayed on LEFT  of chart (praticien sees patient's right on their left)
+//    Q2 = upper-left  patient  → displayed on RIGHT of chart
+//    Q3 = lower-left  patient  → displayed on RIGHT of chart
+//    Q4 = lower-right patient  → displayed on LEFT  of chart
+//
+//  Each quadrant: positions 1–8 (1=central incisor, 8=wisdom tooth)
+//  FDI code = quadrant*10 + position
+//  e.g. Q1 pos 1 = 11, Q1 pos 8 = 18, Q2 pos 1 = 21 ...
+//
+//  CHILD quadrants 5-8, positions 1-5 (A-E)
+// ═══════════════════════════════════════════════════════
+
+const QUADRANTS = {
+  adult: {
+    Q1: { num:1, label:'Sup. Droite (patient)', jaw:'upper', side:'right',
+          teeth:[11,12,13,14,15,16,17,18] },   // 1→8, displayed left-to-right = from midline outward → displayed RIGHT to LEFT in chart
+    Q2: { num:2, label:'Sup. Gauche (patient)', jaw:'upper', side:'left',
+          teeth:[21,22,23,24,25,26,27,28] },
+    Q3: { num:3, label:'Inf. Gauche (patient)', jaw:'lower', side:'left',
+          teeth:[31,32,33,34,35,36,37,38] },
+    Q4: { num:4, label:'Inf. Droite (patient)', jaw:'lower', side:'right',
+          teeth:[41,42,43,44,45,46,47,48] },
+  },
+  child: {
+    Q5: { num:5, label:'Sup. Droite (enfant)', jaw:'upper', side:'right',
+          teeth:[51,52,53,54,55] },
+    Q6: { num:6, label:'Sup. Gauche (enfant)', jaw:'upper', side:'left',
+          teeth:[61,62,63,64,65] },
+    Q7: { num:7, label:'Inf. Gauche (enfant)', jaw:'lower', side:'left',
+          teeth:[71,72,73,74,75] },
+    Q8: { num:8, label:'Inf. Droite (enfant)', jaw:'lower', side:'right',
+          teeth:[81,82,83,84,85] },
+  }
+};
+
+const TOOTH_NAMES_ADULT = {
+  1:'Incisive centrale', 2:'Incisive latérale', 3:'Canine',
+  4:'1ère prémolaire',  5:'2ème prémolaire',
+  6:'1ère molaire',     7:'2ème molaire',     8:'3ème molaire (sagesse)'
+};
+const TOOTH_NAMES_CHILD = {
+  1:'Incisive centrale', 2:'Incisive latérale', 3:'Canine',
+  4:'1ère molaire de lait', 5:'2ème molaire de lait'
+};
+const CHILD_LETTERS = {1:'A',2:'B',3:'C',4:'D',5:'E'};
+const QUADRANT_LABELS = {1:'Q1',2:'Q2',3:'Q3',4:'Q4',5:'Q5',6:'Q6',7:'Q7',8:'Q8'};
+
+// Sizes by position (1=narrow incisor, 8=wide molar)
+const ADULT_W = {1:26,2:24,3:28,4:32,5:32,6:42,7:40,8:40};
+const ADULT_H_UP = {1:48,2:44,3:54,4:52,5:50,6:56,7:54,8:52};
+const ADULT_H_LO = {1:46,2:42,3:52,4:50,5:48,6:54,7:52,8:50};
+const CHILD_W  = {1:22,2:20,3:24,4:30,5:32};
+const CHILD_H_UP = {1:38,2:36,3:42,4:44,5:44};
+const CHILD_H_LO = {1:36,2:34,3:40,4:42,5:42};
+
+// Global state
+let MODE = 'adult'; // 'adult' | 'child'
+const toothStates = {};
+const toothNotes  = {};
+let selectedFdi   = null;
+
+// ═══════════════════════════════════════════════════════
+//  SVG TOOTH DRAWING
+// ═══════════════════════════════════════════════════════
+function gc(state) {
+  const s = STATES[state] || STATES.healthy;
+  return { fill:s.bg, stroke:s.color };
+}
+
+function missingX(w, h, stroke) {
+  const cx=w/2, cy=h/2, r=Math.min(w,h)*0.28;
+  return `
+    <rect x="3" y="3" width="${w-6}" height="${h-6}" rx="6"
+      fill="none" stroke="${stroke}" stroke-width="1.4" stroke-dasharray="4,3" opacity=".45"/>
+    <line x1="${cx-r}" y1="${cy-r}" x2="${cx+r}" y2="${cy+r}" stroke="${stroke}" stroke-width="1.8" opacity=".5"/>
+    <line x1="${cx+r}" y1="${cy-r}" x2="${cx-r}" y2="${cy+r}" stroke="${stroke}" stroke-width="1.8" opacity=".5"/>`;
+}
+
+function rootBar(x, y, rw, rh, col='#c8b89a', scol='#a89070') {
+  return `<rect x="${x}" y="${y}" width="${rw}" height="${rh}" rx="${Math.min(rw,4)}"
+    fill="${col}" stroke="${scol}" stroke-width="1" opacity=".55"/>`;
+}
+
+function drawAdultTooth(fdi, state, upper) {
+  const pos = fdi % 10;
+  const w = ADULT_W[pos];
+  const h = upper ? ADULT_H_UP[pos] : ADULT_H_LO[pos];
+  const {fill,stroke} = gc(state);
+  const cx = w/2, cy = h/2;
+
+  if (state === 'missing') return { svg: missingX(w,h,stroke), w, h };
+
+  let inner = '';
+  const crownH = h*0.58, rootH = h*0.46;
+  const crownY = upper ? 0 : h - crownH;
+  const rootY  = upper ? crownH - 2 : 0;
+
+  if (pos <= 2) {
+    // INCISORS: shovel shape
+    const cw = w-6;
+    if (upper) {
+      inner += `<path d="M ${cx-cw/2} ${crownY+crownH} Q ${cx-cw/2} ${crownY+4} ${cx} ${crownY+3} Q ${cx+cw/2} ${crownY+4} ${cx+cw/2} ${crownY+crownH} Z"
+        fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>`;
+      // mamelons
+      for (let i=-1;i<=1;i++) {
+        inner += `<line x1="${cx+i*4}" y1="${crownY+crownH*0.3}" x2="${cx+i*4}" y2="${crownY+crownH*0.65}" stroke="${stroke}" stroke-width=".7" opacity=".35"/>`;
+      }
+    } else {
+      inner += `<path d="M ${cx-cw/2} ${crownY+4} Q ${cx-cw/2} ${crownY+crownH-3} ${cx} ${crownY+crownH-2} Q ${cx+cw/2} ${crownY+crownH-3} ${cx+cw/2} ${crownY+4} Z"
+        fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>`;
+      for (let i=-1;i<=1;i++) {
+        inner += `<line x1="${cx+i*4}" y1="${crownY+crownH*0.35}" x2="${cx+i*4}" y2="${crownY+crownH*0.68}" stroke="${stroke}" stroke-width=".7" opacity=".35"/>`;
+      }
+    }
+    inner += rootBar(cx-4, rootY, 8, rootH-2);
+  }
+  else if (pos === 3) {
+    // CANINE: pointed
+    const cw = w-6;
+    if (upper) {
+      inner += `<path d="M ${cx} ${crownY+2} L ${cx+cw/2} ${crownY+crownH-3} Q ${cx} ${crownY+crownH+3} ${cx-cw/2} ${crownY+crownH-3} Z"
+        fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>`;
+    } else {
+      inner += `<path d="M ${cx} ${crownY+crownH-2} L ${cx+cw/2} ${crownY+4} Q ${cx} ${crownY-3} ${cx-cw/2} ${crownY+4} Z"
+        fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>`;
+    }
+    inner += rootBar(cx-4, rootY, 8, rootH+2);
+  }
+  else if (pos <= 5) {
+    // PREMOLARS: 2 cusps
+    inner += `<rect x="3" y="${crownY+2}" width="${w-6}" height="${crownH-4}" rx="7" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>`;
+    const oy = crownY + crownH*0.45;
+    inner += `<ellipse cx="${cx-4}" cy="${oy}" rx="5" ry="${crownH*.2}" fill="${fill}" stroke="${stroke}" stroke-width="1" opacity=".7"/>`;
+    inner += `<ellipse cx="${cx+4}" cy="${oy}" rx="5" ry="${crownH*.2}" fill="${fill}" stroke="${stroke}" stroke-width="1" opacity=".7"/>`;
+    inner += `<line x1="${cx}" y1="${crownY+crownH*.15}" x2="${cx}" y2="${crownY+crownH*.8}" stroke="${stroke}" stroke-width=".7" opacity=".45"/>`;
+    const rw=(w-8)/2;
+    inner += rootBar(4, rootY, rw-1, rootH);
+    inner += rootBar(4+rw+1, rootY, rw-1, rootH, '#d4c4aa');
+  }
+  else {
+    // MOLARS: 3 roots, cross grooves
+    inner += `<rect x="3" y="${crownY+2}" width="${w-6}" height="${crownH-4}" rx="8" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>`;
+    const oy = crownY + crownH*0.48;
+    inner += `<ellipse cx="${cx}" cy="${oy}" rx="${(w-16)/2}" ry="${crownH*.28}" fill="${fill}" stroke="${stroke}" stroke-width="1.1" opacity=".7"/>`;
+    inner += `<line x1="${cx}" y1="${crownY+crownH*.2}" x2="${cx}" y2="${crownY+crownH*.82}" stroke="${stroke}" stroke-width=".8" opacity=".45"/>`;
+    inner += `<line x1="${cx-(w-18)/2}" y1="${oy}" x2="${cx+(w-18)/2}" y2="${oy}" stroke="${stroke}" stroke-width=".8" opacity=".45"/>`;
+    const rw=(w-10)/3;
+    inner += rootBar(4,          rootY, rw, rootH, '#c8b89a');
+    inner += rootBar(4+rw+1,    rootY, rw, rootH, '#d4c4aa');
+    inner += rootBar(4+rw*2+2, rootY, rw, rootH, '#c8b89a');
+  }
+
+  // Crown overlay
+  if (state === 'crown') {
+    inner += `<rect x="4" y="${crownY+2}" width="${w-8}" height="${crownH-4}" rx="6"
+      fill="none" stroke="#b8860b" stroke-width="1.5" stroke-dasharray="3,2" opacity=".8"/>`;
+  }
+  if (state === 'bridge') {
+    inner += `<line x1="0" y1="${crownY+crownH/2}" x2="${w}" y2="${crownY+crownH/2}"
+      stroke="#7c3aed" stroke-width="2" opacity=".5"/>`;
+  }
+  if (state === 'root') {
+    inner += `<line x1="${cx-5}" y1="${crownY+4}" x2="${cx+5}" y2="${crownY+crownH-4}"
+      stroke="#dc6d1a" stroke-width="1.5" opacity=".7"/>`;
+    inner += `<line x1="${cx+5}" y1="${crownY+4}" x2="${cx-5}" y2="${crownY+crownH-4}"
+      stroke="#dc6d1a" stroke-width="1.5" opacity=".7"/>`;
+  }
+
+  return { svg: inner, w, h };
+}
+
+function drawChildTooth(fdi, state, upper) {
+  const pos = fdi % 10;
+  const w = CHILD_W[pos];
+  const h = upper ? CHILD_H_UP[pos] : CHILD_H_LO[pos];
+  const {fill,stroke} = gc(state);
+  const cx = w/2;
+
+  if (state === 'missing') return { svg: missingX(w,h,stroke), w, h };
+
+  const crownH = h*.6, rootH = h*.44;
+  const crownY = upper ? 0 : h - crownH;
+  const rootY  = upper ? crownH-2 : 0;
+  let inner = '';
+
+  if (pos <= 2) {
+    const cw=w-6;
+    inner += `<rect x="3" y="${crownY+3}" width="${cw}" height="${crownH-5}" rx="5" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>`;
+    inner += rootBar(cx-3, rootY, 6, rootH);
+  } else if (pos === 3) {
+    const cw=w-6;
+    if (upper) inner += `<path d="M ${cx} ${crownY+2} L ${cx+cw/2} ${crownY+crownH-3} Q ${cx} ${crownY+crownH+2} ${cx-cw/2} ${crownY+crownH-3} Z" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>`;
+    else       inner += `<path d="M ${cx} ${crownY+crownH-2} L ${cx+cw/2} ${crownY+4} Q ${cx} ${crownY-2} ${cx-cw/2} ${crownY+4} Z" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>`;
+    inner += rootBar(cx-3, rootY, 6, rootH);
+  } else {
+    inner += `<rect x="3" y="${crownY+2}" width="${w-6}" height="${crownH-4}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>`;
+    const oy = crownY + crownH*.46;
+    inner += `<ellipse cx="${cx}" cy="${oy}" rx="${(w-14)/2}" ry="${crownH*.25}" fill="${fill}" stroke="${stroke}" stroke-width="1" opacity=".7"/>`;
+    inner += `<line x1="${cx}" y1="${crownY+crownH*.2}" x2="${cx}" y2="${crownY+crownH*.78}" stroke="${stroke}" stroke-width=".7" opacity=".4"/>`;
+    const rw=(w-8)/2;
+    inner += rootBar(4, rootY, rw-1, rootH);
+    inner += rootBar(4+rw+1, rootY, rw-1, rootH, '#d4c4aa');
+  }
+  return { svg: inner, w, h };
+}
+
+function renderToothSVG(fdi) {
+  const el = document.getElementById(`tsvg-${fdi}`);
+  if (!el) return;
+  const state = toothStates[fdi] || 'healthy';
+  const isChild = fdi >= 50;
+  const upper = isChild ? fdi < 70 : (fdi < 30);
+  const {svg, w, h} = isChild
+    ? drawChildTooth(fdi, state, upper)
+    : drawAdultTooth(fdi, state, upper);
+  el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" overflow="visible">${svg}</svg>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  BUILD CHART
+// ═══════════════════════════════════════════════════════
+function buildChart() {
+  const frame = document.getElementById('chart-frame');
+  frame.innerHTML = '';
+
+  const quads = MODE === 'adult' ? QUADRANTS.adult : QUADRANTS.child;
+  // Q1/Q5 upper-right (patient), Q2/Q6 upper-left
+  // Displayed: Q1 teeth from midline outward = 11,12..18 from RIGHT to LEFT on chart (since we mirror)
+  // Actually in chart: LEFT half = Q1 (patient's right), RIGHT half = Q2 (patient's left)
+  // Teeth order in row: Q1 displayed 18→11 (outward→center), then | midline |, then Q2 displayed 21→28 (center→outward)
+  
+  const qUL = MODE==='adult' ? quads.Q1 : quads.Q5; // upper patient-right → chart LEFT
+  const qUR = MODE==='adult' ? quads.Q2 : quads.Q6; // upper patient-left  → chart RIGHT
+  const qLL = MODE==='adult' ? quads.Q4 : quads.Q8; // lower patient-right → chart LEFT
+  const qLR = MODE==='adult' ? quads.Q3 : quads.Q7; // lower patient-left  → chart RIGHT
+
+  // Collect all FDIs for init
+  const allFdi = [...qUL.teeth, ...qUR.teeth, ...qLL.teeth, ...qLR.teeth];
+  allFdi.forEach(f => { if (!(f in toothStates)) toothStates[f] = 'healthy'; });
+
+  // UPPER JAW LABEL
+  const ujLabel = document.createElement('div');
+  ujLabel.className = 'jaw-label-upper';
+  ujLabel.style.cssText = 'grid-column:1/5;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:center;padding:4px 0;';
+  ujLabel.textContent = 'MAXILLAIRE SUPÉRIEUR';
+  frame.appendChild(ujLabel);
+
+  // UPPER ROW
+  buildJawRow(frame, qUL.teeth.slice().reverse(), qUR.teeth, 'upper', false);
+
+  // MIDLINE HORIZONTAL
+  const mh = document.createElement('div');
+  mh.style.cssText = 'grid-column:1/5;height:1px;background:var(--border);display:flex;align-items:center;justify-content:center;position:relative;margin:6px 0;';
+  mh.innerHTML = `<span style="position:absolute;background:var(--bg);font-size:9px;color:var(--muted);letter-spacing:2px;padding:0 12px">— LIGNE MÉDIANE —</span>`;
+  frame.appendChild(mh);
+
+  // LOWER ROW
+  buildJawRow(frame, qLL.teeth.slice().reverse(), qLR.teeth, 'lower', true);
+
+  // LOWER JAW LABEL
+  const ljLabel = document.createElement('div');
+  ljLabel.style.cssText = 'grid-column:1/5;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:center;padding:4px 0;';
+  ljLabel.textContent = 'MANDIBULE INFÉRIEURE';
+  frame.appendChild(ljLabel);
+
+  // Quadrant boxes sidebar
+  buildQBoxes(qUL, qUR, qLL, qLR);
+  updateStats();
+  renderLegend();
+}
+
+function buildJawRow(frame, leftTeeth, rightTeeth, jaw, isLower) {
+  // Side label LEFT
+  const sl = document.createElement('div');
+  sl.style.cssText = 'writing-mode:vertical-rl;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding:0 4px;transform:rotate(180deg);';
+  sl.textContent = 'DROITE PATIENT';
+  frame.appendChild(sl);
+
+  // LEFT HALF (Q1/Q4 = patient right) — teeth go outward: 18,17..11 displayed left→right
+  const leftDiv = document.createElement('div');
+  leftDiv.style.cssText = `display:flex;align-items:${isLower?'flex-start':'flex-end'};gap:3px;justify-content:flex-end;grid-column:2;`;
+  leftTeeth.forEach(fdi => leftDiv.appendChild(createToothEl(fdi, isLower)));
+  frame.appendChild(leftDiv);
+
+  // RIGHT HALF (Q2/Q3 = patient left) — teeth from midline: 21,22..28
+  const rightDiv = document.createElement('div');
+  rightDiv.style.cssText = `display:flex;align-items:${isLower?'flex-start':'flex-end'};gap:3px;justify-content:flex-start;grid-column:3;`;
+  // Midline marker
+  const ml = document.createElement('div');
+  ml.style.cssText = 'width:2px;background:var(--border);align-self:stretch;flex-shrink:0;';
+  rightDiv.appendChild(ml);
+  rightTeeth.forEach(fdi => rightDiv.appendChild(createToothEl(fdi, isLower)));
+  frame.appendChild(rightDiv);
+
+  // Side label RIGHT
+  const sr = document.createElement('div');
+  sr.style.cssText = 'writing-mode:vertical-rl;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding:0 4px;';
+  sr.textContent = 'GAUCHE PATIENT';
+  frame.appendChild(sr);
+}
+
+function createToothEl(fdi, isLower) {
+  const wrap = document.createElement('div');
+  wrap.className = 'tooth-wrap' + (isLower?' lower-row':'');
+  wrap.dataset.fdi = fdi;
+  wrap.style.cssText = 'display:flex;flex-direction:'+(isLower?'column-reverse':'column')+';align-items:center;gap:2px;cursor:pointer;transition:opacity .2s;';
+  wrap.title = getToothTitle(fdi);
+
+  const numEl = document.createElement('div');
+  numEl.className = 'tooth-num';
+  numEl.style.cssText = 'font-size:8px;color:var(--muted);line-height:1;text-align:center;';
+
+  // Show child letters for child mode
+  if (MODE === 'child') {
+    const pos = fdi % 10;
+    numEl.innerHTML = `${fdi}<br><span style="font-size:7px;opacity:.7">${CHILD_LETTERS[pos]||''}</span>`;
+  } else {
+    numEl.textContent = fdi;
+  }
+
+  const svgWrap = document.createElement('div');
+  svgWrap.id = `tsvg-${fdi}`;
+  svgWrap.style.cssText = 'transition:transform .18s cubic-bezier(.34,1.56,.64,1),filter .18s;';
+
+  // hover / selected via event delegation on wrap
+  wrap.addEventListener('mouseenter', () => {
+    svgWrap.style.transform = 'scale(1.2)';
+    svgWrap.style.filter = 'drop-shadow(0 4px 12px rgba(0,0,0,.22))';
+    svgWrap.style.zIndex = '10';
+    svgWrap.style.position = 'relative';
+  });
+  wrap.addEventListener('mouseleave', () => {
+    if (selectedFdi !== fdi) {
+      svgWrap.style.transform = '';
+      svgWrap.style.filter = '';
+    }
+  });
+
+  wrap.appendChild(numEl);
+  wrap.appendChild(svgWrap);
+  wrap.addEventListener('click', () => selectTooth(fdi));
+
+  return wrap;
+}
+
+function getToothTitle(fdi) {
+  const pos = fdi % 10;
+  const q = Math.floor(fdi/10);
+  const isChild = fdi >= 50;
+  const name = isChild ? (TOOTH_NAMES_CHILD[pos]||'') : (TOOTH_NAMES_ADULT[pos]||'');
+  const letter = isChild ? ` (${CHILD_LETTERS[pos]||''})` : '';
+  const qSide = {1:'Sup. Droite',2:'Sup. Gauche',3:'Inf. Gauche',4:'Inf. Droite',
+                 5:'Sup. Droite ♦',6:'Sup. Gauche ♦',7:'Inf. Gauche ♦',8:'Inf. Droite ♦'}[q]||'';
+  return `Dent ${fdi}${letter} — ${name} — ${qSide}`;
+}
+
+function renderAll() {
+  const allFdi = Object.keys(toothStates).map(Number);
+  allFdi.forEach(f => renderToothSVG(f));
+  // Apply dimmed
+  document.querySelectorAll('[data-fdi]').forEach(el => {
+    el.classList.remove('dimmed');
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  SELECTION
+// ═══════════════════════════════════════════════════════
+function selectTooth(fdi) {
+  // deselect previous scale
+  if (selectedFdi) {
+    const prev = document.getElementById(`tsvg-${selectedFdi}`);
+    if (prev) { prev.style.transform=''; prev.style.filter=''; }
+    const prevWrap = document.querySelector(`[data-fdi="${selectedFdi}"]`);
+    if (prevWrap) prevWrap.querySelector('.tooth-num').style.color='';
+  }
+
+  selectedFdi = fdi;
+
+  const svgWrap = document.getElementById(`tsvg-${fdi}`);
+  if (svgWrap) {
+    svgWrap.style.transform='scale(1.25)';
+    svgWrap.style.filter='drop-shadow(0 0 10px rgba(0,0,0,.32))';
+  }
+  const numEl = document.querySelector(`[data-fdi="${fdi}"] .tooth-num`);
+  if (numEl) numEl.style.color=var_text();
+
+  renderDetail(fdi);
+}
+
+function var_text() { return '#2a2118'; }
+
+function renderDetail(fdi) {
+  const state = toothStates[fdi] || 'healthy';
+  const s = STATES[state];
+  const pos = fdi % 10;
+  const q = Math.floor(fdi/10);
+  const isChild = fdi >= 50;
+  const name = isChild ? (TOOTH_NAMES_CHILD[pos]||'') : (TOOTH_NAMES_ADULT[pos]||'');
+  const letter = isChild ? ` (${CHILD_LETTERS[pos]||''})` : '';
+  const qLabels = {1:'Sup. Droite patient',2:'Sup. Gauche patient',3:'Inf. Gauche patient',4:'Inf. Droite patient',
+                   5:'Sup. Droite ♦ enfant',6:'Sup. Gauche ♦ enfant',7:'Inf. Gauche ♦ enfant',8:'Inf. Droite ♦ enfant'};
+  const notes = toothNotes[fdi] || '';
+
+  const stateButtons = Object.entries(STATES).map(([key,val]) => `
+    <button class="state-btn ${state===key?'active':''}"
+      style="${state===key?`border-color:${val.color};color:${val.color};background:${val.bg}`:''}"
+      onclick="setState(${fdi},'${key}')">
+      <div class="sdot" style="background:${val.color}"></div>${val.label}
+    </button>`).join('');
+
+  document.getElementById('tooth-detail').innerHTML = `
+    <div class="sb-sec" style="text-align:center">
+      <div style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:2px">Dent ${fdi}${letter}</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:10px">${name} · Quadrant ${q} · ${qLabels[q]||''}</div>
+      <div style="display:inline-flex;align-items:center;gap:7px;padding:6px 16px;border-radius:20px;font-size:11px;border:1.5px solid ${s.color};color:${s.color};background:${s.bg}">
+        ${s.emoji} ${s.label}
+      </div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-title">Modifier l'état</div>
+      <div class="state-grid">${stateButtons}</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-title">Notes cliniques</div>
+      <textarea class="notes-field" placeholder="Observations, traitement prévu..."
+        onchange="toothNotes[${fdi}]=this.value">${notes}</textarea>
+    </div>`;
+}
+
+function setState(fdi, state) {
+  toothStates[fdi] = state;
+  renderToothSVG(fdi);
+  renderDetail(fdi);
+  updateStats();
+  renderLegend();
+}
+
+// ═══════════════════════════════════════════════════════
+//  QUADRANT BOXES SIDEBAR
+// ═══════════════════════════════════════════════════════
+function buildQBoxes(qUL, qUR, qLL, qLR) {
+  const box = document.getElementById('q-info');
+  const qdata = [
+    { q:qUL, pos:'Sup. Droite (patient)', chart:'← Chart Gauche' },
+    { q:qUR, pos:'Sup. Gauche (patient)', chart:'Chart Droite →' },
+    { q:qLL, pos:'Inf. Droite (patient)', chart:'← Chart Gauche' },
+    { q:qLR, pos:'Inf. Gauche (patient)', chart:'Chart Droite →' },
+  ];
+  box.innerHTML = qdata.map(({q,pos,chart}) => `
+    <div class="q-box" onclick="highlightQuadrant([${q.teeth.join(',')}])">
+      <div class="q-box-num">Q${q.num}</div>
+      <div class="q-box-lbl">${pos}</div>
+      <div style="font-size:8px;color:var(--muted);margin-top:2px">${chart}</div>
+    </div>`).join('');
+}
+
+function highlightQuadrant(teeth) {
+  document.querySelectorAll('[data-fdi]').forEach(el => {
+    el.style.opacity = teeth.includes(parseInt(el.dataset.fdi)) ? '1' : '.15';
+  });
+  setTimeout(() => {
+    document.querySelectorAll('[data-fdi]').forEach(el => { el.style.opacity=''; });
+  }, 2000);
+}
+
+// ═══════════════════════════════════════════════════════
+//  STATS + LEGEND
+// ═══════════════════════════════════════════════════════
+function countByState() {
+  const c = {};
+  Object.keys(STATES).forEach(k => c[k]=0);
+  Object.values(toothStates).forEach(s => c[s]=(c[s]||0)+1);
+  return c;
+}
+
+function updateStats() {
+  const c = countByState();
+  const total = Object.values(toothStates).length;
+  const missing = c.missing||0;
+  const issues = (c.caries||0)+(c.fracture||0)+(c.watching||0);
+  document.getElementById('cnt-present').textContent  = total - missing;
+  document.getElementById('cnt-issues').textContent   = issues;
+  document.getElementById('cnt-missing').textContent  = missing;
+  document.getElementById('hpresent').textContent     = total - missing;
+  document.getElementById('hissues').textContent      = issues;
+  document.getElementById('hmissing').textContent     = missing;
+}
+
+function renderLegend() {
+  const c = countByState();
+  document.getElementById('legend').innerHTML = Object.entries(STATES).map(([key,val]) => `
+    <div class="leg-item" onclick="filterByState('${key}')">
+      <div class="leg-col" style="background:${val.bg};border:1.5px solid ${val.color}"></div>
+      <span>${val.emoji} ${val.label}</span>
+      <span class="leg-cnt">${c[key]||0}</span>
+    </div>`).join('');
+}
+
+function filterByState(state) {
+  document.querySelectorAll('[data-fdi]').forEach(el => {
+    const fdi = parseInt(el.dataset.fdi);
+    el.style.opacity = (toothStates[fdi]===state) ? '1' : '.12';
+  });
+  setTimeout(() => {
+    document.querySelectorAll('[data-fdi]').forEach(el => { el.style.opacity=''; });
+  }, 2200);
+}
+
+// ═══════════════════════════════════════════════════════
+//  MODE SWITCH
+// ═══════════════════════════════════════════════════════
+function setMode(mode, btn) {
+  MODE = mode;
+  selectedFdi = null;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Reset detail panel
+  document.getElementById('tooth-detail').innerHTML = `
+    <div class="no-sel">
+      <span class="no-sel-icon">${mode==='child'?'🧒':'🦷'}</span>
+      ${mode==='child'
+        ? 'Mode <strong>dents de lait</strong><br>Quadrants 5–8 · Dents A–E<br>Cliquez une dent'
+        : 'Mode <strong>adulte</strong><br>Quadrants 1–4 · 32 dents<br>Cliquez une dent'}
+    </div>`;
+
+  buildChart();
+  renderAll();
+  updateStats();
+}
+
+// ═══════════════════════════════════════════════════════
+//  DEMO DATA
+// ═══════════════════════════════════════════════════════
+function loadDemo() {
+  const demoAdult = {16:'crown',26:'crown',36:'caries',46:'filled',
+    12:'watching',22:'caries',38:'missing',17:'root',
+    47:'missing',15:'bridge',25:'bridge',48:'watching',11:'healthy'};
+  Object.entries(demoAdult).forEach(([k,v]) => toothStates[parseInt(k)]=v);
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+buildChart();
+// Init all adult teeth
+[...QUADRANTS.adult.Q1.teeth,...QUADRANTS.adult.Q2.teeth,
+ ...QUADRANTS.adult.Q3.teeth,...QUADRANTS.adult.Q4.teeth].forEach(f => {
+  if(!(f in toothStates)) toothStates[f]='healthy';
+});
+loadDemo();
+renderAll();
+updateStats();
+renderLegend();
+</script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schéma Dentaire Interactif</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg: #f0ece4;
+  --surface: #faf8f4;
+  --surface2: #ede9e0;
+  --border: #d8d0c0;
+  --text: #2a2118;
+  --muted: #8a7d6a;
+
+  --healthy:   #2d7a4f;
+  --healthy-bg:#e8f5ed;
+  --caries:    #c0392b;
+  --caries-bg: #fdecea;
+  --crown:     #b8860b;
+  --crown-bg:  #fef9e0;
+  --missing:   #64748b;
+  --missing-bg:#f1f5f9;
+  --filled:    #2563eb;
+  --filled-bg: #eff6ff;
+  --bridge:    #7c3aed;
+  --bridge-bg: #f5f3ff;
+  --root:      #dc6d1a;
+  --root-bg:   #fff4e6;
+  --watching:  #d97706;
+  --watching-bg:#fffbeb;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 24px 40px 16px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+.patient-info {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.tooth-count {
+  font-size: 11px;
+  color: var(--muted);
+}
+.tooth-count strong {
+  color: var(--text);
+  font-size: 18px;
+  font-family: 'DM Serif Display', serif;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  flex: 1;
+}
+
+/* ── CHART AREA ── */
+.chart-area {
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  overflow: auto;
+}
+
+.jaw-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.jaw-divider {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 10px 0;
+}
+.jaw-divider-line { flex:1; height:1px; background: var(--border); }
+.jaw-divider-text {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+/* Teeth row */
+.teeth-row {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  max-width: 780px;
+  width: 100%;
+  justify-content: center;
+}
+.teeth-row.upper { align-items: flex-end; }
+.teeth-row.lower { align-items: flex-start; }
+
+/* Individual tooth wrapper */
+.tooth-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  position: relative;
+}
+.upper .tooth-wrap { flex-direction: column; }
+.lower .tooth-wrap { flex-direction: column-reverse; }
+
+.tooth-num {
+  font-size: 9px;
+  color: var(--muted);
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.tooth-svg-wrap {
+  position: relative;
+}
+
+.tooth-svg-wrap svg {
+  display: block;
+  transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), filter 0.18s;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.12));
+}
+
+.tooth-wrap:hover .tooth-svg-wrap svg {
+  transform: scale(1.18);
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
+  z-index: 10;
+}
+.tooth-wrap.selected .tooth-svg-wrap svg {
+  transform: scale(1.22);
+  filter: drop-shadow(0 0 8px rgba(0,0,0,0.35));
+}
+.tooth-wrap.selected .tooth-num {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Midline separator */
+.midline {
+  width: 1px;
+  background: var(--border);
+  align-self: stretch;
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-title {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+/* Selected tooth panel */
+.selected-panel {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.selected-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.selected-fdi {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.selected-state-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1.5px solid;
+  margin-bottom: 8px;
+}
+
+/* State picker */
+.state-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.state-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text);
+  transition: all 0.15s;
+  text-align: left;
+}
+.state-btn:hover {
+  border-color: currentColor;
+  transform: translateY(-1px);
+}
+.state-btn.active {
+  border-width: 2px;
+}
+.state-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Notes */
+.notes-field {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text);
+  resize: vertical;
+  min-height: 70px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.notes-field:focus { border-color: var(--muted); }
+.notes-field::placeholder { color: var(--muted); }
+
+/* Legend */
+.legend-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.legend-item:hover { background: var(--surface2); }
+.legend-color {
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.legend-count {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--surface2);
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+/* Summary stats */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.stat {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.stat-n {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  display: block;
+}
+.stat-l { font-size: 9px; color: var(--muted); letter-spacing: 1px; }
+
+/* No selection state */
+.no-selection {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 2;
+  border-bottom: 1px solid var(--border);
+}
+.no-sel-icon { font-size: 36px; margin-bottom: 10px; display: block; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .main { grid-template-columns: 1fr; }
+  .sidebar { border-left: none; border-top: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Odontogramme</h1>
+  <span class="patient-info">notation FDI internationale</span>
+  <div class="header-right">
+    <div class="tooth-count"><strong id="hcount">32</strong><br>dents total</div>
+    <div class="tooth-count"><strong id="hissues" style="color:var(--caries)">0</strong><br>à traiter</div>
+  </div>
+</header>
+
+<div class="main">
+  <div class="chart-area">
+    <div class="jaw-label">MAXILLAIRE SUPÉRIEUR</div>
+
+    <!-- UPPER JAW -->
+   <!-- <div class="teeth-row upper" id="row-upper-right"></div>
+
+    <div class="jaw-divider">
+      <div class="jaw-divider-line"></div>
+      <div class="jaw-divider-text">DROITE · ligne médiane · GAUCHE</div>
+      <div class="jaw-divider-line"></div>
+    </div>
+
+    <!-- LOWER JAW -->
+    <!--<div class="teeth-row lower" id="row-lower-right"></div>
+
+    <div class="jaw-label" style="margin-top:6px">MANDIBULE INFÉRIEURE</div>
+
+    <!-- Faces legend -->
+    <!--<div style="margin-top:30px; display:flex; gap:30px; font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase">
+      <span>M = Mésiale</span>
+      <span>D = Distale</span>
+      <span>O = Occlusale/Incisale</span>
+      <span>B = Buccale</span>
+      <span>L = Linguale/Palatine</span>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <!--<div class="sidebar">
+    <div id="tooth-detail">
+      <div class="no-selection">
+        <span class="no-sel-icon">🦷</span>
+        Sélectionnez une dent<br>pour voir ses détails<br>et modifier son état
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Résumé</div>
+      <div class="stats-row">
+        <div class="stat"><span class="stat-n" id="cnt-total">32</span><div class="stat-l">PRÉSENTES</div></div>
+        <div class="stat"><span class="stat-n" id="cnt-issues" style="color:var(--caries)">0</span><div class="stat-l">À TRAITER</div></div>
+        <div class="stat"><span class="stat-n" id="cnt-missing" style="color:var(--missing)">0</span><div class="stat-l">ABSENTES</div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Légende — cliquer pour filtrer</div>
+      <div class="legend-grid" id="legend"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+
+const STATES = {
+  healthy:  { label:'Saine',        color:'#2d7a4f', bg:'#e8f5ed', emoji:'✓' },
+  caries:   { label:'Caries',       color:'#c0392b', bg:'#fdecea', emoji:'●' },
+  filled:   { label:'Obturée',      color:'#2563eb', bg:'#eff6ff', emoji:'◉' },
+  crown:    { label:'Couronne',     color:'#b8860b', bg:'#fef9e0', emoji:'♛' },
+  missing:  { label:'Absente',      color:'#64748b', bg:'#f1f5f9', emoji:'✕' },
+  bridge:   { label:'Bridge',       color:'#7c3aed', bg:'#f5f3ff', emoji:'═' },
+  implant:  { label:'Implant',      color:'#0891b2', bg:'#ecfeff', emoji:'⚓' },
+  root:     { label:'Dévitalisée',  color:'#dc6d1a', bg:'#fff4e6', emoji:'⬡' },
+  watching: { label:'Surveillance', color:'#d97706', bg:'#fffbeb', emoji:'◎' },
+  fracture: { label:'Fracture',     color:'#9f1239', bg:'#fff1f2', emoji:'⚡' },
+};
+
+// FDI tooth data
+const TOOTH_NAMES = {
+  1:'3ème molaire', 2:'2ème molaire', 3:'1ère molaire',
+  4:'2ème prémolaire', 5:'1ère prémolaire',
+  6:'Canine', 7:'Incisive latérale', 8:'Incisive centrale'
+};
+
+// Upper: right (18→11) then left (21→28)
+const UPPER_RIGHT = [18,17,16,15,14,13,12,11];
+const UPPER_LEFT  = [21,22,23,24,25,26,27,28];
+const LOWER_RIGHT = [48,47,46,45,44,43,42,41];
+const LOWER_LEFT  = [31,32,33,34,35,36,37,38];
+
+// Width per tooth type (index 1-8, incisors narrower)
+const TOOTH_W = { 1:44, 2:42, 3:44, 4:34, 5:34, 6:30, 7:26, 8:26 };
+const TOOTH_H_UPPER = { 1:56, 2:54, 3:56, 4:50, 5:50, 6:54, 7:46, 8:44 };
+const TOOTH_H_LOWER = { 1:54, 2:52, 3:54, 4:48, 5:48, 6:52, 7:44, 8:42 };
+
+// State for each tooth (FDI number → state key)
+const toothStates = {};
+const toothNotes  = {};
+
+// Initialize all teeth as healthy
+[...UPPER_RIGHT,...UPPER_LEFT,...LOWER_RIGHT,...LOWER_LEFT].forEach(n => {
+  toothStates[n] = 'healthy';
+  toothNotes[n] = '';
+});
+
+// Demo: a few preset conditions
+const demo = {
+  16:'crown', 26:'crown',
+  36:'caries', 46:'filled',
+  12:'watching', 22:'caries',
+  38:'missing', 17:'root',
+  15:'bridge', 25:'bridge',
+};
+Object.entries(demo).forEach(([k,v]) => toothStates[parseInt(k)] = v);
+
+let selectedTooth = null;
+
+// ══════════════════════════════════════════════
+//  SVG TOOTH GENERATORS
+// ══════════════════════════════════════════════
+
+function getToothType(fdi) {
+  return fdi % 10;
+}
+function isUpper(fdi) { return fdi >= 11 && fdi <= 28; }
+function isLower(fdi) { return fdi >= 31 && fdi <= 48; }
+
+function getColors(state) {
+  const s = STATES[state] || STATES.healthy;
+  return { fill: s.bg, stroke: s.color, text: s.color };
+}
+
+function drawMolar(fdi, w, h, state) {
+  const { fill, stroke } = getColors(state);
+  const missing = state === 'missing';
+  const rx = 8;
+  const cx = w/2, cy = h/2;
+  // Roots (lower part for upper, upper part for lower)
+  const upper = isUpper(fdi);
+  const rootY = upper ? h*0.62 : 0;
+  const rootH = h * 0.42;
+  const crownH = h * 0.58;
+  const crownY = upper ? 0 : h * 0.42;
+
+  if (missing) return `
+    <rect x="4" y="4" width="${w-8}" height="${h-8}" rx="${rx}" 
+      fill="none" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+    <line x1="${cx-8}" y1="${cy-8}" x2="${cx+8}" y2="${cy+8}" stroke="${stroke}" stroke-width="2" opacity="0.5"/>
+    <line x1="${cx+8}" y1="${cy-8}" x2="${cx-8}" y2="${cy+8}" stroke="${stroke}" stroke-width="2" opacity="0.5"/>
+  `;
+
+  // Crown shape
+  let svg = `<rect x="3" y="${crownY+3}" width="${w-6}" height="${crownH-6}" rx="${rx}" 
+      fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+
+  // Occlusal anatomy (cusps) on crown center
+  const oy = crownY + crownH/2;
+  svg += `<ellipse cx="${cx}" cy="${oy}" rx="${(w-14)/2}" ry="${crownH*0.28}" 
+    fill="${fill}" stroke="${stroke}" stroke-width="1.2" opacity="0.7"/>`;
+  // Cross groove
+  svg += `<line x1="${cx}" y1="${crownY+crownH*0.2}" x2="${cx}" y2="${crownY+crownH*0.8}" stroke="${stroke}" stroke-width="0.8" opacity="0.5"/>
+    <line x1="${cx-(w-16)/2}" y1="${oy}" x2="${cx+(w-16)/2}" y2="${oy}" stroke="${stroke}" stroke-width="0.8" opacity="0.5"/>`;
+
+  // Roots
+  const rw = (w-8)/3;
+  const root_colors = ['#c8b89a','#d4c4aa','#c8b89a'];
+  for (let i=0; i<3; i++) {
+    const rx2 = 4 + i*(rw+2);
+    svg += `<rect x="${rx2}" y="${rootY}" width="${rw}" height="${rootH}" rx="4" 
+      fill="${root_colors[i]}" stroke="#a89070" stroke-width="1" opacity="0.6"/>`;
+  }
+  return svg;
+}
+
+function drawPremolar(fdi, w, h, state) {
+  const { fill, stroke } = getColors(state);
+  const missing = state === 'missing';
+  const upper = isUpper(fdi);
+  const cx = w/2;
+  const crownH = h * 0.6;
+  const rootH = h * 0.44;
+  const crownY = upper ? 0 : h * 0.4;
+  const rootY  = upper ? h * 0.58 : 0;
+
+  if (missing) return `
+    <rect x="4" y="4" width="${w-8}" height="${h-8}" rx="6" 
+      fill="none" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+    <line x1="${cx-7}" y1="${h/2-7}" x2="${cx+7}" y2="${h/2+7}" stroke="${stroke}" stroke-width="2" opacity="0.5"/>
+    <line x1="${cx+7}" y1="${h/2-7}" x2="${cx-7}" y2="${h/2+7}" stroke="${stroke}" stroke-width="2" opacity="0.5"/>
+  `;
+
+  let svg = `<rect x="3" y="${crownY+2}" width="${w-6}" height="${crownH-4}" rx="7" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  // Two cusps
+  const oy = crownY + crownH * 0.45;
+  svg += `<ellipse cx="${cx-4}" cy="${oy}" rx="5" ry="${crownH*0.2}" fill="${fill}" stroke="${stroke}" stroke-width="1" opacity="0.7"/>`;
+  svg += `<ellipse cx="${cx+4}" cy="${oy}" rx="5" ry="${crownH*0.2}" fill="${fill}" stroke="${stroke}" stroke-width="1" opacity="0.7"/>`;
+  svg += `<line x1="${cx}" y1="${crownY+crownH*0.15}" x2="${cx}" y2="${crownY+crownH*0.8}" stroke="${stroke}" stroke-width="0.8" opacity="0.5"/>`;
+
+  // Two roots
+  const rw = (w-8)/2;
+  svg += `<rect x="4" y="${rootY}" width="${rw-1}" height="${rootH}" rx="4" fill="#c8b89a" stroke="#a89070" stroke-width="1" opacity="0.6"/>`;
+  svg += `<rect x="${4+rw+1}" y="${rootY}" width="${rw-1}" height="${rootH}" rx="4" fill="#d4c4aa" stroke="#a89070" stroke-width="1" opacity="0.6"/>`;
+  return svg;
+}
+
+function drawCanine(fdi, w, h, state) {
+  const { fill, stroke } = getColors(state);
+  const missing = state === 'missing';
+  const upper = isUpper(fdi);
+  const cx = w/2;
+  const crownH = h * 0.62;
+  const rootH  = h * 0.44;
+  const crownY = upper ? 0 : h * 0.38;
+  const rootY  = upper ? h * 0.58 : 0;
+
+  if (missing) return `
+    <rect x="3" y="3" width="${w-6}" height="${h-6}" rx="6" 
+      fill="none" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+    <line x1="${cx-6}" y1="${h/2-6}" x2="${cx+6}" y2="${h/2+6}" stroke="${stroke}" stroke-width="2" opacity="0.5"/>
+    <line x1="${cx+6}" y1="${h/2-6}" x2="${cx-6}" y2="${h/2+6}" stroke="${stroke}" stroke-width="2" opacity="0.5"/>
+  `;
+
+  // Pointed crown
+  let svg = '';
+  if (upper) {
+    svg += `<path d="M ${cx} ${crownY+2} L ${cx+(w-8)/2} ${crownY+crownH-4} Q ${cx} ${crownY+crownH+2} ${cx-(w-8)/2} ${crownY+crownH-4} Z" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  } else {
+    svg += `<path d="M ${cx} ${crownY+crownH-2} L ${cx+(w-8)/2} ${crownY+4} Q ${cx} ${crownY-2} ${cx-(w-8)/2} ${crownY+4} Z" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }
+  // Single long root
+  svg += `<rect x="${cx-5}" y="${rootY}" width="10" height="${rootH}" rx="5" fill="#c8b89a" stroke="#a89070" stroke-width="1" opacity="0.6"/>`;
+  return svg;
+}
+
+function drawIncisor(fdi, w, h, state) {
+  const { fill, stroke } = getColors(state);
+  const missing = state === 'missing';
+  const upper = isUpper(fdi);
+  const cx = w/2;
+  const crownH = h * 0.58;
+  const rootH  = h * 0.46;
+  const crownY = upper ? 0 : h * 0.38;
+  const rootY  = upper ? h * 0.55 : 0;
+
+  if (missing) return `
+    <rect x="2" y="2" width="${w-4}" height="${h-4}" rx="5" 
+      fill="none" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+    <line x1="${cx-6}" y1="${h/2-6}" x2="${cx+6}" y2="${h/2+6}" stroke="${stroke}" stroke-width="2" opacity="0.5"/>
+    <line x1="${cx+6}" y1="${h/2-6}" x2="${cx-6}" y2="${h/2+6}" stroke="${stroke}" stroke-width="2" opacity="0.5"/>
+  `;
+
+  let svg = '';
+  // Shovel-shaped crown
+  if (upper) {
+    svg += `<path d="M ${cx-(w-6)/2} ${crownY+crownH-3} Q ${cx-(w-6)/2} ${crownY+2} ${cx} ${crownY+2} Q ${cx+(w-6)/2} ${crownY+2} ${cx+(w-6)/2} ${crownY+crownH-3} Z" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  } else {
+    svg += `<path d="M ${cx-(w-6)/2} ${crownY+4} Q ${cx-(w-6)/2} ${crownY+crownH-2} ${cx} ${crownY+crownH-2} Q ${cx+(w-6)/2} ${crownY+crownH-2} ${cx+(w-6)/2} ${crownY+4} Z" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  }
+  // Mamelons lines
+  const my = upper ? crownY+crownH*0.35 : crownY+crownH*0.6;
+  svg += `<line x1="${cx-4}" y1="${my}" x2="${cx-4}" y2="${my+8}" stroke="${stroke}" stroke-width="0.7" opacity="0.4"/>`;
+  svg += `<line x1="${cx}"   y1="${my}" x2="${cx}"   y2="${my+8}" stroke="${stroke}" stroke-width="0.7" opacity="0.4"/>`;
+  svg += `<line x1="${cx+4}" y1="${my}" x2="${cx+4}" y2="${my+8}" stroke="${stroke}" stroke-width="0.7" opacity="0.4"/>`;
+  // Root
+  svg += `<rect x="${cx-4}" y="${rootY}" width="8" height="${rootH}" rx="4" fill="#c8b89a" stroke="#a89070" stroke-width="1" opacity="0.6"/>`;
+  return svg;
+}
+
+function drawTooth(fdi, state) {
+  const type = fdi % 10; // 1-8
+  const upper = isUpper(fdi);
+  const heights = upper ? TOOTH_H_UPPER : TOOTH_H_LOWER;
+  const w = TOOTH_W[type];
+  const h = heights[type];
+  let inner = '';
+  if (type <= 3) inner = drawMolar(fdi, w, h, state);
+  else if (type <= 5) inner = drawPremolar(fdi, w, h, state);
+  else if (type === 6) inner = drawCanine(fdi, w, h, state);
+  else inner = drawIncisor(fdi, w, h, state);
+
+  // Crown overlay for 'crown' state
+  if (state === 'crown') {
+    inner += `<rect x="4" y="${upper?2:h*0.4+2}" width="${w-8}" height="${upper?h*0.55:h*0.55}" rx="6" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.8"/>`;
+  }
+
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" overflow="visible">${inner}</svg>`;
+}
+
+// ══════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════
+
+function createToothEl(fdi) {
+  const type = fdi % 10;
+  const upper = isUpper(fdi);
+  const heights = upper ? TOOTH_H_UPPER : TOOTH_H_LOWER;
+  const h = heights[type];
+  const name = TOOTH_NAMES[type] || '';
+  const quadrant = Math.floor(fdi / 10);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'tooth-wrap';
+  wrap.dataset.fdi = fdi;
+  wrap.title = `Dent ${fdi} — ${name}`;
+
+  const numEl = document.createElement('div');
+  numEl.className = 'tooth-num';
+  numEl.textContent = fdi;
+
+  const svgWrap = document.createElement('div');
+  svgWrap.className = 'tooth-svg-wrap';
+  svgWrap.id = `tooth-svg-${fdi}`;
+
+  wrap.appendChild(numEl);
+  wrap.appendChild(svgWrap);
+
+  wrap.addEventListener('click', () => selectTooth(fdi));
+  return wrap;
+}
+
+function renderToothSVG(fdi) {
+  const el = document.getElementById(`tooth-svg-${fdi}`);
+  if (el) el.innerHTML = drawTooth(fdi, toothStates[fdi]);
+}
+
+function buildRow(fdis, rowId) {
+  const row = document.getElementById(rowId);
+  row.innerHTML = '';
+  fdis.forEach((fdi, i) => {
+    // midline between index 3 and 4 (between 11/21 or 41/31)
+    if (i === 4) {
+      const ml = document.createElement('div');
+      ml.className = 'midline';
+      row.appendChild(ml);
+    }
+    const el = createToothEl(fdi);
+    row.appendChild(el);
+  });
+}
+
+function renderAll() {
+  buildRow([...UPPER_RIGHT, ...UPPER_LEFT], 'row-upper-right');
+  buildRow([...LOWER_RIGHT.slice().reverse(), ...LOWER_LEFT], 'row-lower-right');
+  [...UPPER_RIGHT,...UPPER_LEFT,...LOWER_RIGHT,...LOWER_LEFT].forEach(f => renderToothSVG(f));
+}
+
+// ══════════════════════════════════════════════
+//  SELECTION
+// ══════════════════════════════════════════════
+
+function getToothLabel(fdi) {
+  const type = fdi % 10;
+  const q = Math.floor(fdi / 10);
+  const side = (q===1||q===4)?'Droite':'Gauche';
+  const jaw  = (q<=2)?'Sup.':'Inf.';
+  return { name: TOOTH_NAMES[type] || '', side, jaw };
+}
+
+function selectTooth(fdi) {
+  selectedTooth = fdi;
+  document.querySelectorAll('.tooth-wrap').forEach(el => {
+    el.classList.toggle('selected', parseInt(el.dataset.fdi) === fdi);
+  });
+  renderDetail(fdi);
+}
+
+function renderDetail(fdi) {
+  const state = toothStates[fdi];
+  const s = STATES[state];
+  const { name, side, jaw } = getToothLabel(fdi);
+  const notes = toothNotes[fdi] || '';
+
+  const stateButtons = Object.entries(STATES).map(([key, val]) => `
+    <button class="state-btn ${state===key?'active':''}" 
+      style="${state===key?`border-color:${val.color};color:${val.color};background:${val.bg}`:'color:'+val.color}"
+      onclick="setState(${fdi},'${key}')">
+      <div class="state-dot" style="background:${val.color}"></div>${val.label}
+    </button>
+  `).join('');
+
+  document.getElementById('tooth-detail').innerHTML = `
+    <div class="selected-panel">
+      <div class="selected-name">Dent ${fdi}</div>
+      <div class="selected-fdi">${name} · ${jaw} ${side}</div>
+      <div class="selected-state-badge" style="color:${s.color};background:${s.bg};border-color:${s.color}">
+        <span>${s.emoji}</span><span>${s.label}</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Changer l'état</div>
+      <div class="state-grid">${stateButtons}</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Notes cliniques</div>
+      <textarea class="notes-field" placeholder="Observations, traitement prévu..." 
+        onchange="setNote(${fdi},this.value)">${notes}</textarea>
+    </div>
+  `;
+}
+
+function setState(fdi, state) {
+  toothStates[fdi] = state;
+  renderToothSVG(fdi);
+  renderDetail(fdi);
+  updateStats();
+  renderLegend();
+}
+
+function setNote(fdi, val) {
+  toothNotes[fdi] = val;
+}
+
+// ══════════════════════════════════════════════
+//  STATS & LEGEND
+// ══════════════════════════════════════════════
+
+function countByState() {
+  const counts = {};
+  Object.keys(STATES).forEach(k => counts[k] = 0);
+  Object.values(toothStates).forEach(s => counts[s] = (counts[s]||0)+1);
+  return counts;
+}
+
+function updateStats() {
+  const counts = countByState();
+  const total = 32 - (counts.missing || 0);
+  const issues = (counts.caries||0)+(counts.fracture||0)+(counts.watching||0);
+  document.getElementById('cnt-total').textContent = total;
+  document.getElementById('cnt-issues').textContent = issues;
+  document.getElementById('cnt-missing').textContent = counts.missing || 0;
+  document.getElementById('hcount').textContent = total;
+  document.getElementById('hissues').textContent = issues;
+}
+
+function renderLegend() {
+  const counts = countByState();
+  const legend = document.getElementById('legend');
+  legend.innerHTML = Object.entries(STATES).map(([key, val]) => `
+    <div class="legend-item" onclick="filterState('${key}')">
+      <div class="legend-color" style="background:${val.bg};border:1.5px solid ${val.color}"></div>
+      <span style="font-size:11px">${val.emoji} ${val.label}</span>
+      <span class="legend-count">${counts[key] || 0}</span>
+    </div>
+  `).join('');
+}
+
+function filterState(state) {
+  // Flash/highlight teeth of that state
+  const allFdi = [...UPPER_RIGHT,...UPPER_LEFT,...LOWER_RIGHT,...LOWER_LEFT];
+  document.querySelectorAll('.tooth-wrap').forEach(el => {
+    const fdi = parseInt(el.dataset.fdi);
+    el.style.opacity = toothStates[fdi] === state ? '1' : '0.25';
+  });
+  setTimeout(() => {
+    document.querySelectorAll('.tooth-wrap').forEach(el => { el.style.opacity = ''; });
+  }, 1800);
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+
+renderAll();
+updateStats();
+renderLegend();
+</script>
+</body>
+</html> -->
