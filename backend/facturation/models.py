@@ -77,6 +77,13 @@ class Facture(models.Model):
             self.statut = "PARTIELLE"
 
         self.save(update_fields=["statut"])
+        
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+
+        if is_new:
+            self.recalculer_montant()
 
     def __str__(self):
         return f"Facture {self.numero_facture}"
