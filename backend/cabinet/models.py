@@ -1,3 +1,4 @@
+#cabinet/models.py
 from django.db import models
 
 PLAN_ABONNEMENT_CHOICES = (

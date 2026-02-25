@@ -4,9 +4,10 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from cabinet.models import Cabinet
 
 ROLE_CHOICES = (
+    ('admin', 'Admin'),
     ('dentiste', 'Dentiste'),
     ('assistant', 'Assistant'),
-    ('admin', 'Admin'),
+    ('patient', 'Patient'),
 )
 
 

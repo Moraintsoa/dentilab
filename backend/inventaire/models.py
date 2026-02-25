@@ -12,6 +12,7 @@ class Article(models.Model):
     quantite_actuelle = models.IntegerField(default=0)
     seuil_alerte = models.IntegerField(default=5)
     prix_unitaire = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    date_creation = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
         return f"{self.nom} ({self.quantite_actuelle})"
@@ -37,5 +38,4 @@ class MouvementStock(models.Model):
     commentaire = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
-        # ✅ Corrigé : self.produit.nom → self.article.nom
         return f"{self.type} - {self.quantite} {self.article.nom}"

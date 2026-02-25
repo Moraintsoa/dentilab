@@ -79,7 +79,13 @@ class Facture(models.Model):
         self.save(update_fields=["statut"])
         
     def save(self, *args, **kwargs):
+        
         is_new = self.pk is None
+        
+        if not self.numero_facture:
+            last_count = Facture.objects.filter(cabinet=self.cabinet).count()
+            self.numero_facture = f"FAC-{self.cabinet.slug.upper()}-{last_count + 1:04d}"
+            
         super().save(*args, **kwargs)
 
         if is_new:

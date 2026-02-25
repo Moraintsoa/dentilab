@@ -70,6 +70,7 @@ STATUT_DENT_CHOICES = (
 # ═══════════════════════════════════════════════════════════════
 
 class Patient(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, related_name="patient_profile", null=True, blank=True)
     cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, related_name='patients')
     prenom = models.CharField(max_length=100)
     nom = models.CharField(max_length=100)
