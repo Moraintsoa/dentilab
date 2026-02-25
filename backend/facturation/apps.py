@@ -1,3 +1,4 @@
+#facturation/apps.py
 from django.apps import AppConfig
 
 class FacturationConfig(AppConfig):

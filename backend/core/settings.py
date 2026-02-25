@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'patients',
     'consultation',
     'rendezvous',
-    'facturation',
+    'facturation.apps.FacturationConfig',
     'inventaire',
     'rapports',
 ]

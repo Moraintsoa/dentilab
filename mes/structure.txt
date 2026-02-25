@@ -1,0 +1,97 @@
+front-end/
+│
+├── public/
+│   └── index.html
+│
+├── src/
+│
+│   ├── app/                        # Configuration globale
+│   │   ├── store.js                # Redux/Zustand si utilisé
+│   │   ├── AppProviders.jsx        # Providers globaux
+│   │   └── theme.js                # Thème MUI
+│
+│   ├── routes/                     # Configuration routing
+│   │   ├── AppRoutes.jsx
+│   │   ├── PrivateRoute.jsx
+│   │   └── RoleBasedRoute.jsx
+│
+│   ├── layouts/                    # Layouts globaux
+│   │   ├── MainLayout.jsx
+│   │   ├── AuthLayout.jsx
+│   │   └── DashboardLayout.jsx
+│
+│   ├── features/                   # 🔥 Architecture par module métier
+│   │
+│   │   ├── auth/
+│   │   │   ├── pages/
+│   │   │   │   ├── Login.jsx
+│   │   │   │   └── Register.jsx
+│   │   │   ├── components/
+│   │   │   │   └── LoginForm.jsx
+│   │   │   ├── services/
+│   │   │   │   └── authService.js
+│   │   │   ├── hooks/
+│   │   │   │   └── useAuth.js
+│   │   │   └── authSlice.js
+│   │   │
+│   │   ├── patients/
+│   │   │   ├── pages/
+│   │   │   │   ├── PatientList.jsx
+│   │   │   │   ├── PatientDetails.jsx
+│   │   │   │   └── PatientForm.jsx
+│   │   │   ├── components/
+│   │   │   │   ├── PatientTable.jsx
+│   │   │   │   └── PatientSearch.jsx
+│   │   │   ├── services/
+│   │   │   │   └── patientService.js
+│   │   │   └── patientSlice.js
+│   │   │
+│   │   ├── consultations/
+│   │   │   ├── pages/
+│   │   │   ├── components/
+│   │   │   ├── services/
+│   │   │   └── consultationSlice.js
+│   │   │
+│   │   ├── facturation/
+│   │   │   ├── pages/
+│   │   │   ├── components/
+│   │   │   ├── services/
+│   │   │   └── factureSlice.js
+│   │   │
+│   │   ├── inventaire/
+│   │   │   ├── pages/
+│   │   │   ├── components/
+│   │   │   ├── services/
+│   │   │   └── inventaireSlice.js
+│   │   │
+│   │   └── rapports/
+│   │       ├── pages/
+│   │       ├── components/
+│   │       └── services/
+│
+│   ├── shared/                     # 🔁 Composants réutilisables globaux
+│   │   ├── components/
+│   │   │   ├── DataTable.jsx
+│   │   │   ├── ConfirmDialog.jsx
+│   │   │   └── Loader.jsx
+│   │   │
+│   │   ├── hooks/
+│   │   │   └── useDebounce.js
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── formatDate.js
+│   │   │   ├── currency.js
+│   │   │   └── constants.js
+│   │   │
+│   │   └── services/
+│   │       └── api.js              # Axios config globale
+│
+│   ├── styles/
+│   │   └── global.css
+│
+│   ├── App.jsx
+│   └── main.jsx
+│
+├── .env
+├── package.json
+└── vite.config.js

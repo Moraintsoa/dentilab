@@ -43,7 +43,9 @@ class Facture(models.Model):
 
     numero_facture = models.CharField(
         max_length=50,
-        unique=True
+        unique=True,
+        blank=True,
+        null=True
     )
 
     montant_total = models.DecimalField(
@@ -59,24 +61,39 @@ class Facture(models.Model):
     )
 
     date_emission = models.DateTimeField(auto_now_add=True)
-
-    def recalculer_montant(self):
+    
+    def recalculer_montant_et_statut(self):
+        """Recalcule montant ET statut en un seul save()."""
         self.montant_total = self.consultation.total
-        self.save(update_fields=["montant_total"])
-
-    def recalculer_statut(self):
-        total_paye = self.paiements.aggregate(
-            total=Sum("montant")
-        )["total"] or 0
-
+        
+        total_paye = self.paiements.aggregate(total=Sum("montant"))["total"] or 0
+        
         if total_paye == 0:
             self.statut = "IMPAYEE"
         elif total_paye >= self.montant_total:
             self.statut = "PAYEE"
         else:
             self.statut = "PARTIELLE"
+        
+        self.save(update_fields=["montant_total", "statut"])
 
-        self.save(update_fields=["statut"])
+    # def recalculer_montant(self):
+    #     self.montant_total = self.consultation.total
+    #     self.save(update_fields=["montant_total"])
+
+    # def recalculer_statut(self):
+    #     total_paye = self.paiements.aggregate(
+    #         total=Sum("montant")
+    #     )["total"] or 0
+
+    #     if total_paye == 0:
+    #         self.statut = "IMPAYEE"
+    #     elif total_paye >= self.montant_total:
+    #         self.statut = "PAYEE"
+    #     else:
+    #         self.statut = "PARTIELLE"
+
+    #     self.save(update_fields=["statut"])
         
     def save(self, *args, **kwargs):
         
@@ -89,7 +106,7 @@ class Facture(models.Model):
         super().save(*args, **kwargs)
 
         if is_new:
-            self.recalculer_montant()
+            self.recalculer_montant_et_statut()
 
     def __str__(self):
         return f"Facture {self.numero_facture}"
