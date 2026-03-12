@@ -198,7 +198,7 @@ class DentAdmin(admin.ModelAdmin):
     def get_type(self, obj):
         if obj.numero is None:
             return '—'
-        return '🥛 Lait' if obj.est_lait else '🦷 Permanent'
+        return '🦷 Permanent'
     get_type.short_description = 'Type'
 
     def get_lettre(self, obj):

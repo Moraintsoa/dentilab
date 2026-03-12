@@ -1,3 +1,4 @@
+# inventaire/urls.py
 from django.urls import path, include
 from .views import ArticleViewSet, MouvementStockViewSet
 from rest_framework.routers import DefaultRouter

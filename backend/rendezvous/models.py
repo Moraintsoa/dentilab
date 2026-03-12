@@ -1,6 +1,5 @@
 # rendezvous/models.py
 from django.db import models
-from cabinet.models import Cabinet
 from patients.models import Patient
 from comptes.models import CustomUser
 from django.core.exceptions import ValidationError
@@ -13,7 +12,12 @@ class RendezVous(models.Model):
         ('ABSENT', 'Absent'),
     ]
 
-    cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, related_name="rendezvous")
+    cabinet = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="rendezvous",
+        limit_choices_to={"role": "CABINET"}
+    )
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="rendezvous")
     praticien = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="rendezvous_recus")
     debut = models.DateTimeField()

@@ -2,7 +2,6 @@
 
 from django.db import models
 from django.db.models import Sum
-from cabinet.models import Cabinet
 from comptes.models import CustomUser
 from rendezvous.models import RendezVous
 
@@ -20,19 +19,14 @@ class Consultation(models.Model):
     )
 
     cabinet = models.ForeignKey(
-        Cabinet,
+        CustomUser,
         on_delete=models.CASCADE,
-        related_name="consultations"
+        related_name="consultations",
+        limit_choices_to={"role": "CABINET"}
     )
 
     odontogramme = models.ForeignKey(
         "patients.Odontogramme",
-        on_delete=models.CASCADE,
-        related_name="consultations"
-    )
-
-    effectue_par = models.ForeignKey(
-        CustomUser,
         on_delete=models.CASCADE,
         related_name="consultations"
     )

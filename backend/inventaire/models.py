@@ -1,12 +1,16 @@
 # inventaire/models.py
 from django.db import models
-from cabinet.models import Cabinet
 from consultation.models import Consultation, Traitement
 from comptes.models import CustomUser
 
 
 class Article(models.Model):
-    cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, related_name='stocks')
+    cabinet = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="stocks",
+        limit_choices_to={"role": "CABINET"}
+    )
     nom = models.CharField(max_length=255)
     categorie = models.CharField(max_length=100, blank=True)
     quantite_actuelle = models.IntegerField(default=0)

@@ -1,3 +1,4 @@
+# settings.py
 import os
 from pathlib import Path
 from datetime import timedelta
@@ -30,7 +31,6 @@ INSTALLED_APPS = [
     
     # Applications locales du projet SaaS
     'comptes',
-    'cabinet',
     'patients',
     'consultation',
     'rendezvous',
@@ -76,7 +76,7 @@ SIMPLE_JWT = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -110,6 +110,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
+# --- EMAIL ---
+EMAIL_BACKEND = os.getenv("MAIL_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = os.getenv("MAIL_EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("MAIL_EMAIL_PORT", 587))
+EMAIL_USE_TLS = os.getenv("MAIL_EMAIL_USE_TLS", "True").lower() in ["true", "1"]
+EMAIL_HOST_USER = os.getenv("MAIL_EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("MAIL_EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("MAIL_DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
 
 # --- INTERNATIONALISATION (Configuration Madagascar/France) ---
 LANGUAGE_CODE = 'fr-fr'

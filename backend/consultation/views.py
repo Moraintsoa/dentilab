@@ -1,9 +1,10 @@
+# consultation/views.py
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from .models import Consultation, Traitement, TypeTraitement
 from .serializers import ConsultationSerializer, TraitementSerializer, TypeTraitementSerializer
 from rest_framework.permissions import IsAuthenticated
-from core.permissions import EstAdmin, EstDentiste, EstAssistant, EstPatient, EstDentisteOuAssistant, AppartientAuCabinet
+from core.permissions import AppartientAuCabinet
 
 
 class TypeTraitementViewSet(ModelViewSet):

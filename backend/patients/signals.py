@@ -1,39 +1,13 @@
 # patients/signals.py
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Patient, Odontogramme, Dent
+from .models import Patient, Odontogramme, Dent, StatutDent
 
 # ═══════════════════════════════════════════════════════════════
 #  CONFIGURATION FDI PAR TYPE DE DENTURE
 # ═══════════════════════════════════════════════════════════════
 
 DENTS_PAR_TYPE = {
-
-    # ─── TEMPORAIRE ─── 20 dents · Q5-Q8
-    'dent_de_lait': {
-        'total': 20,
-        'numeros': [
-            55, 54, 53, 52, 51,   # Q5 — Maxillaire droit
-            61, 62, 63, 64, 65,   # Q6 — Maxillaire gauche
-            71, 72, 73, 74, 75,   # Q7 — Mandibule gauche
-            81, 82, 83, 84, 85,   # Q8 — Mandibule droite
-        ],
-    },
-
-    # ─── MIXTE ─── 28 dents · lait + permanent
-    'dent_mixte': {
-        'total': 28,
-        'numeros': [
-            16, 12, 11,           # Q1 — permanentes éruptées
-            21, 22, 26,           # Q2
-            31, 32, 36,           # Q3
-            41, 42, 46,           # Q4
-            55, 54, 53,           # Q5 — lait restants
-            63, 64, 65,           # Q6
-            73, 74, 75,           # Q7
-            83, 84, 85,           # Q8
-        ],
-    },
 
     # ─── PERMANENTE ─── 32 dents · Q1-Q4 · sagesses incluses
     'dent_permanente': {
@@ -53,7 +27,7 @@ DENTS_PAR_TYPE = {
 # ═══════════════════════════════════════════════════════════════
 
 @receiver(post_save, sender=Patient)
-def creer_odontogramme_et_dents(sender, instance, created, **kwargs):
+def creer_odontogramme_et_dents_et_statuts(sender, instance, created, **kwargs):
     """
     ▶ Création patient   → crée Odontogramme + toutes les Dents
     ▶ type_dent modifié  → supprime les anciennes dents et recrée selon le nouveau type

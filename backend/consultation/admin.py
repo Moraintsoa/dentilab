@@ -25,7 +25,6 @@ class ConsultationAdmin(admin.ModelAdmin):
         "id",
         "cabinet",
         "odontogramme",
-        "effectue_par",
         "statut",
         "appliquer_frais",
         "total_display",
@@ -41,13 +40,11 @@ class ConsultationAdmin(admin.ModelAdmin):
 
     search_fields = (
         "odontogramme__patient__nom",
-        "effectue_par__email",
     )
 
     autocomplete_fields = [
         "cabinet",
         "odontogramme",
-        "effectue_par",
         "rendezvous",
     ]
 

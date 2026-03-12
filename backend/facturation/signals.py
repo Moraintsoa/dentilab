@@ -21,5 +21,4 @@ def creer_facture_apres_consultation(sender, instance, created, **kwargs):
             cabinet=instance.cabinet,
             patient=instance.odontogramme.patient,
             consultation=instance,
-            creer_par=instance.effectue_par
         )

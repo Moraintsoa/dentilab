@@ -1,3 +1,4 @@
+# consultation/urls.py
 from django.urls import path, include
 from .views import TypeTraitementViewSet, TraitementViewSet, ConsultationViewSet
 
@@ -9,5 +10,6 @@ router.register(r'traitements', TraitementViewSet, basename='traitement')
 router.register(r'consultations', ConsultationViewSet, basename='consultation')
 
 urlpatterns = [
+    
     path('', include(router.urls)),
 ]

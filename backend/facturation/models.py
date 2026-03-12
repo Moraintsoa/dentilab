@@ -2,7 +2,6 @@
 
 from django.db import models
 from django.db.models import Sum
-from cabinet.models import Cabinet
 from patients.models import Patient
 from consultation.models import Consultation, Traitement
 from comptes.models import CustomUser
@@ -17,9 +16,10 @@ class Facture(models.Model):
     ]
 
     cabinet = models.ForeignKey(
-        Cabinet,
+        CustomUser,
         on_delete=models.CASCADE,
-        related_name="factures"
+        related_name="factures",
+        limit_choices_to={"role": "CABINET"}
     )
 
     patient = models.ForeignKey(
@@ -76,24 +76,6 @@ class Facture(models.Model):
             self.statut = "PARTIELLE"
         
         self.save(update_fields=["montant_total", "statut"])
-
-    # def recalculer_montant(self):
-    #     self.montant_total = self.consultation.total
-    #     self.save(update_fields=["montant_total"])
-
-    # def recalculer_statut(self):
-    #     total_paye = self.paiements.aggregate(
-    #         total=Sum("montant")
-    #     )["total"] or 0
-
-    #     if total_paye == 0:
-    #         self.statut = "IMPAYEE"
-    #     elif total_paye >= self.montant_total:
-    #         self.statut = "PAYEE"
-    #     else:
-    #         self.statut = "PARTIELLE"
-
-    #     self.save(update_fields=["statut"])
         
     def save(self, *args, **kwargs):
         

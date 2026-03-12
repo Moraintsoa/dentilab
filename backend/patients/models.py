@@ -1,6 +1,5 @@
 # patients/models.py
 from django.db import models
-from cabinet.models import Cabinet
 from comptes.models import CustomUser
 
 # ═══════════════════════════════════════════════════════════════
@@ -18,27 +17,14 @@ NOMS_DENTS_PERMANENTES = {
     8: '3ème molaire (sagesse)',
 }
 
-NOMS_DENTS_LAIT = {
-    1: 'Incisive centrale',
-    2: 'Incisive latérale',
-    3: 'Canine',
-    4: '1ère molaire de lait',
-    5: '2ème molaire de lait',
-}
+
 
 QUADRANTS = {
-    1: 'Maxillaire droit',
-    2: 'Maxillaire gauche',
-    3: 'Mandibule gauche',
-    4: 'Mandibule droite',
-    5: 'Maxillaire droit (lait)',
-    6: 'Maxillaire gauche (lait)',
-    7: 'Mandibule gauche (lait)',
-    8: 'Mandibule droite (lait)',
+    1: 'Supérieure droit',
+    2: 'Supérieure gauche',
+    3: 'Inférieure gauche',
+    4: 'Inférieure droite',
 }
-
-# Lettres FDI pour les dents de lait (A=1 → E=5)
-LETTRES_LAIT = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E'}
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -46,8 +32,6 @@ LETTRES_LAIT = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E'}
 # ═══════════════════════════════════════════════════════════════
 
 TYPE_DENT_CHOICES = (
-    ('dent_de_lait', 'Dent de lait'),
-    ('dent_mixte', 'Dent mixte'),
     ('dent_permanente', 'Dent permanente'),
 )
 
@@ -70,12 +54,27 @@ STATUT_DENT_CHOICES = (
 # ═══════════════════════════════════════════════════════════════
 
 class Patient(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, related_name="patient_profile", null=True, blank=True)
-    cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, related_name='patients')
+    TYPE_GENRE=(
+        ('Homme','Homme'),
+        ('Femme','Femme'),
+    )
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="patient_profile"
+    )
+    cabinet = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="patients",
+        limit_choices_to={"role": "CABINET"}
+    )
     prenom = models.CharField(max_length=100)
     nom = models.CharField(max_length=100)
     date_naissance = models.DateField()
-    genre = models.CharField(max_length=20, blank=True, null=True)
+    genre = models.CharField(max_length=20, choices=TYPE_GENRE, blank=True, null=True)
     type_dent = models.CharField(max_length=50, choices=TYPE_DENT_CHOICES, default='dent_permanente')
     telephone = models.CharField(max_length=20)
     anonymise = models.BooleanField(default=False)
@@ -119,18 +118,14 @@ class Dent(models.Model):
         """2ème chiffre du numéro FDI → position dans le quadrant."""
         return self.numero % 10
 
-    @property
-    def est_lait(self):
-        """True si c'est une dent de lait (quadrants 5–8)."""
-        return self.quadrant >= 5
 
     @property
     def nom(self):
         """
         Nom clinique de la dent déduit du numéro FDI.
-        Ex: 16 → '1ère molaire' | 55 → '2ème molaire de lait'
+        Ex: 16 → '1ère molaire'
         """
-        noms = NOMS_DENTS_LAIT if self.est_lait else NOMS_DENTS_PERMANENTES
+        noms =  NOMS_DENTS_PERMANENTES
         return noms.get(self.position, 'Inconnu')
 
     @property
@@ -146,26 +141,13 @@ class Dent(models.Model):
         """
         return f"{self.nom} — {self.nom_quadrant}"
 
-    @property
-    def lettre_lait(self):
-        """
-        Lettre FDI pour les dents de lait (A→E).
-        Retourne None si c'est une dent permanente.
-        Ex: 55 → 'E' | 51 → 'A'
-        """
-        if not self.est_lait:
-            return None
-        return LETTRES_LAIT.get(self.position)
 
     @property
     def label(self):
         """
         Label d'affichage complet pour le frontend.
         Permanente : '16 — 1ère molaire'
-        Lait        : '55 (E) — 2ème molaire de lait'
         """
-        if self.est_lait:
-            return f"{self.numero} ({self.lettre_lait}) — {self.nom}"
         return f"{self.numero} — {self.nom}"
 
     # ── Statut ──────────────────────────────────────────────────

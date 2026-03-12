@@ -1,22 +1,27 @@
 # comptes/models.py
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from cabinet.models import Cabinet
+
 
 ROLE_CHOICES = (
-    ('admin', 'Admin'),
-    ('dentiste', 'Dentiste'),
-    ('assistant', 'Assistant'),
-    ('patient', 'Patient'),
+    ('ADMIN', 'Admin SaaS'),
+    ('CABINET', 'Cabinet Dentaire'),
+    ('PATIENT', 'Patient'),
+)
+
+
+PLAN_ABONNEMENT_CHOICES = (
+    ('standard', 'Standard'),
+    ('premium', 'Premium'),
+    ('pro', 'Professionnel'),
 )
 
 
 class CustomUserManager(BaseUserManager):
-    """Manager qui utilise email à la place de username."""
 
     def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError("L'adresse email est obligatoire.")
+            raise ValueError("Email obligatoire.")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -24,34 +29,40 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError("Le superuser doit avoir is_staff=True.")
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError("Le superuser doit avoir is_superuser=True.")
+        extra_fields.setdefault("role", "ADMIN")
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
 
         return self.create_user(email, password, **extra_fields)
 
 
 class CustomUser(AbstractUser):
-    username = None  # On supprime le champ username
-    cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, null=True, blank=True)
+
+    username = None
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='dentiste', blank=True)
-    numero_ordre = models.CharField(max_length=100, blank=True, null=True)
-    references = models.TextField(blank=True, null=True)
 
-    objects = CustomUserManager()  # ✅ Notre manager personnalisé
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []  # Pas de champs supplémentaires demandés au createsuperuser
+    # 🔹 Infos spécifiques au cabinet
+    nom_cabinet = models.CharField(max_length=255, blank=True, null=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    telephone = models.CharField(max_length=20, blank=True, null=True)
+    adresse = models.TextField(blank=True, null=True)
+    plan_abonnement = models.CharField(
+        max_length=50,
+        choices=PLAN_ABONNEMENT_CHOICES,
+        default='standard'
+    )
+    est_actif = models.BooleanField(default=True)
+    
+    is_active = models.BooleanField(default=True)
 
-    @property
-    def est_dentiste(self):
-        return self.role == 'dentiste'
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
 
     def __str__(self):
+        if self.role == "CABINET":
+            return self.nom_cabinet
         return self.email
