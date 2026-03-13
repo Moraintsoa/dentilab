@@ -1,5 +1,5 @@
 // features/auth/pages/Login.jsx
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from "../../../shared/hooks/useAuth";
 import AuthService from "../services/ApiServices";
@@ -133,6 +133,7 @@ export const Login = () => {
                                     id="email"
                                     type="email"
                                     value={email}
+                                    placeholder='dr.rakotondrabe@gmail.com'
                                     onChange={(e) => setEmail(e.target.value)}
                                     startAdornment={
                                         <InputAdornment position="start">
@@ -150,6 +151,7 @@ export const Login = () => {
                                     id="password"
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
+                                    placeholder='********'
                                     onChange={(e) => setPassword(e.target.value)}
                                     startAdornment={
                                         <InputAdornment position="start">

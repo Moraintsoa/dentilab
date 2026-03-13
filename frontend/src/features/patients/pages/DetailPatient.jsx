@@ -33,7 +33,7 @@ export const DetailPatient = () => {
     return (
         <Box>
             <HeaderPagesBackArrow
-                title={`${patientDetails?.nom} ${patientDetails?.prenom}`}
+                title={`${patientDetails?.prenom} ${patientDetails?.nom}`}
                 description={`${patientDetails?.genre} · ${Math.floor((new Date() - new Date(patientDetails?.date_naissance)) / 31557600000)} ans`}
                 urlparent={'/patients'}
             >

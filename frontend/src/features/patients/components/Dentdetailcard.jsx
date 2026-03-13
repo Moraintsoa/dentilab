@@ -1,5 +1,8 @@
 import { alpha, Box, Chip, Divider, Paper, Tooltip, Typography, useTheme } from '@mui/material'
 import React from 'react'
+import api from '../../../shared/services/Api'
+import { useAuth } from '../../../shared/hooks/useAuth'
+import { Info } from '@mui/icons-material'
 
 const MonChip = ({ statut, allConditions }) => {
     const condition = allConditions.find(c => c.statut === statut)
@@ -16,6 +19,7 @@ const MonChip = ({ statut, allConditions }) => {
 }
 
 const StatCard = ({ count, label, color }) => {
+
     const theme = useTheme()
     return (
         <Box sx={{
@@ -39,8 +43,24 @@ const StatCard = ({ count, label, color }) => {
     )
 }
 
-export const Dentdetailcard = ({ selectedTeeth, allConditions, odontogrammeData, countByStatut = {} }) => {
+export const Dentdetailcard = ({ selectedTeeth, allConditions, odontogrammeData, countByStatut = {}, onStatutChange }) => {
     const theme = useTheme()
+    const { user } = useAuth()
+
+    const handleStatutClick = async (newStatut) => {
+        if (!selectedTeeth || selectedTeeth.statut_actuel === newStatut) return
+        try {
+            await api.post('/patient/statut_dents/', {
+                dent: selectedTeeth.id,
+                modifie_par: user?.id,
+                statut: newStatut,
+                consultation: null,
+            })
+            onStatutChange?.() // callback pour recharger les données dans le parent
+        } catch (error) {
+            console.error('Erreur mise à jour statut :', error)
+        }
+    }
 
     const categorizeTeeth = (teethData) => {
         return teethData.reduce((acc, item) => {
@@ -96,7 +116,7 @@ export const Dentdetailcard = ({ selectedTeeth, allConditions, odontogrammeData,
                                         variant={isActive ? 'filled' : 'outlined'}
                                         size="medium"
                                         clickable
-                                        onClick={() => { }}
+                                        onClick={() => handleStatutClick(c.statut)}
                                         sx={{
                                             fontWeight: isActive ? 600 : 400,
                                             width: '100%',
@@ -111,9 +131,12 @@ export const Dentdetailcard = ({ selectedTeeth, allConditions, odontogrammeData,
                 </>
             ) : (
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Typography variant="body2" color="text.disabled" textAlign="center" fontStyle="italic" sx={{ pt: 1 }}>
-                        Sélectionnez une dent pour voir ses détails.
-                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+                        <Info sx={{ verticalAlign: 'middle', mr: 0.5 }} />
+                        <Typography variant="body2" color="text.disabled" textAlign="center" fontStyle="italic" sx={{ pt: 1 }}>
+                            Sélectionnez une dent pour voir ses détails.
+                        </Typography>
+                    </Box>
 
                     <Divider />
 

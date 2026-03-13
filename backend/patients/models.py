@@ -22,8 +22,8 @@ NOMS_DENTS_PERMANENTES = {
 QUADRANTS = {
     1: 'Sup. à droit',
     2: 'Sup. à gauche',
-    3: 'Inf. à gauche',
-    4: 'Inf. à droite',
+    3: 'Inf. à droite',
+    4: 'Inf. à gauche',
 }
 
 

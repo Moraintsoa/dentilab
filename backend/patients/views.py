@@ -47,15 +47,5 @@ class PatientViewSet(ModelViewSet):
     serializer_class = PatientSerializer
     def get_queryset(self):
         return Patient.objects.filter(cabinet=self.request.user)
-    
-    # @action(detail=True, methods=["get"])
-    # def odontogramme(self, request, pk=None):
-    #     patient = self.get_object()
-
-    #     odontogramme = (
-    #         patient.odontogramme_patient
-    #         .prefetch_related("dents__statuts")
-    #     )
-
-    #     serializer = OdontogrammeSerializer(odontogramme)
-    #     return Response(serializer.data)
+    def perform_create(self, serializer):
+        serializer.save(cabinet=self.request.user)

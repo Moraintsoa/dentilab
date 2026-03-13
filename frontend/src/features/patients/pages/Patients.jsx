@@ -164,7 +164,7 @@ export const Patients = () => {
         description="Liste des patients"
         isButton={true}
         buttonText="Ajouter un patient"
-        onClick={() => { }}
+        onClick={() => Navigate('new')}
       />
 
       <Grid container spacing={2}>
