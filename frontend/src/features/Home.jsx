@@ -12,9 +12,14 @@ import { Sidebar, SidebarInDrawer } from "../shared/components/Sidebar"
 import { Outlet } from "react-router-dom"
 
 import {
+    Approval,
+    Apps,
+    AssignmentIndOutlined,
     MenuOpenOutlined,
-    MenuOutlined
+    MenuOutlined,
+    ReceiptLongOutlined
 } from "@mui/icons-material"
+import { CustomTabs } from "../shared/components/CustomTabs"
 
 export const Home = () => {
 
@@ -78,7 +83,6 @@ export const Home = () => {
                             : <MenuOutlined sx={{ color: theme.palette.primary.main }} />
                         }
                     </IconButton>
-
                     <Box textAlign="right">
                         <Typography fontWeight={600} fontSize={14}>
                             {user?.cabinet}

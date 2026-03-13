@@ -1,5 +1,5 @@
 import { Approval, Apps, AssignmentIndOutlined, ReceiptLongOutlined } from '@mui/icons-material'
-import { Box} from '@mui/material'
+import { Box } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { HeaderPagesBackArrow } from '../../../shared/components/HeaderPages'
 import { Outlet, useParams } from 'react-router-dom'
@@ -20,7 +20,7 @@ export const DetailPatient = () => {
     useEffect(() => {
         const fetchPatientDetails = async () => {
             try {
-                
+
                 const response = await api.get(`/patient/patients/${id}`);
                 setPatientDetails(response.data);
             } catch (error) {
@@ -36,15 +36,14 @@ export const DetailPatient = () => {
                 title={`${patientDetails?.nom} ${patientDetails?.prenom}`}
                 description={`${patientDetails?.genre} · ${Math.floor((new Date() - new Date(patientDetails?.date_naissance)) / 31557600000)} ans`}
                 urlparent={'/patients'}
-                navTab={NAV_TABS}
-            />
+            >
+                <CustomTabs NAV_TABS={NAV_TABS} />
+            </HeaderPagesBackArrow>
 
-            {/* <CustomTabs NAV_TABS={NAV_TABS} /> */}
-
-            <Box sx={{ mt: 2}}>
+            <Box sx={{ mt: 2 }}>
                 <Outlet />
             </Box>
-            
+
         </Box>
     )
 }
