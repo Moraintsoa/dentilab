@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'facturation.apps.FacturationConfig',
     'inventaire',
     'rapports',
+    'geographique',
 ]
 
 # --- MIDDLEWARES ---
