@@ -47,6 +47,12 @@ class CustomUser(AbstractUser):
     nom_cabinet = models.CharField(max_length=255, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
     telephone = models.CharField(max_length=20, blank=True, null=True)
+    pays = models.CharField(max_length=100, blank=True, null=True)
+    province = models.CharField(max_length=100, blank=True, null=True)
+    region = models.CharField(max_length=100, blank=True, null=True)
+    district = models.CharField(max_length=100, blank=True, null=True)
+    commune = models.CharField(max_length=100, blank=True, null=True)
+    quartier = models.CharField(max_length=100, blank=True, null=True)
     adresse = models.TextField(blank=True, null=True)
     plan_abonnement = models.CharField(
         max_length=50,

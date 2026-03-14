@@ -25,7 +25,8 @@ import {
     LocalHospitalOutlined,
     LogoutOutlined,
     QueryStatsOutlined,
-    ReceiptLongOutlined
+    ReceiptLongOutlined,
+    SettingsOutlined
 } from "@mui/icons-material";
 
 export const Sidebar = ({ open, onClose }) => {
@@ -43,6 +44,7 @@ export const Sidebar = ({ open, onClose }) => {
         { icon: <ReceiptLongOutlined />, label: "Facturation", path: "/facturation" },
         { icon: <CategoryOutlined />, label: "Inventaire", path: "/inventaire" },
         { icon: <QueryStatsOutlined />, label: "Rapports", path: "/rapports" },
+        { icon: <SettingsOutlined />, label: "Paramètres", path: "/parametres" },
     ]
 
     return (
@@ -123,7 +125,7 @@ export const Sidebar = ({ open, onClose }) => {
 
             {/* LOGOUT */}
             <Box sx={{ mt: "auto", mb: 1 }}>
-                <ListItemButton onClick={logout} sx={{ "&:hover > *": { color: theme.palette.primary.main } }}>
+                <ListItemButton onClick={logout} sx={{ "&:hover": { backgroundColor: "rgba(255,255,255,0.1)"} }}>
                     <ListItemIcon sx={{ color: theme.palette.text.tertiary, minWidth: 35 }}>
                         <LogoutOutlined />
                     </ListItemIcon>

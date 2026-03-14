@@ -19,6 +19,8 @@ class StatutDentViewSet(ModelViewSet):
     serializer_class = StatutDentSerializer
     def get_queryset(self):
         return StatutDent.objects.filter(dent__odontogramme__patient__cabinet=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(modifie_par=self.request.user)
 
 
 class DentViewSet(ModelViewSet):

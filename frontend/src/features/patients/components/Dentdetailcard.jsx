@@ -52,7 +52,6 @@ export const Dentdetailcard = ({ selectedTeeth, allConditions, odontogrammeData,
         try {
             await api.post('/patient/statut_dents/', {
                 dent: selectedTeeth.id,
-                modifie_par: user?.id,
                 statut: newStatut,
                 consultation: null,
             })

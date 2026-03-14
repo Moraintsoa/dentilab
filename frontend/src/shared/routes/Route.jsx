@@ -26,6 +26,13 @@ import { Odontogramme } from "../../features/patients/components/Odontogramme";
 import { HistoriqueConsultations } from "../../features/patients/components/HistoriqueConsultations";
 import { FacturationsPatient } from "../../features/patients/components/FacturationsPatient";
 import { InformationsPatient } from "../../features/patients/components/InformationsPatient";
+import { Parametres } from "../../features/parametres/pages/Parametres";
+import { CabinetForm } from "../../features/parametres/components/CabinetForm";
+import { TarifsForm } from "../../features/parametres/components/TarifsForm";
+import { HorairesForm } from "../../features/parametres/components/HorairesForm";
+import { NotificationsForm } from "../../features/parametres/components/NotificationsForm";
+import { FacturationForm } from "../../features/parametres/components/FacturationForm";
+import { SecuriteForm } from "../../features/parametres/components/SecuriteForm.jsx";
 
 const routes = createBrowserRouter([
 
@@ -77,8 +84,8 @@ const routes = createBrowserRouter([
             element: <FacturationsPatient />
           },
           {
-            path:"informations",
-            element:<InformationsPatient/>
+            path: "informations",
+            element: <InformationsPatient />
           }
         ]
       },
@@ -113,6 +120,42 @@ const routes = createBrowserRouter([
       {
         path: "rapports",
         element: <Rapports />
+      },
+      {
+        path: "parametres",
+        element: <Parametres />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="cabinet" />
+          },
+          {
+            index: true,
+            path: "cabinet",
+            element: <CabinetForm />
+          },
+          {
+            path: "tarifs",
+            element: <TarifsForm />
+          },
+          {
+            path: "horaires",
+            element: <HorairesForm />
+          },
+          {
+            path: "notifications",
+            element: <NotificationsForm />
+          },
+          {
+            path: "securite",
+            element: <SecuriteForm />
+          },
+          {
+            path: "facturation",
+            element: <FacturationForm />
+          }
+        ]
+
       }
 
     ]

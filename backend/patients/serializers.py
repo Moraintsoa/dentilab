@@ -6,6 +6,7 @@ class StatutDentSerializer(serializers.ModelSerializer):
     class Meta:
         model = StatutDent
         fields = '__all__'
+        read_only_fields = ['modifie_par']
         
 class DentSerializer(serializers.ModelSerializer):
     nom_complet = serializers.SerializerMethodField()

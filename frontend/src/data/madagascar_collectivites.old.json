@@ -1,0 +1,2336 @@
+{
+  "madagascar": {
+    "titre": "Collectivités Territoriales Décentralisées de Madagascar",
+    "reference": "Annexe n°01 à la loi n° 2014-020 du 27 septembre 2014",
+    "total": {
+      "provinces": 6,
+      "regions": 23,
+      "communes": 1549
+    },
+    "provinces": [
+      {
+        "nom": "ANTANANARIVO",
+        "chef_lieu": "Antananarivo Renivohitra",
+        "total_regions": 4,
+        "total_communes": 296,
+        "regions": [
+          {
+            "nom": "ANALAMANGA",
+            "chef_lieu": "Antananarivo Renivohitra",
+            "total_communes": 133,
+            "districts": [
+              {
+                "nom": "District d'Andramasina",
+                "communes": [
+                  "Alarobia Vatosola",
+                  "Alatsinainy Bakaro",
+                  "Ambohimiadana",
+                  "Andohariana",
+                  "Andramasina",
+                  "Anosibe Trimoloharano",
+                  "Antotohazo",
+                  "Fitsinjovana Bakaro",
+                  "Mandrosoa",
+                  "Sabotsy Ambohitromby",
+                  "Sabotsy Manjakavahoaka",
+                  "Tankafatra"
+                ]
+              },
+              {
+                "nom": "District d'Ambohidratrimo",
+                "communes": [
+                  "Ambato",
+                  "Ambatolampy Tsimahafotsy",
+                  "Ambohidratrimo",
+                  "Ambohimanjaka",
+                  "Ambohimpihaonana",
+                  "Ambohitrimanjaka",
+                  "Ampangabe",
+                  "Ampanotokana",
+                  "Anjanadoria",
+                  "Anosiala",
+                  "Antanetibe",
+                  "Antehiroka",
+                  "Antsahafilo",
+                  "Avaratsena",
+                  "Fiadanana",
+                  "Iarinarivo",
+                  "Ivato Aeroport",
+                  "Ivato Firaisana",
+                  "Mahabo",
+                  "Mahereza",
+                  "Mahitsy",
+                  "Mananjara",
+                  "Manjakavaradrano",
+                  "Merimandroso",
+                  "Talatamaty"
+                ]
+              },
+              {
+                "nom": "District d'Anjozorobe",
+                "communes": [
+                  "Alakamisy",
+                  "Ambatomanoina",
+                  "Amboasary",
+                  "Ambohibary",
+                  "Ambohimanarina Marovazaha",
+                  "Ambohimirary",
+                  "Ambongamarina",
+                  "Amparatanjona",
+                  "Analaroa",
+                  "Anjozorobe",
+                  "Antanetibe",
+                  "Belanitra",
+                  "Beronono",
+                  "Betatao",
+                  "Mangamila",
+                  "Marotsipoy",
+                  "Tsarasaotra Andona",
+                  "Androvakely"
+                ]
+              },
+              {
+                "nom": "District d'Ankazobe",
+                "communes": [
+                  "Ambohitromby",
+                  "Ambolotarakely",
+                  "Ankazobe",
+                  "Antakavana",
+                  "Antotohazo",
+                  "Fiadanana",
+                  "Fihaonana",
+                  "Kiangara",
+                  "Mahavelona",
+                  "Marondry",
+                  "Miantso",
+                  "Talata-Angavo",
+                  "Tsaramasoandro"
+                ]
+              },
+              {
+                "nom": "District d'Antananarivo-Atsimondrano",
+                "communes": [
+                  "Alakamisy Fenoarivo",
+                  "Alatsinainy Ambazaha",
+                  "Ambalavao",
+                  "Ambatofahavalo",
+                  "Ambavahaditokana",
+                  "Ambohidrapeto",
+                  "Ambohijanaka",
+                  "Ampahitrosy",
+                  "Ampanefy",
+                  "Ampitatafika",
+                  "Andoharanofotsy",
+                  "Andranonahoatra",
+                  "Androhibe",
+                  "Ankadimanga",
+                  "Ankaraobato",
+                  "Anosizato Andrefana",
+                  "Antanetikely",
+                  "Bemasoandro",
+                  "Bongatsara",
+                  "Fenoarivo",
+                  "Fiombonana",
+                  "Itaosy",
+                  "Soalandy",
+                  "Soavina",
+                  "Tanjombato",
+                  "Tsiafahy"
+                ]
+              },
+              {
+                "nom": "District d'Antananarivo-Avaradrano",
+                "communes": [
+                  "Alasora",
+                  "Ambohimalaza Miray",
+                  "Ambohimanambola",
+                  "Ambohimanga Rova",
+                  "Ambohimangakely",
+                  "Anjeva Gara",
+                  "Ankadikely Ilafy",
+                  "Ankadinandriana",
+                  "Fieferana",
+                  "Manandriana",
+                  "Masindray",
+                  "Sabotsy Namehana",
+                  "Talata Volonondry",
+                  "Viliahazo"
+                ]
+              },
+              {
+                "nom": "District de Manjakandriana",
+                "communes": [
+                  "Alarobia",
+                  "Ambanitsena",
+                  "Ambatolaona",
+                  "Ambatomanga",
+                  "Ambatomena",
+                  "Ambohibao Sud",
+                  "Ambohibary",
+                  "Ambohitrandriamanitra",
+                  "Ambohitrolomahitsy",
+                  "Ambohitrony",
+                  "Ambohitseheno",
+                  "Ampaneva",
+                  "Anjepy",
+                  "Anjoma Betoho",
+                  "Ankazodandy",
+                  "Antsahalalina",
+                  "Manjakandriana",
+                  "Mantasoa",
+                  "Merikanjaka",
+                  "Miadanandriana",
+                  "Nandihizana Carion",
+                  "Ranovao",
+                  "Sadabe",
+                  "Sambaina",
+                  "Soavinandriana (Ambohidratrimoanala)"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "BONGOLAVA",
+            "chef_lieu": "Tsiroanomandidy",
+            "total_communes": 26,
+            "districts": [
+              {
+                "nom": "District de Fenoarivobe",
+                "communes": [
+                  "Ambatomainty Sud",
+                  "Ambohitromby",
+                  "Fenoarivo-Be",
+                  "Firavahana",
+                  "Kiranomena",
+                  "Mahajeby",
+                  "Morarano Maritampona",
+                  "Tsinjoarivo"
+                ]
+              },
+              {
+                "nom": "District de Tsiroanomandidy",
+                "communes": [
+                  "Ambalanirana",
+                  "Ambararatabe",
+                  "Ambatolampy",
+                  "Ankadinondry Sakay",
+                  "Ankerana Nord",
+                  "Anosy",
+                  "Belobaka",
+                  "Bemahatazana",
+                  "Bevato",
+                  "Fierenana",
+                  "Mahasolo",
+                  "Maroharona",
+                  "Maritampona",
+                  "Miandrarivo",
+                  "Soanierana",
+                  "Tsinjoarivo-Imanga",
+                  "Tsiroamandidy Fihaonana",
+                  "Tsiroamandidy Ville"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "ITASY",
+            "chef_lieu": "Miarinarivo",
+            "total_communes": 51,
+            "districts": [
+              {
+                "nom": "District d'Arivonimamo",
+                "communes": [
+                  "Alakamisikely",
+                  "Ambatomanga",
+                  "Ambatomirahavavy",
+                  "Amboanana",
+                  "Ambohimandry",
+                  "Ambohimasina",
+                  "Ambohipandrano",
+                  "Ambohitrambo",
+                  "Ampahimanga",
+                  "Andranomiely",
+                  "Antambolo",
+                  "Antenimbe",
+                  "Arivonimamo",
+                  "Arivonimamo II",
+                  "Imerintsiatosika",
+                  "Mahatsinjo Est",
+                  "Manalalondo",
+                  "Marofangady",
+                  "Miandrandra",
+                  "Miantsoarivo",
+                  "Morafeno",
+                  "Morarano"
+                ]
+              },
+              {
+                "nom": "District de Miarinarivo",
+                "communes": [
+                  "Alatsinainikely",
+                  "Ambatomanjaka",
+                  "Analavory",
+                  "Andolofotsy",
+                  "Anosibe-Ifanja",
+                  "Antoby Est",
+                  "Manazary",
+                  "Mandiavato",
+                  "Miarinarivo",
+                  "Miarinarivo II",
+                  "Sarobaratra",
+                  "Soamahamanina",
+                  "Soavimbazaha",
+                  "Zoma Bealoka"
+                ]
+              },
+              {
+                "nom": "District de Soavinandriana",
+                "communes": [
+                  "Ambatoasana Centre",
+                  "Amberomanga",
+                  "Amparaky",
+                  "Amparibohitra",
+                  "Ampary",
+                  "Ampefy",
+                  "Ankaranana",
+                  "Ankisabe",
+                  "Antanetibe",
+                  "Dondona",
+                  "Mahavelona",
+                  "Mananasy",
+                  "Masindray",
+                  "Soavinandriana",
+                  "Tamponala"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "VAKINANKARATRA",
+            "chef_lieu": "Antsirabe",
+            "total_communes": 86,
+            "districts": [
+              {
+                "nom": "District d'Ambatolampy",
+                "communes": [
+                  "Ambatolampy",
+                  "Ambatondrakalavao",
+                  "Ambodifarihy Fenomanana",
+                  "Ambohimpihaonana",
+                  "Andranovelona",
+                  "Andravola Vohipeno",
+                  "Andriambilany",
+                  "Antakasina",
+                  "Antanamalaza",
+                  "Antanimasaka",
+                  "Antsampandrano",
+                  "Behenjy",
+                  "Belambo Firaisana",
+                  "Manjakatompo",
+                  "Morarano",
+                  "Sabotsy Namotana",
+                  "Tsiafajavona Ankaratra",
+                  "Tsinjoarivo"
+                ]
+              },
+              {
+                "nom": "District Antanifotsy",
+                "communes": [
+                  "Ambatolahy",
+                  "Ambatomiady",
+                  "Ambatotsipihana",
+                  "Ambodiarina",
+                  "Ambohimandroso",
+                  "Ambohitompoina",
+                  "Ampitatafika",
+                  "Andranofito",
+                  "Antanifotsy",
+                  "Antsahalava",
+                  "Antsampandrano",
+                  "Belanitra"
+                ]
+              },
+              {
+                "nom": "District d'Antsirabe I",
+                "communes": [
+                  "CU Antsirabe"
+                ]
+              },
+              {
+                "nom": "District d'Antsirabe II",
+                "communes": [
+                  "Alakamisy",
+                  "Alatsinainy Ibity",
+                  "Ambano",
+                  "Ambatomena",
+                  "Ambohibary",
+                  "Ambohidranandriana",
+                  "Ambohimiarivo",
+                  "Ambohitsimanova",
+                  "Andranomanelatra",
+                  "Antanambao",
+                  "Antanimandry",
+                  "Antsoantany",
+                  "Belazao",
+                  "Mandrosohasina",
+                  "Mangarano",
+                  "Sahanivotry Manandona",
+                  "Soanindrariny",
+                  "Tsarahonenana Sahanivotry",
+                  "Vinanikarena",
+                  "Manandona"
+                ]
+              },
+              {
+                "nom": "District de Betafo",
+                "communes": [
+                  "Alakamisy Anativato",
+                  "Alakamisy Marososona",
+                  "Alarobia Bemaha",
+                  "Ambatonikolahy",
+                  "Ambohimanambola",
+                  "Ambohimasina",
+                  "Andranomafana",
+                  "Andrembesoa",
+                  "Anosiarivo Manapa",
+                  "Antohobe",
+                  "Antsoso",
+                  "Betafo",
+                  "Inanantonana",
+                  "Mahaiza",
+                  "Mandritsara",
+                  "Manohisoa",
+                  "Soavina",
+                  "Tritriva"
+                ]
+              },
+              {
+                "nom": "District de Mandoto",
+                "communes": [
+                  "Anjoma Ramartina",
+                  "Ankazomiriotra",
+                  "Antanambao Ambary",
+                  "Betsohana",
+                  "Fidirana",
+                  "Mandoto",
+                  "Vasiana",
+                  "Vinany"
+                ]
+              },
+              {
+                "nom": "District de Faratsiho",
+                "communes": [
+                  "Ambohiborona",
+                  "Andranomiady",
+                  "Antsampanimahazo",
+                  "Faratsiho",
+                  "Miandrarivo",
+                  "Ramainandro",
+                  "Valabetokana",
+                  "Faravohitra",
+                  "Vinaninony Sud"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "nom": "ANTSIRANANA",
+        "chef_lieu": "Antsiranana I",
+        "total_regions": 2,
+        "total_communes": 141,
+        "regions": [
+          {
+            "nom": "DIANA",
+            "chef_lieu": "Antsiranana I",
+            "total_communes": 61,
+            "districts": [
+              {
+                "nom": "District d'Ambanja",
+                "communes": [
+                  "Ambalahonko",
+                  "Ambodimanga Ramena",
+                  "Ambohimarina",
+                  "Ambohimena",
+                  "Anorotsangana",
+                  "Antsirabe",
+                  "Bemanevika Haut Sambirano",
+                  "Marovato",
+                  "Ankingameloka",
+                  "Ambaliha",
+                  "Ambohitrandriana",
+                  "Ankatafa",
+                  "Antafiambotry",
+                  "Antranonkarany",
+                  "Antsakoamanondro",
+                  "Antsatsaka",
+                  "Bemanevika Ouest",
+                  "Benavony",
+                  "CU Ambanja",
+                  "Djangoa",
+                  "Maevatanana",
+                  "Maherivaratra",
+                  "Marotaolana"
+                ]
+              },
+              {
+                "nom": "District d'Ambilobe",
+                "communes": [
+                  "Anaborano Ifasy",
+                  "Antsaravibe",
+                  "Manambato",
+                  "Ambakirano",
+                  "Ambarakaraka",
+                  "Ambatoben'anjavy",
+                  "Ambodiboanara",
+                  "Ampondralava",
+                  "Anjiabe Haut",
+                  "Antsohimbondrona",
+                  "Beramanja",
+                  "Betsiaka",
+                  "CU Ambilobe",
+                  "Mantaly",
+                  "Tanambao Marivorahona"
+                ]
+              },
+              {
+                "nom": "District d'Antsiranana I",
+                "communes": [
+                  "CU Antsiranana"
+                ]
+              },
+              {
+                "nom": "District d'Antsiranana II",
+                "communes": [
+                  "Ambondrona",
+                  "Andrafiabe",
+                  "Andranofanjava",
+                  "Andranovondronina",
+                  "Anivorano Nord",
+                  "Ankarongona",
+                  "Anketrakabe",
+                  "Antanamitarana",
+                  "Antsahampano",
+                  "Antsalaka",
+                  "Antsoha",
+                  "Bobakilandy",
+                  "Bobasakoa",
+                  "Joffre Ville",
+                  "Mahalina",
+                  "Mahavanona",
+                  "Mangaoko",
+                  "Mosorolava",
+                  "Ramena",
+                  "Sadjoavato",
+                  "Sakaramy"
+                ]
+              },
+              {
+                "nom": "District de Nosy-Be",
+                "communes": [
+                  "CU Nosy Be"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "SAVA",
+            "chef_lieu": "Sambava",
+            "total_communes": 80,
+            "districts": [
+              {
+                "nom": "District d'Andapa",
+                "communes": [
+                  "Ambalamanasy II",
+                  "Ambodiangezoka",
+                  "Ambodimanga I",
+                  "Andapa",
+                  "Andrakata",
+                  "Andranomena",
+                  "Anjialavabe",
+                  "Ankiakabe Nord",
+                  "Anoviara",
+                  "Antsahamena",
+                  "Bealampona",
+                  "Belaoka Lokoho",
+                  "Belaoka Marovato",
+                  "Betsakotsako",
+                  "Doany",
+                  "Marovato",
+                  "Matsohely",
+                  "Tanandava"
+                ]
+              },
+              {
+                "nom": "District d'Antalaha",
+                "communes": [
+                  "Ambalabe",
+                  "Ambinanifaho",
+                  "Ambohitralanana",
+                  "Ampahana",
+                  "Ampanavoana",
+                  "Ampohibe",
+                  "Andampy",
+                  "Antalaha",
+                  "Antananambo",
+                  "Antombana",
+                  "Antsahanoro",
+                  "Antsambalahy",
+                  "Lanjarivo",
+                  "Marofinaritra",
+                  "Manakambahiny",
+                  "Sarahandrano",
+                  "Vinanivao"
+                ]
+              },
+              {
+                "nom": "District de Sambava",
+                "communes": [
+                  "Ambatoafo",
+                  "Amboangibe",
+                  "Ambodiampana",
+                  "Ambodivoara",
+                  "Ambohimalaza",
+                  "Ambohimitsinjo",
+                  "Analamaho",
+                  "Andrahanjo",
+                  "Andratamarina",
+                  "Andrembona",
+                  "Anjangoveratra",
+                  "Anjialava",
+                  "Anjinjaomby",
+                  "Antindra",
+                  "Antsahavaribe",
+                  "Antsambaharo",
+                  "Bemanevika",
+                  "Bevonotra",
+                  "Farahalana",
+                  "Maroambihy",
+                  "Marogaona",
+                  "Marojala",
+                  "Morafeno",
+                  "Nosiarina",
+                  "CU Sambava",
+                  "Tanambao Daoud"
+                ]
+              },
+              {
+                "nom": "District de Vohémar",
+                "communes": [
+                  "Ambalasatrana",
+                  "Ambinan'andravory",
+                  "Ambodisambalahy",
+                  "Amboriala",
+                  "Ampanefena",
+                  "Ampisikina",
+                  "Ampondra",
+                  "Andrafainkona",
+                  "Andravory",
+                  "Antsirabe Nord",
+                  "Belambo",
+                  "Bobakindro",
+                  "Daraina",
+                  "Fanambana",
+                  "Maromokotra Loky",
+                  "Milanoa",
+                  "Nosibe",
+                  "Tsarabaria",
+                  "Vohemar"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "nom": "FIANARANTSOA",
+        "chef_lieu": "Fianarantsoa I",
+        "total_regions": 5,
+        "total_communes": 392,
+        "regions": [
+          {
+            "nom": "HAUTE MATSIATRA",
+            "chef_lieu": "Fianarantsoa I",
+            "total_communes": 82,
+            "districts": [
+              {
+                "nom": "District d'Ambalavao",
+                "communes": [
+                  "Ambalavao",
+                  "Ambinanindovoka",
+                  "Ambinaniroa",
+                  "Ambohimahamasina",
+                  "Ambohimandroso",
+                  "Andrainjato",
+                  "Anjoma",
+                  "Ankaramena",
+                  "Besoa",
+                  "Fenoarivo",
+                  "Iarintsena",
+                  "Kirano",
+                  "Mahazony",
+                  "Manamisoa",
+                  "Miarinarivo",
+                  "Sendrisoa",
+                  "Vohitsaoka"
+                ]
+              },
+              {
+                "nom": "District d'Ambohimahasoa",
+                "communes": [
+                  "Ambalakindresy",
+                  "Ambatosoa",
+                  "Ambohimahasoa",
+                  "Ambohinamboarina",
+                  "Ampitana",
+                  "Ankafina Tsarafidy",
+                  "Ankerana",
+                  "Befeta",
+                  "Camp Robin",
+                  "Fiadanana",
+                  "Isaka",
+                  "Kalalao",
+                  "Manandroy",
+                  "Morafeno",
+                  "Sahatona",
+                  "Sahave",
+                  "Vohiposa",
+                  "Vohitrarivo"
+                ]
+              },
+              {
+                "nom": "District de Fianarantsoa I",
+                "communes": [
+                  "CU Fianarantsoa"
+                ]
+              },
+              {
+                "nom": "District d'Ikalamavony",
+                "communes": [
+                  "Ambatomainty",
+                  "Fitampito",
+                  "Ikalamavony",
+                  "Mangindry",
+                  "Solila",
+                  "Tanamarina Bekisopa",
+                  "Tananamarina Sakay",
+                  "Tsitondroina"
+                ]
+              },
+              {
+                "nom": "District de Lalangina",
+                "communes": [
+                  "Alakamisy Ambohimaha",
+                  "Alatsinainy Ialamarina",
+                  "Ambalakely",
+                  "Ambalamahasoa",
+                  "Andrainjato Centre",
+                  "Andrainjato Est",
+                  "Androy",
+                  "Fandradava",
+                  "Ialananindro",
+                  "Ivoamba",
+                  "Mahatsinjony",
+                  "Sahambavy",
+                  "Taindambo"
+                ]
+              },
+              {
+                "nom": "District d'Isandra",
+                "communes": [
+                  "Ambalamindera II",
+                  "Ambondrona",
+                  "Andoharanomaintso",
+                  "Anjoma Itsara",
+                  "Ankarinarivo Manirisoa",
+                  "Fanjakana",
+                  "Isorana",
+                  "Mahazoarivo",
+                  "Nasandratrony",
+                  "Soatanana",
+                  "Vohibola"
+                ]
+              },
+              {
+                "nom": "District de Vohibato",
+                "communes": [
+                  "Alakamisy Itenina",
+                  "Andranominditra",
+                  "Andranovorivato",
+                  "Ankaromalaza Mifanasoa",
+                  "Ihazoara",
+                  "Mahaditra",
+                  "Mahasoabe",
+                  "Maneva",
+                  "Soaindrana",
+                  "Talata Ampano",
+                  "Vinanitelo",
+                  "Vohibato Ouest",
+                  "Vohimarina Lamosina",
+                  "Vohitrafeno"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "AMORON'I MANIA",
+            "chef_lieu": "Ambositra",
+            "total_communes": 55,
+            "districts": [
+              {
+                "nom": "District d'Ambatofinandrahana",
+                "communes": [
+                  "Ambatomifangoa",
+                  "Ambondromisotra",
+                  "Amborompotsy",
+                  "Ambotofinandrahana",
+                  "Fenoarivo",
+                  "Itremo",
+                  "Mandrosonoro",
+                  "Mangataboahangy",
+                  "Soavina"
+                ]
+              },
+              {
+                "nom": "District d'Ambositra",
+                "communes": [
+                  "Alakamisy Ambohijatovo",
+                  "Ambalamanakana",
+                  "Ambatofitorahana",
+                  "Ambinaninandro",
+                  "Ambohimitombo I",
+                  "Ambohimitombo II",
+                  "CU Ambositra",
+                  "Ambositra II",
+                  "Andina",
+                  "Ankazoambo",
+                  "Antoetra",
+                  "Fahizay",
+                  "Ihadilanana",
+                  "Ilaka Centre",
+                  "Imerina Imady",
+                  "Ivato Centre",
+                  "Ivony Miara-Miasa",
+                  "Kianjandrakefina",
+                  "Mahazina Ambohipierenana",
+                  "Marosoa",
+                  "Sahatsiho Ambohimanjaka",
+                  "Tsarasaotra",
+                  "Vohidahy"
+                ]
+              },
+              {
+                "nom": "District de Fandriana",
+                "communes": [
+                  "Alakamisy Ambohimahazo",
+                  "Ankarinoro",
+                  "Betsimisotra",
+                  "Fandriana",
+                  "Fiadanana",
+                  "Imito",
+                  "Mahazoarivo",
+                  "Miarinavaratra",
+                  "Milamina",
+                  "Sahamadio",
+                  "Sandrandahy",
+                  "Tatamalaza",
+                  "Tsarazaza"
+                ]
+              },
+              {
+                "nom": "District de Manandriana",
+                "communes": [
+                  "Ambatomarina",
+                  "Ambohimahazo",
+                  "Ambohimilanja",
+                  "Ambohipo",
+                  "Ambovombe Centre",
+                  "Andakatany",
+                  "Anjoma Nandihizana",
+                  "Anjoman'ankona",
+                  "Talata Vohimena",
+                  "Vinany Andakantanikely"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "IHOROMBE",
+            "chef_lieu": "Ihosy",
+            "total_communes": 26,
+            "districts": [
+              {
+                "nom": "District d'Iakora",
+                "communes": [
+                  "Begogo",
+                  "Iakora",
+                  "Ranotsara Nord"
+                ]
+              },
+              {
+                "nom": "District d'Ihosy",
+                "communes": [
+                  "Ambatolahy",
+                  "Ambia",
+                  "Analaliry",
+                  "Analavoka",
+                  "Andioalava",
+                  "Ankily",
+                  "Antsoha",
+                  "CU Ihosy",
+                  "Ilakaka",
+                  "Irina",
+                  "Mahasoa",
+                  "Menamaty Iloto",
+                  "Ranohira",
+                  "Sahambano",
+                  "Sakalalina",
+                  "Satrokala",
+                  "Soamatasy",
+                  "Tolohomiady",
+                  "Zazafotsy"
+                ]
+              },
+              {
+                "nom": "District d'Ivohibe",
+                "communes": [
+                  "Antambohobe",
+                  "Ivohibe",
+                  "Ivongo",
+                  "Maropaika"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "ATSIMO ATSINANANA",
+            "chef_lieu": "Farafangana",
+            "total_communes": 90,
+            "districts": [
+              {
+                "nom": "District de Befotaka-Sud",
+                "communes": [
+                  "Antaninarenina",
+                  "Antondabe",
+                  "Befotaka Sud",
+                  "Beharena",
+                  "Bekofafa Sud",
+                  "Marovitsika Sud",
+                  "Ranotsara Sud"
+                ]
+              },
+              {
+                "nom": "District de Farafangana",
+                "communes": [
+                  "Ambalatany",
+                  "Ambalavato Antevato",
+                  "Ambalavato Nord",
+                  "Ambohigogo",
+                  "Ambohimandroso",
+                  "Amporoforo",
+                  "Ankarana",
+                  "Anosivelo",
+                  "Anosy Tsararafa",
+                  "Antsiranambe",
+                  "Bevoay Beretra",
+                  "Efatsy",
+                  "Etrotroka",
+                  "Evato",
+                  "CU Farafangana",
+                  "Fenoarivo",
+                  "Iabohazo",
+                  "Ihorombe",
+                  "Ivandrika",
+                  "Mahabo Mananivo",
+                  "Mahafasa",
+                  "Mahavelo",
+                  "Maheriraty",
+                  "Manambotra Sud",
+                  "Marovandrika",
+                  "Namohora Iaborano",
+                  "Sahamadio",
+                  "Tangainony",
+                  "Tovona",
+                  "Vohilengo",
+                  "Vohimasy",
+                  "Vohitromby"
+                ]
+              },
+              {
+                "nom": "District de Midongy du Sud",
+                "communes": [
+                  "Andranolalina",
+                  "Ankazovelo",
+                  "Ivondro",
+                  "Maliorano",
+                  "Soakibany",
+                  "Nosifeno (ex-Midongy du Sud)"
+                ]
+              },
+              {
+                "nom": "District de Vangaindrano",
+                "communes": [
+                  "Ambatolava",
+                  "Ambongo",
+                  "Amparihy Est",
+                  "Ampasimalemy",
+                  "Ampataka",
+                  "Anilobe",
+                  "Bekaraoky",
+                  "Bema",
+                  "Bevata",
+                  "Fenoambany",
+                  "Iara",
+                  "Isahara",
+                  "Karimbary",
+                  "Lohafary",
+                  "Lopary",
+                  "Manambondro",
+                  "Marokibo",
+                  "Masianaka",
+                  "Matanga",
+                  "Ranomena",
+                  "Sandravinany",
+                  "Soamanova",
+                  "Tsianofana",
+                  "Tsiately",
+                  "CU Vangaindrano",
+                  "Vatanato",
+                  "Vohimalaza",
+                  "Vohipaho",
+                  "Vohitrambo"
+                ]
+              },
+              {
+                "nom": "District de Vondrozo",
+                "communes": [
+                  "Ambohimanana",
+                  "Anandravy",
+                  "Andakana",
+                  "Antokonala",
+                  "Iamonta",
+                  "Ivato",
+                  "Karianga",
+                  "Mahatsinjo",
+                  "Mahavelo",
+                  "Mahazoarivo",
+                  "Manambidala",
+                  "Manato",
+                  "Maroteza",
+                  "Vohiboreka",
+                  "Vohimary",
+                  "Vondrozo"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "FITOVINANY",
+            "chef_lieu": "Manakara",
+            "total_communes": 79,
+            "districts": [
+              {
+                "nom": "District d'Ikongo",
+                "communes": [
+                  "Ambatofotsy",
+                  "Ambinanitromby",
+                  "Ambohimisafy",
+                  "Ambolomadinika",
+                  "Ankarimbelo",
+                  "Antondinga",
+                  "Belemoka",
+                  "Ifanirea",
+                  "Ikongo",
+                  "Kalafotsy",
+                  "Manampatrana",
+                  "Maromiandra",
+                  "Sahalanona",
+                  "Tanakamba",
+                  "Tolongoina"
+                ]
+              },
+              {
+                "nom": "District de Manakara",
+                "communes": [
+                  "Ambahatrazo",
+                  "Ambahive",
+                  "Ambalaroka",
+                  "Ambalavero",
+                  "Ambandrika",
+                  "Ambila",
+                  "Amboanjo",
+                  "Ambohitsara M",
+                  "Amborondra",
+                  "Ambotaka",
+                  "Ampasimanjeva",
+                  "Ampasimboraka",
+                  "Ampasimpotsy Sud",
+                  "Analavory",
+                  "Anorombato",
+                  "Anteza",
+                  "Bekatra",
+                  "Betampona",
+                  "Fenomby",
+                  "Kianjanomby",
+                  "Lokomby",
+                  "Mahabako",
+                  "Mahamaibe",
+                  "CU Manakara",
+                  "Mangatsiotra",
+                  "Marofarihy",
+                  "Mavorano",
+                  "Mitanty",
+                  "Mizilo",
+                  "Nihaonana",
+                  "Nosiala",
+                  "Onilahy",
+                  "Sahanambohitra",
+                  "Saharefo",
+                  "Sahasinaka",
+                  "Sakoana",
+                  "Sorombo",
+                  "Tataho",
+                  "Vatana",
+                  "Vinanitelo",
+                  "Vohilava",
+                  "Vohimanitra",
+                  "Vohimasina Nord",
+                  "Vohimasina Sud",
+                  "Vohimasy"
+                ]
+              },
+              {
+                "nom": "District de Vohipeno",
+                "communes": [
+                  "Andemaka",
+                  "Ankarimbary",
+                  "Anoloka",
+                  "Antananabo",
+                  "Ifatsy",
+                  "Ilakatra",
+                  "Ivato",
+                  "Lanivo",
+                  "Mahabo",
+                  "Mahasoabe",
+                  "Mahazoarivo",
+                  "Nato",
+                  "Onjatsy",
+                  "Sahalava",
+                  "Savana",
+                  "Vohilany",
+                  "Vohindava",
+                  "Vohipeno",
+                  "Vohitrindry"
+      ]
+    }
+  ]
+},
+{
+            "nom": "VATOVAVY",
+            "chef_lieu": "Mananjary",
+            "total_communes": 60,
+            "districts": [
+              {
+                "nom": "District d'Ifanadiana",
+                "communes": [
+                  "Ambohimanga Sud",
+                  "Ambohimiera",
+                  "Analampasina",
+                  "Androrangavola",
+                  "Antaretra",
+                  "Antsindra",
+                  "Fasintsara",
+                  "Ifanadiana",
+                  "Kelilalina",
+                  "Maroharatra",
+                  "Marotoko",
+                  "Ranomafana",
+                  "Tsaratanana"
+                ]
+              },
+              {
+                "nom": "District de Mananjary",
+                "communes": [
+                  "Ambalahosy Nord",
+                  "Ambodinonoka",
+                  "Ambohimiarina II",
+                  "Ambohinihaonana",
+                  "Ambohitsara Est",
+                  "Andonabe",
+                  "Andragnambolava",
+                  "Andranomavo",
+                  "Ankatafana",
+                  "Anosimparihy",
+                  "Antaretra",
+                  "Antsenavolo",
+                  "Kianjavato",
+                  "Mahatsara Iefaka",
+                  "Mahatsara Sud",
+                  "Mahavoky Nord",
+                  "Mahela",
+                  "Manakana Nord",
+                  "Mananjary",
+                  "Marofototra",
+                  "Marokarima",
+                  "Marosangy",
+                  "Morafeno",
+                  "Namorona",
+                  "Sandrohy",
+                  "Tsaravary",
+                  "Tsiatosika",
+                  "Vatohandrina",
+                  "Vohilava"
+                ]
+              },
+              {
+                "nom": "District de Nosy Varika",
+                "communes": [
+                  "Ambahy",
+                  "Ambakobe",
+                  "Ambodiara",
+                  "Ambodilafa",
+                  "Ambodirian'i Sahafary",
+                  "Ampasinambo",
+                  "Andara",
+                  "Androrangavola",
+                  "Angodongodona",
+                  "Antanambao",
+                  "Befody",
+                  "Fiadanana",
+                  "Nosy Varika",
+                  "Sahavato",
+                  "Soavina",
+                  "Vohidroa",
+                  "Vohilava",
+                  "Vohitrandriana"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "nom": "MAHAJANGA",
+        "chef_lieu": "Mahajanga I",
+        "total_regions": 4,
+        "total_communes": 223,
+        "regions": [
+          {
+            "nom": "BOENY",
+            "chef_lieu": "Mahajanga I",
+            "total_communes": 43,
+            "districts": [
+              {
+                "nom": "District d'Ambato Boeny",
+                "communes": [
+                  "Ambato Ambarimay",
+                  "Ambondromamy",
+                  "Andranofasika",
+                  "Andranomamy",
+                  "Anjiajia",
+                  "Ankijabe",
+                  "Ankirihitra",
+                  "Madirovalo",
+                  "Manerinerina",
+                  "Sitampiky",
+                  "Tsaramandroso"
+                ]
+              },
+              {
+                "nom": "District de Mahajanga I",
+                "communes": [
+                  "CU Mahajanga"
+                ]
+              },
+              {
+                "nom": "District de Mahajanga II",
+                "communes": [
+                  "Ambalabe Befanjava",
+                  "Ambalakida",
+                  "Andranoboboka",
+                  "Bekobay Centre",
+                  "Belobaka",
+                  "Betsako",
+                  "Boanamary",
+                  "Mahajamba Usine",
+                  "Mariarano"
+                ]
+              },
+              {
+                "nom": "District de Marovoay",
+                "communes": [
+                  "Ambolomoty",
+                  "Ankaraobato",
+                  "Ankazomborona",
+                  "Anosinalainolona",
+                  "Antanambao Andranolava",
+                  "Antanimasaka",
+                  "Bemaharivo",
+                  "Manaratsandry",
+                  "Marosakoa",
+                  "Marovoay Banlieue",
+                  "CU Marovoay",
+                  "Tsararano"
+                ]
+              },
+              {
+                "nom": "District de Mitsinjo",
+                "communes": [
+                  "Ambarimaninga",
+                  "Antongomena Bevary",
+                  "Antseza",
+                  "Bekipay",
+                  "Katsepy",
+                  "Matsaka Banja",
+                  "Mitsinjo"
+                ]
+              },
+              {
+                "nom": "District de Soalala",
+                "communes": [
+                  "Ambohipaky",
+                  "Andranomavo",
+                  "Soalala"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "BETSIBOKA",
+            "chef_lieu": "Maevatanana",
+            "total_communes": 35,
+            "districts": [
+              {
+                "nom": "District de Kandreho",
+                "communes": [
+                  "Ambaliha",
+                  "Andasibe",
+                  "Antanimbaribe",
+                  "Behazomaty",
+                  "Betaimboay",
+                  "Kandreho"
+                ]
+              },
+              {
+                "nom": "District de Maevatanana",
+                "communes": [
+                  "Ambalajia",
+                  "Ambalanjanakomby",
+                  "Andriba",
+                  "Antanimbary",
+                  "Antsiafabositra",
+                  "Bemokotra",
+                  "Beratsimanina",
+                  "Madiromirafy",
+                  "Maevatanana I",
+                  "Maevatanana II",
+                  "Mahatsinjo",
+                  "Mahazoma",
+                  "Mangabe",
+                  "Maria",
+                  "Marokoro",
+                  "Morafeno",
+                  "Tsararano"
+                ]
+              },
+              {
+                "nom": "District de Tsaratanana",
+                "communes": [
+                  "Ambakireny",
+                  "Ampandrana",
+                  "Andriamena",
+                  "Bekapaika",
+                  "Betrandraka",
+                  "Brieville",
+                  "Keliloha",
+                  "Manakana",
+                  "Sakoamadinika",
+                  "Sarobaratra",
+                  "Tsararova",
+                  "Tsaratanana"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "MELAKY",
+            "chef_lieu": "Maintirano",
+            "total_communes": 37,
+            "districts": [
+              {
+                "nom": "District d'Ambatomainty",
+                "communes": [
+                  "Ambatomainty",
+                  "Bemarivo",
+                  "Marotsialeha",
+                  "Sarodrano"
+                ]
+              },
+              {
+                "nom": "District d'Antsalova",
+                "communes": [
+                  "Antsalova",
+                  "Bekopaka",
+                  "Masoarivo",
+                  "Soahany",
+                  "Trangahy"
+                ]
+              },
+              {
+                "nom": "District de Besalampy",
+                "communes": [
+                  "Ambolodia Sud",
+                  "Ampako",
+                  "Ankasakasa",
+                  "Bekodoka",
+                  "Besalampy",
+                  "Mahabe",
+                  "Marovoay Sud",
+                  "Soanenga"
+                ]
+              },
+              {
+                "nom": "District de Maintirano",
+                "communes": [
+                  "Andabotoka",
+                  "Andranovao",
+                  "Andrea",
+                  "Ankisatra",
+                  "Antsaidoha Bebao",
+                  "Antsondrondava",
+                  "Bebaboka Sud",
+                  "Belitsaky",
+                  "Bemokotra",
+                  "Berevo Ranobe",
+                  "Betanatanana",
+                  "Mafaijijo",
+                  "Maintirano CU",
+                  "Marohazo",
+                  "Maromavo",
+                  "Tambohorano",
+                  "Veromanga"
+                ]
+              },
+              {
+                "nom": "District de Morafenobe",
+                "communes": [
+                  "Andramy",
+                  "Beravina",
+                  "Morafenobe"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "SOFIA",
+            "chef_lieu": "Antsohihy",
+            "total_communes": 108,
+            "districts": [
+              {
+                "nom": "District d'Analalava",
+                "communes": [
+                  "Ambaliha",
+                  "Ambarijeby Sud",
+                  "Ambolobozo",
+                  "Analalava",
+                  "Andribavontsina",
+                  "Angoaka Sud",
+                  "Ankaramy",
+                  "Antonibe",
+                  "Befotaka Nord",
+                  "Mahadrodroka",
+                  "Maromandia",
+                  "Marovantaza",
+                  "Marovatolena"
+                ]
+              },
+              {
+                "nom": "District d'Antsohihy",
+                "communes": [
+                  "Ambodimadiro",
+                  "Ambodimanary",
+                  "Ambodimandresy",
+                  "Ampandriakilandy",
+                  "Anahidrano",
+                  "Andreba",
+                  "Anjalazala",
+                  "Anjiamangirana",
+                  "Ankerika",
+                  "Antsahabe",
+                  "Antsohihy",
+                  "Maroala"
+                ]
+              },
+              {
+                "nom": "District de Bealanana",
+                "communes": [
+                  "Ambalaromba",
+                  "Ambararata Sofia",
+                  "Ambararatabe Nord",
+                  "Ambatoriha Est",
+                  "Ambatosia",
+                  "Ambodiadabo M",
+                  "Ambodiampana",
+                  "Ambodisikidy",
+                  "Ambovonomby",
+                  "Analila",
+                  "Anjoromadosy",
+                  "Ankazotokana",
+                  "Antananarivo Haut",
+                  "Antsamaka",
+                  "Bealanana",
+                  "Beandrarezona",
+                  "Mangindrano",
+                  "Marotolana"
+                ]
+              },
+              {
+                "nom": "District de Befandriana Nord",
+                "communes": [
+                  "Ambararata",
+                  "Ambodimotso Sud",
+                  "Ambolidibe Est",
+                  "Ankarongana",
+                  "Antsakabary",
+                  "Antsakanalabe",
+                  "Befandriana Nord",
+                  "Maroamalona",
+                  "Matsondakana",
+                  "Morafeno",
+                  "Tsarahonenana",
+                  "Tsiamalao"
+                ]
+              },
+              {
+                "nom": "District de Mampikony",
+                "communes": [
+                  "Ambodihazoambo",
+                  "Ambohitoaka",
+                  "Ampasimatera",
+                  "Ankiririky",
+                  "Bekoratsaka",
+                  "Betaramahamay",
+                  "Komajia",
+                  "Malakialina",
+                  "Mampikony",
+                  "Mampikony II"
+                ]
+              },
+              {
+                "nom": "District de Mandritsara",
+                "communes": [
+                  "Ambalakirajy",
+                  "Ambarikorano",
+                  "Ambaripaika",
+                  "Ambilombe",
+                  "Amboaboa",
+                  "Ambodiadabo",
+                  "Ambodiamontana Kianga",
+                  "Ambohisoa",
+                  "Amborondolo",
+                  "Ampatakamaroreny",
+                  "Andohajango",
+                  "Andratamarina",
+                  "Anjiabe",
+                  "Ankiabe Salohy",
+                  "Ankiakabe Fonoko",
+                  "Antanambaon'amberina",
+                  "Antanandava",
+                  "Antsatramidola",
+                  "Antsiatsiaka",
+                  "Antsirabe Centre",
+                  "Antsoha",
+                  "Kalandy",
+                  "Manampaneva",
+                  "Mandritsara",
+                  "Marotandrano",
+                  "Pont Sofia",
+                  "Tsarajomoko",
+                  "Tsaratanana"
+                ]
+              },
+              {
+                "nom": "District de Port Berger",
+                "communes": [
+                  "Ambanjabe",
+                  "Ambodimahabibo",
+                  "Ambodisakoana",
+                  "Ambodivongo",
+                  "Amparihy",
+                  "Andranomeva",
+                  "Leanja",
+                  "Mahevaranohely",
+                  "Marovato",
+                  "Port Berge I",
+                  "Port-Berge II",
+                  "Tsarahasina",
+                  "Tsaratanana I",
+                  "Tsiningia",
+                  "Tsinjomitondraka"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "nom": "TOAMASINA",
+        "chef_lieu": "Toamasina I",
+        "total_regions": 3,
+        "total_communes": 226,
+        "regions": [
+          {
+            "nom": "ATSINANANA",
+            "chef_lieu": "Toamasina I",
+            "total_communes": 84,
+            "districts": [
+              {
+                "nom": "District d'Antanambao Manampotsy",
+                "communes": [
+                  "Antanambao Manampotsy",
+                  "Antanandehibe",
+                  "Mahela",
+                  "Manakana",
+                  "Saivaza"
+                ]
+              },
+              {
+                "nom": "District de Brickaville",
+                "communes": [
+                  "Ambalarondra",
+                  "Ambinaninony",
+                  "Ambohimanana",
+                  "Ampasimbe",
+                  "Andekaleka",
+                  "Andevoranto",
+                  "Anivorano Est",
+                  "Anjahamana",
+                  "Brickaville",
+                  "Fanasana",
+                  "Fetraomby",
+                  "Lohariandava",
+                  "Mahatsara",
+                  "Maroseranana",
+                  "Ranomafana Est",
+                  "Razanaka",
+                  "Vohitranivona"
+                ]
+              },
+              {
+                "nom": "District de Mahanoro",
+                "communes": [
+                  "Ambinanidilana",
+                  "Ambinanindrano",
+                  "Ambodiboanara",
+                  "Ambodiharina",
+                  "Ankazotsifantatra",
+                  "Befotaka",
+                  "Betsizaraina",
+                  "Mahanoro",
+                  "Manjakandriana",
+                  "Masomeloka",
+                  "Tsaravinany"
+                ]
+              },
+              {
+                "nom": "District de Marolambo",
+                "communes": [
+                  "Ambalapaiso II",
+                  "Ambatofisaka II",
+                  "Amboasary",
+                  "Ambodinonoka",
+                  "Ambodivoahangy",
+                  "Ambohimilanja",
+                  "Andodabe Sud",
+                  "Androrangavola",
+                  "Anosiarivo",
+                  "Betampona",
+                  "Lohavanana",
+                  "Marolambo",
+                  "Sahakevo",
+                  "Tanambao Rabemanana"
+                ]
+              },
+              {
+                "nom": "District de Toamasina I",
+                "communes": [
+                  "CU Toamasina"
+                ]
+              },
+              {
+                "nom": "District de Toamasina II",
+                "communes": [
+                  "Ambodilazana",
+                  "Ambodiriana",
+                  "Amboditandroho",
+                  "Ampasimadinika",
+                  "Ampasimbe Onibe",
+                  "Ampisokiana",
+                  "Amporoforo",
+                  "Andondabe",
+                  "Andranobolaha",
+                  "Antenina",
+                  "Antetezambaro",
+                  "Fanandrana",
+                  "Fito",
+                  "Foulpointe",
+                  "Mangabe",
+                  "Sahambala",
+                  "Toamasina Suburbaine"
+                ]
+              },
+              {
+                "nom": "District de Vatomandry",
+                "communes": [
+                  "Ambalabe",
+                  "Ambalavolo",
+                  "Amboditavolo",
+                  "Ambodivoananto",
+                  "Ampasimadinika",
+                  "Ampasimazava",
+                  "Antanambao Mahatsara",
+                  "Iamborano",
+                  "Ifasina I",
+                  "Ifasina II",
+                  "Ilaka Est",
+                  "Maintinandry",
+                  "Niarovana Caroline",
+                  "Niherenana",
+                  "Sahamatevina",
+                  "Tanambao Vahatrakaka",
+                  "Tsarasambo",
+                  "Tsivangiana",
+                  "CU Vatomandry"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "ANALANJIROFO",
+            "chef_lieu": "Fenerive Est",
+            "total_communes": 63,
+            "districts": [
+              {
+                "nom": "District de Fenerive-Est",
+                "communes": [
+                  "Ambatoharanana",
+                  "Ambodimanga II",
+                  "Ampasimbe Manantsantrana",
+                  "Ampasina Maningoro",
+                  "Antsiatsiaka",
+                  "Fenerive Ville",
+                  "Mahambo",
+                  "Mahanoro",
+                  "Miorimivalana",
+                  "Saranambana",
+                  "Vohilengo",
+                  "Vohipeno"
+                ]
+              },
+              {
+                "nom": "District de Mananara Nord",
+                "communes": [
+                  "Ambatoharanana",
+                  "Ambodiampana",
+                  "Ambodivoanio",
+                  "Andasibe",
+                  "Antanambaobe",
+                  "Antanambe",
+                  "Antananivo",
+                  "Imorona",
+                  "Manambolosy",
+                  "Mananara Nord",
+                  "Sandrakatsy",
+                  "Saromaona",
+                  "Tanibe",
+                  "Vanono"
+                ]
+              },
+              {
+                "nom": "District de Maroantsetra",
+                "communes": [
+                  "Ambanizana",
+                  "Ambinanitelo",
+                  "Ambodimanga Rantabe",
+                  "Anandrivola",
+                  "Andranofotsy",
+                  "Androndrona",
+                  "Anjahana",
+                  "Anjanazana",
+                  "Ankofa",
+                  "Ankofabe",
+                  "Antakotako",
+                  "Antsirabe Sahatany",
+                  "Mahavelona",
+                  "Manambolo",
+                  "Maroantsetra",
+                  "Morafeno",
+                  "Rantabe",
+                  "Voloina"
+                ]
+              },
+              {
+                "nom": "District de Sainte-Marie",
+                "communes": [
+                  "CU Sainte-Marie"
+                ]
+              },
+              {
+                "nom": "District de Soanierana Ivongo",
+                "communes": [
+                  "Ambahoambe",
+                  "Ambodiampana",
+                  "Andapafito",
+                  "Antanifotsy",
+                  "Antenina",
+                  "Fotsialanana",
+                  "Manompana",
+                  "Soanierana Ivongo"
+                ]
+              },
+              {
+                "nom": "District de Vavatenina",
+                "communes": [
+                  "Ambatoharanana",
+                  "Ambodimangavalo",
+                  "Ambohibe",
+                  "Ampasimazava",
+                  "Andasibe",
+                  "Anjahambe",
+                  "Maromitety",
+                  "Miarinarivo",
+                  "Sahatavy",
+                  "Vavatenina"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "ALAOTRA MANGORO",
+            "chef_lieu": "Ambatondrazaka",
+            "total_communes": 79,
+            "districts": [
+              {
+                "nom": "District d'Ambatondrazaka",
+                "communes": [
+                  "Ambandrika",
+                  "Ambatondrazaka",
+                  "Ambatondrazaka Suburbaine",
+                  "Ambatosoratra",
+                  "Ambohitsilaozana",
+                  "Amparihintsokatra",
+                  "Ampitatsimo",
+                  "Andilanatoby",
+                  "Andromba",
+                  "Antanandava",
+                  "Antsangasanga",
+                  "Bejofo",
+                  "Didy",
+                  "Feramanga Nord",
+                  "Ilafy",
+                  "Imerimandroso",
+                  "Manakambahiny Est",
+                  "Manakambahiny Ouest",
+                  "Soalazaina",
+                  "Tanambao Besakay"
+                ]
+              },
+              {
+                "nom": "District d'Amparafaravola",
+                "communes": [
+                  "Ambatomainty",
+                  "Amboavory",
+                  "Ambodimanga",
+                  "Ambohijanahary",
+                  "Ambohimandroso I",
+                  "Ambohitrarivo",
+                  "Amparafaravola",
+                  "Ampasikely",
+                  "Andilana Nord",
+                  "Andrebakely Sud",
+                  "Andrebakely Nord",
+                  "Anororo",
+                  "Beanana",
+                  "Bedidy",
+                  "Morarano Chrome",
+                  "Ranomainty",
+                  "Sahamamy",
+                  "Tanambe",
+                  "Vohimena",
+                  "Vohitsara"
+                ]
+              },
+              {
+                "nom": "District d'Andilamena",
+                "communes": [
+                  "Andilamena",
+                  "Antanimenabaka",
+                  "Bemaintso",
+                  "Maitsokely",
+                  "Maroadabo",
+                  "Marovato",
+                  "Miarinarivo",
+                  "Tanananifololahy"
+                ]
+              },
+              {
+                "nom": "District d'Anosibe An'ala",
+                "communes": [
+                  "Ambalaomby",
+                  "Ambatoharanana",
+                  "Ampandroantraka",
+                  "Ampasimaneva",
+                  "Anosibe An'ala",
+                  "Antandrokomby",
+                  "Longozabe",
+                  "Niarovana",
+                  "Tratramarina",
+                  "Tsaravinany"
+                ]
+              },
+              {
+                "nom": "District de Moramanga",
+                "communes": [
+                  "Ambatovola",
+                  "Amboasary",
+                  "Ambohibary",
+                  "Ambohidronono",
+                  "Ampasimpotsy Gare",
+                  "Ampasimpotsy Mandialaza",
+                  "Andaingo",
+                  "Andasibe",
+                  "Anosibe Ifody",
+                  "Antanandava",
+                  "Antaniditra",
+                  "Beforona",
+                  "Belavabary",
+                  "Beparasy Mangarivotra",
+                  "Fierenana",
+                  "Lakato",
+                  "Mandialaza",
+                  "Moramanga",
+                  "Morarano Gare",
+                  "Sabotsy Anjiro",
+                  "Vodiriana"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "nom": "TOLIARA",
+        "chef_lieu": "Toliara I",
+        "total_regions": 4,
+        "total_communes": 271,
+        "regions": [
+          {
+            "nom": "ATSIMO ANDREFANA",
+            "chef_lieu": "Toliara I",
+            "total_communes": 105,
+            "districts": [
+              {
+                "nom": "District d'Ampanihy Ouest",
+                "communes": [
+                  "Amboropotsy",
+                  "Ampanihy Centre",
+                  "Androka",
+                  "Ankiliabo",
+                  "Ankilimivory",
+                  "Ankilizato",
+                  "Antaly",
+                  "Beahitse",
+                  "Belafike Haut",
+                  "Beroy Sud",
+                  "Ejeda",
+                  "Fotadrevo",
+                  "Gogogogo",
+                  "Itampolo",
+                  "Maniry",
+                  "Vohitany"
+                ]
+              },
+              {
+                "nom": "District d'Ankazoabo-Sud",
+                "communes": [
+                  "Ankazoabo Sud",
+                  "Berenty",
+                  "Andranomafana",
+                  "Fotivolo",
+                  "Ilemby",
+                  "Tandrano"
+                ]
+              },
+              {
+                "nom": "District de Benenitra",
+                "communes": [
+                  "Ambalavato",
+                  "Benenitra",
+                  "Ehara",
+                  "Ianapera"
+                ]
+              },
+              {
+                "nom": "District de Beroroha",
+                "communes": [
+                  "Behisatsy",
+                  "Bemavo",
+                  "Beroroha",
+                  "Fanjakana",
+                  "Mandronarivo",
+                  "Marerano",
+                  "Sakena",
+                  "Tanamary"
+                ]
+              },
+              {
+                "nom": "District de Betioky-Sud",
+                "communes": [
+                  "Ambatry Mitsinjo",
+                  "Andranomangatsiaka",
+                  "Ankazomanga Ouest",
+                  "Ankazombalala",
+                  "Ankilivalo",
+                  "Antohabato",
+                  "Antsavoa",
+                  "Beantake",
+                  "Belamoty",
+                  "Besely",
+                  "Betioky Sud",
+                  "Bezaha",
+                  "Fenoandala",
+                  "Lazarivo",
+                  "Manalobe",
+                  "Maroarivo Ankazomanga",
+                  "Marosavoa",
+                  "Masiaboay",
+                  "Montifeno",
+                  "Sakamasay",
+                  "Salobe",
+                  "Soamanonga",
+                  "Soaserana",
+                  "Tanambao Haut",
+                  "Temeantsoa",
+                  "Tongobory",
+                  "Vatolatsaka"
+                ]
+              },
+              {
+                "nom": "District de Morombe",
+                "communes": [
+                  "Ambahikily",
+                  "Antanimieva",
+                  "Antongo Vaovao",
+                  "Basibasy",
+                  "Befandeha",
+                  "Befandriana Sud",
+                  "Morombe",
+                  "Nosy Ambositra"
+                ]
+              },
+              {
+                "nom": "District de Sakaraha",
+                "communes": [
+                  "Ambinany",
+                  "Amboronabo",
+                  "Andamasiny Vineta",
+                  "Andranolava",
+                  "Beraketa",
+                  "Mahaboboka",
+                  "Mihary Lamatihy",
+                  "Mihary Teheza",
+                  "Mihavatsy",
+                  "Mikoboka",
+                  "Mitsinjo",
+                  "Sakaraha"
+                ]
+              },
+              {
+                "nom": "District de Toliara I",
+                "communes": [
+                  "CU Toliara"
+                ]
+              },
+              {
+                "nom": "District de Toliara II",
+                "communes": [
+                  "Ambohimahavelona",
+                  "Ambolofoty",
+                  "Anakao",
+                  "Analamisampy",
+                  "Andranohinaly",
+                  "Andranovory",
+                  "Ankililoaka",
+                  "Ankilimalinika",
+                  "Antanimena Onilahy",
+                  "Beheloka",
+                  "Behompy",
+                  "Belalanda",
+                  "Betsinjaka",
+                  "Manombo Sud",
+                  "Manorofify",
+                  "Marofoty",
+                  "Maromiandra",
+                  "Miary",
+                  "Milenaka",
+                  "Mitsinjo Betanimena",
+                  "Saint Augustin",
+                  "Soalara Sud",
+                  "Tsianisiha"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "ANOSY",
+            "chef_lieu": "Tolagnaro",
+            "total_communes": 64,
+            "districts": [
+              {
+                "nom": "District d'Amboasary Sud",
+                "communes": [
+                  "Amboasary Sud",
+                  "Behara",
+                  "Ebelo",
+                  "Elonty",
+                  "Esira",
+                  "Ifotaka",
+                  "Mahaly",
+                  "Manevy",
+                  "Maromby",
+                  "Marotsiraka",
+                  "Ranobe",
+                  "Sampona",
+                  "Tanandava Sud",
+                  "Tomboarivo",
+                  "Tranomaro",
+                  "Tsivory"
+                ]
+              },
+              {
+                "nom": "District de Betroka",
+                "communes": [
+                  "Ambalasoa",
+                  "Ambatomivary",
+                  "Analamary",
+                  "Andriandampy",
+                  "Beampombo I",
+                  "Beampombo II",
+                  "Bekorobo",
+                  "Benato Toby",
+                  "Betroka",
+                  "Iaborotra",
+                  "Ianabinda",
+                  "Ianakafy",
+                  "Isoanala",
+                  "Ivahona",
+                  "Jangany",
+                  "Mahabo",
+                  "Mahasoa Est",
+                  "Nanarena Besakoa",
+                  "Naninora",
+                  "Sakamahily",
+                  "Tsaraitso"
+                ]
+              },
+              {
+                "nom": "District de Tolagnaro",
+                "communes": [
+                  "Ambatoabo",
+                  "Ampasimena",
+                  "Ampasy Nahampoana",
+                  "Analamary",
+                  "Analapatsy",
+                  "Andranobory",
+                  "Ankaramena",
+                  "Ankariera",
+                  "Bevoay",
+                  "Emagnobo",
+                  "Enakara Haut",
+                  "Enaniliha",
+                  "Fenoevo Efita",
+                  "Iaboakoho",
+                  "Ifarantsa",
+                  "Isaka Ivondro",
+                  "Mahatalaky",
+                  "Manambaro",
+                  "Manantenina",
+                  "Mandiso",
+                  "Mandromodromotra",
+                  "Ranomafana Sud",
+                  "Ranopiso",
+                  "Sarisambo",
+                  "Soanierana",
+                  "Soavary",
+                  "CU Taolagnaro"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "ANDROY",
+            "chef_lieu": "Ambovombe Androy",
+            "total_communes": 51,
+            "districts": [
+              {
+                "nom": "District d'Ambovombe Androy",
+                "communes": [
+                  "Ambanisarika",
+                  "Ambazoa",
+                  "Ambohimalaza",
+                  "Ambonaivo",
+                  "Ambondro",
+                  "CU Ambovombe Androy",
+                  "Ampamanta",
+                  "Analamary",
+                  "Andalatanosy",
+                  "Anjeky Ankilikira",
+                  "Antanimora Sud",
+                  "Erada",
+                  "Imanombo",
+                  "Jafaro",
+                  "Maroalomainte",
+                  "Maroalopoty",
+                  "Marovato Befeno",
+                  "Sihanamaro",
+                  "Tsimanada"
+                ]
+              },
+              {
+                "nom": "District de Bekily",
+                "communes": [
+                  "Ambahita",
+                  "Ambatosola",
+                  "Anivorano Mitsinjo",
+                  "Anja Nord",
+                  "Ankaranabo Nord",
+                  "Antsakoamaro",
+                  "Bekitro",
+                  "Belindo Mahasoa",
+                  "Beraketa",
+                  "Besakoa",
+                  "Beteza",
+                  "Bevitiky",
+                  "Manakompy",
+                  "Maroviro",
+                  "Morafeno",
+                  "Tanandava",
+                  "Tsikolaky",
+                  "Tsirandrany",
+                  "Vohimanga"
+                ]
+              },
+              {
+                "nom": "District de Beloha",
+                "communes": [
+                  "Behabobo",
+                  "Beloha Androy",
+                  "Kopoky",
+                  "Marolinta",
+                  "Tranoroa",
+                  "Tranovaho"
+                ]
+              },
+              {
+                "nom": "District de Tsihombe",
+                "communes": [
+                  "Anjampaly",
+                  "Antaritarika",
+                  "Faux Cap",
+                  "Imongy",
+                  "Marovato",
+                  "Nikoly",
+                  "Tsihombe"
+                ]
+              }
+            ]
+          },
+          {
+            "nom": "MENABE",
+            "chef_lieu": "Morondava",
+            "total_communes": 51,
+            "districts": [
+              {
+                "nom": "District de Belo sur Tsiribihina",
+                "communes": [
+                  "Ambiky",
+                  "Amboalimena",
+                  "Andimaky Manambolo",
+                  "Ankalalobe",
+                  "Ankororoky",
+                  "Antsoha",
+                  "Belinta",
+                  "Belo Sur Tsiribihina",
+                  "Bemarivo Ankirondro",
+                  "Berevo",
+                  "Beroboka",
+                  "Masoarivo",
+                  "Tsaraotana",
+                  "Tsimafana"
+                ]
+              },
+              {
+                "nom": "District de Mahabo",
+                "communes": [
+                  "Ambia",
+                  "Ampanihy",
+                  "Analamitsivala",
+                  "Ankilivalo",
+                  "Ankilizato",
+                  "Befotaka",
+                  "Beronono",
+                  "Mahabo",
+                  "Malaimbandy",
+                  "Mandabe",
+                  "Tsimazava"
+                ]
+              },
+              {
+                "nom": "District de Manja",
+                "communes": [
+                  "Andranopasy",
+                  "Ankiliabo",
+                  "Anontsibe Centre",
+                  "Beharona",
+                  "Manja",
+                  "Soaserana"
+                ]
+              },
+              {
+                "nom": "District de Miandrivazo",
+                "communes": [
+                  "Ambatolahy",
+                  "Ampanihy",
+                  "Ankavandra",
+                  "Ankondromena",
+                  "Ankorofotsy",
+                  "Anosimena",
+                  "Bemahatazana",
+                  "Betsipolitra",
+                  "Dabolava",
+                  "Isalo",
+                  "Itondy",
+                  "Manambina",
+                  "Manandaza",
+                  "Miandrivazo",
+                  "Soaloka"
+                ]
+              },
+              {
+                "nom": "District de Morondava",
+                "communes": [
+                  "Analaiva",
+                  "Befasy",
+                  "Belo Sur Mer",
+                  "Bemanonga",
+                  "Morondava"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

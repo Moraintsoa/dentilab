@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import {
     Box, Button, CircularProgress, Divider, FormControl, FormControlLabel,
-    FormLabel, Grid, InputAdornment, MenuItem, Paper, Radio, RadioGroup,
-    TextField, Typography, Alert, IconButton, useTheme, alpha
+    FormLabel, Grid, InputAdornment, Paper, Radio, RadioGroup,
+    TextField, Typography, Alert, useTheme, alpha
 } from '@mui/material'
 import {
     PersonOutlined, CakeOutlined, PhoneOutlined, MedicalServicesOutlined,
-    ShieldOutlined, BadgeOutlined, ArrowBack, Save, PersonAddAlt1Outlined
+    ShieldOutlined, BadgeOutlined, Save, PersonAddAlt1Outlined
 } from '@mui/icons-material'
 import { useNavigate, useParams } from 'react-router-dom'
 import api from '../../../shared/services/Api'
-import { useAuth } from '../../../shared/hooks/useAuth'
 import { HeaderPagesBackArrow } from '../../../shared/components/HeaderPages'
 
 const FIELD_SECTIONS = [
@@ -49,7 +48,6 @@ const INITIAL_STATE = {
 }
 
 export const PatientForm = () => {
-    const { user } = useAuth()
     const theme = useTheme()
     const navigate = useNavigate()
     const { id } = useParams()
@@ -117,9 +115,9 @@ export const PatientForm = () => {
                 await api.patch(`/patient/patients/${id}/`, formData)
                 setSuccess('Patient mis à jour avec succès.')
             } else {
-                await api.post('/patient/patients/', formData)
-                setSuccess('Patient créé avec succès.')
-                setFormData(INITIAL_STATE)
+                const response = await api.post('/patient/patients/', formData)
+                const newId = response.data.id
+                navigate(`/patients/${newId}/odontogramme`)
             }
         } catch (err) {
             const data = err.response?.data
@@ -147,23 +145,6 @@ export const PatientForm = () => {
     return (
         <Box component="form" onSubmit={handleSubmit}>
             {/* Header */}
-            {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
-                <IconButton
-                    size="small"
-                    onClick={() => navigate(-1)}
-                    sx={{ border: '0.5px solid', borderColor: 'divider', borderRadius: 1.5, bgcolor: 'background.paper' }}
-                >
-                    <ArrowBack fontSize="small" />
-                </IconButton>
-                <Box>
-                    <Typography variant="body1" fontWeight={600}>
-                        {isEdit ? 'Modifier le patient' : 'Nouveau patient'}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                        {isEdit ? 'Mettez à jour les informations du patient' : 'Remplissez le formulaire pour créer un patient'}
-                    </Typography>
-                </Box>
-            </Box> */}
             <HeaderPagesBackArrow
                 title={isEdit ? 'Modifier le patient' : 'Nouveau patient'}
                 description={isEdit ? 'Mettez à jour les informations du patient' : 'Remplissez le formulaire pour créer un patient'}
@@ -303,26 +284,3 @@ export const PatientForm = () => {
         </Box>
     )
 }
-
-
-
-
-
-// import { ArrowBack } from '@mui/icons-material'
-// import { Box, Icon, IconButton, Typography, useTheme } from '@mui/material'
-// import React from 'react'
-// import { HeaderPagesBackArrow } from '../../../shared/components/HeaderPages'
-
-// export const PatientForm = () => {
-//     const theme = useTheme()
-//     return (
-//         <Box>
-//             <HeaderPagesBackArrow
-//                 title={`Ajout de Patient`}
-//                 description={`Enregistrer les informations du patient`}
-//                 urlparent={'/patients'}
-//             />
-//             <Typography variant='h4' >PatientForm</Typography>
-//         </Box>
-//     )
-// }

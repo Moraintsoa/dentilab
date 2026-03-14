@@ -17,6 +17,8 @@ export const CustomTabs = ({ NAV_TABS }) => {
             sx={{
                 flex: 1,
                 minHeight: 36,
+                bgcolor: theme.palette.background.paper,
+                borderRadius: 2,
                 '& .MuiTabs-flexContainer': {
                     gap: 0.5,
                 },

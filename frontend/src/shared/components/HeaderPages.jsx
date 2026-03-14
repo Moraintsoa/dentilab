@@ -1,10 +1,11 @@
 import { Add, ArrowBack } from '@mui/icons-material'
-import { Box, Button, Divider, Grid, IconButton, Typography } from '@mui/material'
+import { Box, Button, Divider, Grid, IconButton, Typography, useTheme } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CustomTabs } from './CustomTabs'
 
 export const HeaderPages = ({ icon, title, description, isButton = false, onClick, buttonText }) => {
+
     return (
         < Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
             <Box>
@@ -30,8 +31,9 @@ export const HeaderPages = ({ icon, title, description, isButton = false, onClic
     )
 }
 
-export const HeaderPagesBackArrow = ({ title, description, isButton = false, onClick, buttonText, urlparent, navTab, children }) => {
+export const HeaderPagesBackArrow = ({ title, description, isButton = false, onClick, buttonText, urlparent, children }) => {
     const navigate = useNavigate()
+    const theme = useTheme()
 
     return (
         <Box sx={{
@@ -40,7 +42,7 @@ export const HeaderPagesBackArrow = ({ title, description, isButton = false, onC
             justifyContent: 'space-between',
             gap: 2,
             mb: 3,
-            bgcolor: 'background.paper',
+            bgcolor:theme.palette.background.paper,
             borderRadius: 2,
             border: '0.5px solid',
             borderColor: 'divider',
@@ -68,8 +70,6 @@ export const HeaderPagesBackArrow = ({ title, description, isButton = false, onC
             </Box>
 
             <Divider orientation="vertical" flexItem />
-
-            {/* <CustomTabs NAV_TABS={navTab} /> */}
             {children}
 
 

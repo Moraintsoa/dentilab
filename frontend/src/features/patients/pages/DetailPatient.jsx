@@ -8,9 +8,9 @@ import api from '../../../shared/services/Api'
 
 const NAV_TABS = [
     { label: 'Odontogramme', to: 'odontogramme', icon: <Apps fontSize="small" /> },
-    { label: 'Consultations', to: 'historiqueconsultations', icon: <Approval fontSize="small" /> },
-    { label: 'Facturations', to: 'facturations', icon: <ReceiptLongOutlined fontSize="small" /> },
-    { label: 'Informations', to: 'informations', icon: <AssignmentIndOutlined fontSize="small" /> },
+    { label: 'Historique de consultations', to: 'historiqueconsultations', icon: <Approval fontSize="small" /> },
+    { label: 'Facturations du patient', to: 'facturations', icon: <ReceiptLongOutlined fontSize="small" /> },
+    { label: 'Informations du patient', to: 'informations', icon: <AssignmentIndOutlined fontSize="small" /> },
 ]
 
 export const DetailPatient = () => {
